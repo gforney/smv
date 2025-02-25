@@ -4920,9 +4920,6 @@ int ParseISOFProcess(smv_case *scase, bufferstreamdata *stream, char *buffer, in
     return RETURN_BREAK;
   }
 
-#ifdef pp_ISOFRAME
-  isoi->frameinfo = NULL;
-#endif
   isoi->fds_skip = fds_skip;
   isoi->fds_delta = fds_delta;
   isoi->tfile = NULL;
@@ -6852,9 +6849,6 @@ int ReadSMV_Init(smv_case *scase){
   START_TIMER(timer_readsmv);
   START_TIMER(scase->processing_time);
 
-#ifdef pp_ISOFRAME
-  use_isosurface_threads = 0;
-#endif
 //** initialize multi-threading
   if(runscript == 1){
     use_checkfiles_threads  = 0;
