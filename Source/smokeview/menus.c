@@ -3215,7 +3215,6 @@ void ReloadAllVectorSliceFiles(int load_flag){
 
     //*** reload vector slice files
 
-#ifndef pp_SLICEFRAME
   for(i = 0; i<global_scase.slicecoll.nvsliceinfo; i++){
     vslicedata *vslicei;
 
@@ -3224,7 +3223,6 @@ void ReloadAllVectorSliceFiles(int load_flag){
       ReadVSlice(i, ALL_FRAMES, NULL, UNLOAD, DEFER_SLICECOLOR, &errorcode);
     }
   }
-#endif
   int lastslice=0;
 
   for(i = global_scase.slicecoll.nvsliceinfo-1; i>=0; i--){
@@ -3255,10 +3253,8 @@ void ReloadAllVectorSliceFiles(int load_flag){
 
 void ReloadAllSliceFiles(int load_flag){
   int ii;
-#ifndef pp_SLICEFRAME
   int file_count = 0;
   float load_size = 0.0;
-#endif
   float load_time;
   slicedata **reload_slicelist;
 
@@ -3288,28 +3284,16 @@ void ReloadAllSliceFiles(int load_flag){
     i = slicei-global_scase.slicecoll.sliceinfo;
 
     if(slicei->slice_filetype == SLICE_GEOM){
-#ifdef pp_SLICEFRAME
-      ReadGeomData(slicei->patchgeom, slicei, load_flag, ALL_FRAMES, NULL, 0, &errorcode);
-#else
       load_size+=ReadGeomData(slicei->patchgeom, slicei, LOAD, ALL_FRAMES, NULL, 0, &errorcode);
-#endif
     }
     else{
-#ifdef pp_SLICEFRAME
-      ReadSlice(slicei->file, i, ALL_FRAMES, NULL, load_flag, DEFER_SLICECOLOR, &errorcode);
-#else
       load_size += ReadSlice(slicei->file, i, ALL_FRAMES, NULL, LOAD, DEFER_SLICECOLOR, &errorcode);
-#endif
     }
-#ifndef pp_SLICEFRAME
     file_count++;
-#endif
   }
   STOP_TIMER(load_time);
   FREEMEMORY(reload_slicelist);
-#ifndef pp_SLICEFRAME
   PrintFileLoadTimes(file_count,load_size,load_time);
-#endif
   slicefile_labelindex = slicefile_labelindex_save;
 }
 
@@ -4530,10 +4514,8 @@ FILE_SIZE LoadVSliceMenu2(int value){
     vslicedata *vslicei;
     slicedata *slicei;
     int dir;
-#ifndef pp_SLICEFRAME
     int file_count = 0;
     float load_size = 0.0;
-#endif
     float load_time;
     int lastslice=0;
 
@@ -4565,29 +4547,16 @@ FILE_SIZE LoadVSliceMenu2(int value){
       longlabel = slicei->label.longlabel;
       if(strcmp(longlabel,submenulabel)!=0)continue;
       if(dir!=0&&dir!=slicei->idir)continue;
-#ifndef pp_SLICEFRAME
       file_count++;
-#endif
-#ifdef pp_SLICEFRAME
-      if(lastslice==i){
-        ReadVSlice(i,ALL_FRAMES, NULL, LOAD, SET_SLICECOLOR, &errorcode);
-      }
-      else{
-        ReadVSlice(i,ALL_FRAMES, NULL, LOAD, DEFER_SLICECOLOR, &errorcode);
-      }
-#else
       if(lastslice==i){
         load_size+=ReadVSlice(i,ALL_FRAMES, NULL, LOAD, SET_SLICECOLOR, &errorcode);
       }
       else{
         load_size+=ReadVSlice(i,ALL_FRAMES, NULL, LOAD, DEFER_SLICECOLOR, &errorcode);
       }
-#endif
     }
     STOP_TIMER(load_time);
-#ifndef pp_SLICEFRAME
     PrintFileLoadTimes(file_count,load_size,load_time);
-#endif
   }
   GLUTSETCURSOR(GLUT_CURSOR_LEFT_ARROW);
   return return_filesize;
@@ -5059,10 +5028,8 @@ FILE_SIZE LoadAllSliceFiles(int last_slice, char *submenulabel, int dir, int *fc
 
 void LoadSliceMenu(int value){
   int errorcode,i;
-#ifndef pp_SLICEFRAME
   float load_time, load_size = 0.0;
   int file_count=0;
-#endif
 
   SNIFF_ERRORS("LoadSliceMenu: start");
   if(value==MENU_DUMMY)return;
@@ -5075,11 +5042,9 @@ void LoadSliceMenu(int value){
     switch(value){
       int submenutype;
       slicedata *slicei;
-#ifndef pp_SLICEFRAME
       char *submenulabel;
       int dir;
       int last_slice;
-#endif
 
       case UNLOAD_ALL:
         for(i=0;i<global_scase.slicecoll.nsliceinfo;i++){
@@ -5111,7 +5076,6 @@ void LoadSliceMenu(int value){
         submenutype=value/4;
         submenutype=global_scase.subslice_menuindex[submenutype];
         slicei = global_scase.slicecoll.sliceinfo + submenutype;
-#ifndef pp_SLICEFRAME
         submenulabel = slicei->label.longlabel;
         dir=value%4;
         last_slice = global_scase.slicecoll.nsliceinfo - 1;
@@ -5129,7 +5093,6 @@ void LoadSliceMenu(int value){
         load_size = LoadAllSliceFiles(last_slice, submenulabel, dir, &file_count);
         STOP_TIMER(load_time);
         PrintFileLoadTimes(file_count,load_size,load_time);
-#endif
       }
   }
   updatemenu=1;
@@ -5142,10 +5105,8 @@ void LoadSliceMenu(int value){
 
 void LoadMultiVSliceMenu(int value){
   int i;
-#ifndef pp_SLICEFRAME
   int file_count = 0;
   float load_size = 0.0;
-#endif
   float load_time;
 
   if(value==MENU_DUMMY)return;
@@ -5200,19 +5161,13 @@ void LoadMultiVSliceMenu(int value){
         vslicei = global_scase.slicecoll.vsliceinfo + mvslicei->ivslices[i];
         IF_NOT_USEMESH_CONTINUE(vslicei->loaded,global_scase.slicecoll.sliceinfo[vslicei->ival].blocknumber);
         if(vslicei->skip==0&&vslicei->loaded==0){
-#ifdef pp_SLICEFRAME
-          LoadVSliceMenu2(mvslicei->ivslices[i]);
-#else
           load_size+=LoadVSliceMenu2(mvslicei->ivslices[i]);
           file_count++;
-#endif
         }
         if(vslicei->skip==1&&vslicei->loaded==1)UnloadVSliceMenu(mvslicei->ivslices[i]);
       }
       STOP_TIMER(load_time);
-#ifndef pp_SLICEFRAME
       PrintFileLoadTimes(file_count,load_size,load_time);
-#endif
     }
     script_multivslice=0;
   }
@@ -5242,14 +5197,10 @@ void LoadMultiVSliceMenu(int value){
       if(strcmp(longlabel,submenulabel)!=0)continue;
       if(dir!=0&&dir!=slicej->idir)continue;
       LoadMultiVSliceMenu(i);
-#ifndef pp_SLICEFRAME
       file_count++;
-#endif
     }
     STOP_TIMER(load_time);
-#ifndef pp_SLICEFRAME
     PrintFileLoadTimes(file_count,load_size,load_time);
-#endif
   }
   else{
     switch(value){
@@ -5341,9 +5292,7 @@ FILE_SIZE LoadAllMSlices(int last_slice, multislicedata *mslicei){
   SetLoadedSliceBounds(mslicei->islices, mslicei->nslices);
   file_size = LoadAllMSlicesMT(last_slice, mslicei, &file_count);
   STOP_TIMER(load_time);
-#ifndef pp_SLICEFRAME
   PrintFileLoadTimes(file_count,(float)file_size,load_time);
-#endif
   return file_size;
 }
 
@@ -5426,10 +5375,8 @@ void LoadMultiSliceMenu(int value){
     char *submenulabel;
     slicedata *slicei;
     float load_time;
-#ifndef pp_SLICEFRAME
     float load_size = 0.0;
     int file_count = 0;
-#endif
 
     value = -(1000 + value);
     submenutype=value/4;
@@ -5447,14 +5394,6 @@ void LoadMultiSliceMenu(int value){
       if(strcmp(longlabel,submenulabel)!=0)continue;
       if(dir!=0&&dir!=slicei->idir)continue;
       if(dir!=0&&slicei->volslice==1)continue;
-#ifdef pp_SLICEFRAME
-      if(slicei->slice_filetype == SLICE_GEOM){
-        ReadGeomData(slicei->patchgeom, slicei, LOAD, ALL_FRAMES, NULL, 0, &errorcode);
-      }
-      else{
-        ReadSlice(slicei->file,i, ALL_FRAMES, NULL, LOAD,SET_SLICECOLOR,&errorcode);
-      }
-#else
       if(slicei->slice_filetype == SLICE_GEOM){
         load_size += ReadGeomData(slicei->patchgeom, slicei, LOAD, ALL_FRAMES, NULL, 0, &errorcode);
       }
@@ -5462,12 +5401,9 @@ void LoadMultiSliceMenu(int value){
         load_size += ReadSlice(slicei->file,i, ALL_FRAMES, NULL, LOAD,SET_SLICECOLOR,&errorcode);
       }
       file_count++;
-#endif
     }
     STOP_TIMER(load_time);
-#ifndef pp_SLICEFRAME
     PrintFileLoadTimes(file_count,load_size,load_time);
-#endif
   }
   else{
     switch(value){

@@ -666,9 +666,6 @@ typedef struct _slicedata {
   FILE_SIZE file_size;
   int *geom_offsets;
   devicedata vals2d;
-#ifdef pp_SLICEFRAME
-  framedata *frameinfo;
-#endif
 } slicedata;
 
 /* --------------------------  multislicedata ------------------------------------ */
