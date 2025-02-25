@@ -3,9 +3,6 @@
 #include "isobox.h"
 #include "options.h"
 #include <stdio.h>
-#ifdef pp_FRAME
-#include "IOframe.h"
-#endif
 
 #if defined(WIN32)
 #include <windows.h>
@@ -1083,9 +1080,6 @@ typedef struct {
   char *log_filename;
   char *caseini_filename;
   char *fedsmv_filename;
-#ifdef pp_FRAME
-  char *frametest_filename;
-#endif
   char *expcsv_filename;
   char *dEcsv_filename;
   char *html_filename;

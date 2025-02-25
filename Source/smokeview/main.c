@@ -305,13 +305,6 @@ char *ProcessCommandLine(CommandlineArgs *args){
   STRCPY(global_scase.paths.caseini_filename, global_scase.fdsprefix);
   STRCAT(global_scase.paths.caseini_filename, ".ini");
 
-#ifdef pp_FRAME
-  FREEMEMORY(global_scase.paths.frametest_filename);
-  NewMemory((void **)&global_scase.paths.frametest_filename, len_casename + strlen(".tst") + 1);
-  STRCPY(global_scase.paths.frametest_filename, global_scase.fdsprefix);
-  STRCAT(global_scase.paths.frametest_filename, ".tst");
-#endif
-
   FREEMEMORY(global_scase.paths.fedsmv_filename);
   NewMemory((void **)&global_scase.paths.fedsmv_filename, len_casename + strlen(".fedsmv") + 1);
   STRCPY(global_scase.paths.fedsmv_filename, global_scase.fdsprefix);

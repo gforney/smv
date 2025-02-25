@@ -3481,16 +3481,7 @@ void LoadUnloadMenu(int value){
     break;
   case RELOADALL:
   case RELOAD_INCREMENTAL_ALL:
-#ifdef pp_FRAME
-    if(value == RELOADALL){
-      load_flag = LOAD;
-    }
-    else{
-      load_flag = RELOAD;
-    }
-#else
     load_flag = LOAD;
-#endif
     THREADcontrol(compress_threads, THREAD_LOCK);
     if(global_scase.paths.hrr_csv_filename!=NULL){
       ReadHRR(&global_scase, LOAD);
