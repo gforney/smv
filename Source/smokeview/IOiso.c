@@ -449,7 +449,6 @@ FILE_SIZE ReadIsoGeom(int ifile, int load_flag, int *geom_frame_index, int *erro
   int i;
   surfdata *surfi;
   FILE_SIZE return_filesize=0;
-  int time_frame = ALL_FRAMES;
 
   isoi = global_scase.isoinfo + ifile;
   if(load_flag==LOAD||load_flag==RELOAD){
