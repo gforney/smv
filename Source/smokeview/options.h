@@ -8,11 +8,6 @@
 #define pp_GPU              // support the GPU
 #define pp_THREAD           // turn on multi-threading
 
-#ifdef pp_FRAME          // turn on each frame type if pp_FRAME is set
-//#define pp_FRAME_DEBUG   // frame timing test
-//#define pp_FRAME_DEBUG2  // output frame times
-#endif
-
 #define pp_PART_COUNT    // precompute particle frame counting when loading all particle files
 
 //*** options: windows
