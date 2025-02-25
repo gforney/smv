@@ -312,9 +312,7 @@ typedef struct _meshdata {
   unsigned char *cpatchval_zlib, *cpatchval_iframe_zlib;
   unsigned char *cpatchval, *cpatchval_iframe;
   float *patch_times, *patch_timesi, *patchval;
-#ifndef pp_BOUNDFRAME
   float *patchval_iframe;
-#endif
   unsigned char *patch_times_map;
   float **patchventcolors;
   int patch_itime;
@@ -1406,9 +1404,6 @@ typedef struct _patchdata {
   int npatches;
   patchfacedata *patchfaceinfo;
   patchfacedata *meshfaceinfo[6];
-#ifdef pp_BOUNDFRAME
-  framedata *frameinfo;
-#endif
 } patchdata;
 
 /* --------------------------  std_objects ------------------------------------ */
