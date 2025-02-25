@@ -5103,9 +5103,6 @@ int ParsePRT5Process(smv_case *scase, bufferstreamdata *stream, char *buffer, in
     blocknumber--;
   }
 
-#ifdef pp_PARTFRAME
-  parti->frameinfo = NULL;
-#endif
   parti->blocknumber = blocknumber;
   parti->seq_id = nn_part;
   parti->autoload = 0;
@@ -5169,9 +5166,7 @@ int ParsePRT5Process(smv_case *scase, bufferstreamdata *stream, char *buffer, in
   parti->timeslist = NULL;
   parti->histograms = NULL;
   parti->bounds_set = 0;
-#ifndef pp_PARTFRAME
   parti->filepos = NULL;
-#endif
   parti->sort_tags = NULL;
   parti->vis_part = NULL;
   parti->irvals = NULL;
@@ -11441,9 +11436,7 @@ int ReadSMV_Configure(){
     }
   }
   if(global_scase.npartinfo>=64){
-#ifndef pp_PARTFRAME
     use_partload_threads = 1;
-#endif
     partfast = 1;
   }
 
@@ -14499,9 +14492,6 @@ int ReadIni2(const char *inifile, int localfile){
       if(current_script_command==NULL){
         sscanf(buffer, "%i %i %i", &partfast, &use_partload_threads, &n_partload_threads);
       }
-#ifdef pp_PARTFRAME
-      use_partload_threads = 0;
-#endif
       continue;
     }
     if(MatchINI(buffer, "WINDOWOFFSET") == 1){
