@@ -1510,17 +1510,12 @@ typedef struct _smoke3ddata {
   float maxval;
   unsigned char *smokeframe_in, *smokeframe_out, **smokeframe_comp_list;
   unsigned char *smokeview_tmp;
-#ifndef pp_SMOKEFRAME
   unsigned char *smoke_comp_all;
-#endif
   unsigned char *frame_all_zeros;
   FILE_SIZE file_size;
   float *smoke_boxmin, *smoke_boxmax;
   smokedata smoke;
   int dir;
-#ifdef pp_SMOKEFRAME
-  framedata *frameinfo;
-#endif
 } smoke3ddata;
 
 /* --------------------------  smoke3dtypedata ------------------------------ */
