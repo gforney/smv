@@ -8,6 +8,7 @@
 #define pp_GPU              // support the GPU
 #define pp_THREAD           // turn on multi-threading
 //#define pp_BOUNDING_BOX   // draw bounding box when mouse is pressed and option selected
+//#define pp_DEBUG_OSX_CRASH  // debug print to test crash on mac
 
 #define pp_PART_COUNT    // precompute particle frame counting when loading all particle files
 
