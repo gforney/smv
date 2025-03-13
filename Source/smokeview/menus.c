@@ -11719,9 +11719,6 @@ static int menu_count=0;
     glutAddMenuEntry("  Platform: WIN64", 1);
 #endif
 #ifdef pp_OSX
-#ifdef pp_QUARTZ
-    glutAddMenuEntry("  Platform: OSX64/QUARTZ", 1);
-#else
 #ifdef pp_OSX_HIGHRES
     if(double_scale==1){
       glutAddMenuEntry("  Platform: OSX64(high res fonts)", 1);
@@ -11731,7 +11728,6 @@ static int menu_count=0;
     }
 #else
     glutAddMenuEntry("  Platform: OSX64", 1);
-#endif
 #endif
 #endif
 #ifdef pp_LINUX
