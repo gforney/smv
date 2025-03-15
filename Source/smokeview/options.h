@@ -8,8 +8,6 @@
 #define pp_GPU              // support the GPU
 #define pp_THREAD           // turn on multi-threading
 
-#define pp_PART_COUNT    // precompute particle frame counting when loading all particle files
-
 //*** options: windows
 
 #ifdef WIN32
