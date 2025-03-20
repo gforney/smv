@@ -5000,6 +5000,7 @@ void LoadSliceMenu(int value){
   }
   else{
     switch(value){
+      slicedata *slicei;
       int submenutype;
       slicedata *slicei;
       char *submenulabel;
@@ -5031,6 +5032,10 @@ void LoadSliceMenu(int value){
       case MENU_SLICE_SETTINGS:
         GLUIShowBoundsDialog(DLG_SLICE);
         break;
+#ifdef pp_SLICEFRAME
+      default:
+        break;
+#else
       default:
         value = -(1000 + value);
         submenutype=value/4;
