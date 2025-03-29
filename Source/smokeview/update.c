@@ -2647,17 +2647,6 @@ void BoundBoundCB(int var);
 
 }
 
-/* ------------------ UpdateOutlineMode ------------------------ */
-
-void UpdateOutlineMode(void){
-  if(global_scase.visFrame == 1){
-    outline_mode = SCENE_OUTLINE_SCENE;
-  }
-  else{
-    outline_mode = SCENE_OUTLINE_HIDDEN;
-  }
-}
-
 /* ------------------ UpdateFlippedColorbar ------------------------ */
 
 void UpdateFlippedColorbar(void){

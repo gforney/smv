@@ -14449,9 +14449,16 @@ int ReadIni2(const char *inifile, int localfile){
     if(MatchINI(buffer, "SHOWFRAME") == 1 &&
        MatchINI(buffer, "SHOWFRAMERATE") != 1 &&
        MatchINI(buffer, "SHOWFRAMELABEL") != 1){
+      int vis_state;
+
       fgets(buffer, 255, stream);
-      sscanf(buffer, "%i", &global_scase.visFrame);
-      ONEORZERO(global_scase.visFrame);
+      sscanf(buffer, "%i", &vis_state);
+      if(vis_state == 0){
+        outline_mode = SCENE_OUTLINE_HIDDEN;
+      }
+      else{
+        outline_mode = SCENE_OUTLINE_SCENE;
+      }
       continue;
     }
     if(MatchINI(buffer, "FRAMERATEVALUE") == 1){
@@ -16932,8 +16939,14 @@ void WriteIni(int flag,char *filename){
   fprintf(fileout, " %i\n", visDummyVents);
   fprintf(fileout, "SHOWFLOOR\n");
   fprintf(fileout, " %i\n", global_scase.visFloor);
-  fprintf(fileout, "SHOWFRAME\n");
-  fprintf(fileout, " %i\n", global_scase.visFrame);
+  if(outline_mode == SCENE_OUTLINE_HIDDEN){
+    fprintf(fileout, "SHOWFRAME\n");
+    fprintf(fileout, " 0\n");
+  }
+  else{
+    fprintf(fileout, "SHOWFRAME\n");
+    fprintf(fileout, " 1\n");
+  }
   fprintf(fileout, "SHOWFRAMELABEL\n");
   fprintf(fileout, " %i\n", visFramelabel);
   fprintf(fileout, "SHOWFRAMETIMELABEL\n");

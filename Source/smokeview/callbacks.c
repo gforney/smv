@@ -2235,20 +2235,13 @@ void Keyboard(unsigned char key, int flag){
       }
       else{
         outline_mode++;
-        if(outline_mode!=SCENE_OUTLINE_HIDDEN&&global_scase.visFrame==0){
-          global_scase.visFrame = 1;
+        if(outline_mode!=SCENE_OUTLINE_HIDDEN){
           updatefacelists = 1;
           updatemenu = 1;
           glutPostRedisplay();
         }
         if(outline_mode>2&&global_scase.noutlineinfo>0)outline_mode=SCENE_OUTLINE_HIDDEN;
         if(outline_mode>1&&global_scase.noutlineinfo==0)outline_mode=SCENE_OUTLINE_HIDDEN;
-        if(outline_mode==SCENE_OUTLINE_HIDDEN){
-          global_scase.visFrame = 0;
-        }
-        else{
-          global_scase.visFrame = 1;
-        }
         if(outline_mode==SCENE_OUTLINE_HIDDEN)PRINTF("outline mode: hidden\n",outline_mode);
         if(outline_mode==SCENE_OUTLINE_MESH)PRINTF("outline mode: mesh\n",outline_mode);
         if(outline_mode==SCENE_OUTLINE_SCENE)PRINTF("outline mode: scene\n",outline_mode);

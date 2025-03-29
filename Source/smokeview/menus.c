@@ -7599,8 +7599,12 @@ void GeometryMenu(int value){
     break;
   case GEOM_Outline:
     if(global_scase.isZoneFireModel == 0){
-      global_scase.visFrame = 1 - global_scase.visFrame;
-      UpdateOutlineMode();
+      if(outline_mode == SCENE_OUTLINE_HIDDEN){
+        outline_mode = SCENE_OUTLINE_SCENE;
+      }
+      else{
+        outline_mode = SCENE_OUTLINE_HIDDEN;
+      }
     }
     if(outline_mode==SCENE_OUTLINE_HIDDEN)PRINTF("outline mode: hidden\n",outline_mode);
     if(outline_mode==SCENE_OUTLINE_MESH)PRINTF("outline mode: mesh\n",outline_mode);
@@ -7655,14 +7659,12 @@ void GeometryMenu(int value){
   case GEOM_ShowAll:
     show_faces_shaded=1;
     global_scase.visFloor = 1;
-    global_scase.visFrame = 1;
-    UpdateOutlineMode();
+    outline_mode = SCENE_OUTLINE_SCENE;
     BlockageMenu(visBLOCKAsInput);
     VentMenu(SHOW_ALL_VENTS);
     break;
   case GEOM_HideAll:
-    global_scase.visFrame=0;
-    UpdateOutlineMode();
+    outline_mode = SCENE_OUTLINE_HIDDEN;
     global_scase.visFloor=0;
     global_scase.visWalls=0;
     global_scase.visCeiling=0;
@@ -10224,17 +10226,16 @@ static int menu_count=0;
   GLUTADDSUBMENU(_("Grid"),gridslicemenu);
   if(global_scase.isZoneFireModel==0){
     if(skyboxinfo==NULL){
-      if(global_scase.visFrame==1)glutAddMenuEntry(_("*Outline"), GEOM_Outline);
-      if(global_scase.visFrame==0)glutAddMenuEntry(_("Outline"), GEOM_Outline);
+      if(outline_mode!=SCENE_OUTLINE_HIDDEN)glutAddMenuEntry(_("*Outline"), GEOM_Outline);
+      if(outline_mode==SCENE_OUTLINE_HIDDEN)glutAddMenuEntry(_("Outline"), GEOM_Outline);
     }
     else{
-      if(global_scase.visFrame==1)glutAddMenuEntry(_("*Outline(FDS scene)"), GEOM_Outline);
-      if(global_scase.visFrame==0)glutAddMenuEntry(_("Outline(FDS scene)"), GEOM_Outline);
+      if(outline_mode != SCENE_OUTLINE_HIDDEN)glutAddMenuEntry(_("*Outline(FDS scene)"), GEOM_Outline);
+      if(outline_mode == SCENE_OUTLINE_HIDDEN)glutAddMenuEntry(_("Outline(FDS scene)"), GEOM_Outline);
     }
   }
   else{
-    global_scase.visFrame=0;
-    UpdateOutlineMode();
+    outline_mode = SCENE_OUTLINE_HIDDEN;
   }
   if(skyboxinfo!=NULL){
     if(visSkyboxoutline==1)glutAddMenuEntry(_("*Outline(skybox images)"), SKY_OUTLINE);
