@@ -5050,7 +5050,7 @@ void DrawBlockages(int mode, int trans_flag){
         DrawObstsDebug();
         break;
       default:
-        assert(0);
+        assert(FFALSE);
         break;
       }
     }

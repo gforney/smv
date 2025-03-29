@@ -1876,7 +1876,7 @@ void Keyboard(unsigned char key, int flag){
         printf("translate only front/back\n");
         break;
       default:
-        assert(0);
+        assert(FFALSE);
         break;
       }
       break;

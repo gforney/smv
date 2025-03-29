@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <math.h>
+#include <assert.h>
 #ifdef pp_OSX
 #include <unistd.h>
 #endif
@@ -41,7 +42,7 @@ char *ConcatLabels(char *label1, char *label2, char *label3, char *label){
   assert(label!=NULL);
   assert(label1!=NULL||label2!=NULL||label3!=NULL);
   if(label == NULL)return NULL;
-  strcpy(label, "")
+  strcpy(label, "");
   if(label1!=NULL)strcpy(label, label1);
   if(label2!=NULL)strcat(label, label2);
   if(label3!=NULL)strcat(label, label3);

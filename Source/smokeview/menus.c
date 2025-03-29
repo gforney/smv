@@ -3338,7 +3338,7 @@ void LoadPlot2DMenu(int value){
     }
     break;
   default:
-    assert(0);
+    assert(FFALSE);
     break;
   }
 }
@@ -4447,7 +4447,7 @@ void UnloadVSliceMenu(int value){
     }
   }
   else if(value==-2){
-    assert(0);
+    assert(FFALSE);
   }
 }
 
@@ -6817,7 +6817,7 @@ void TranslateTypeMenu(int value){
     printf("translate only front/back\n");
     break;
   default:
-    assert(0);
+    assert(FFALSE);
     break;
   }
 }
@@ -7108,7 +7108,7 @@ void TerrainGeomShowMenu(int value){
       GLUIUpdateGeomBoundingBox();
       break;
     default:
-      assert(0);
+      assert(FFALSE);
       break;
     }
   }
