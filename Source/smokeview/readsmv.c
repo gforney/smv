@@ -13692,8 +13692,8 @@ int ReadIni2(const char *inifile, int localfile){
     if(MatchINI(buffer, "OUTLINEMODE") == 1){
       fgets(buffer, 255, stream);
       sscanf(buffer, "%i %i", &outline_mode, &outline_color_flag);
-      if(global_scase.meshescoll.nmeshes<2&&outline_mode!=SCENE_OUTLINE_HIDDEN){
-        outline_mode = SCENE_OUTLINE_SCENE;
+      if(global_scase.meshescoll.nmeshes<2){
+        outline_mode = CLAMP(outline_mode, 0, 1);
       }
       continue;
     }
@@ -14444,6 +14444,21 @@ int ReadIni2(const char *inifile, int localfile){
     if(MatchINI(buffer, "SHOWFRAMERATE") == 1){
       fgets(buffer, 255, stream);
       sscanf(buffer, "%i", &visFramerate);
+      continue;
+    }
+    if(MatchINI(buffer, "SHOWFRAME") == 1 &&
+       MatchINI(buffer, "SHOWFRAMERATE") != 1 &&
+       MatchINI(buffer, "SHOWFRAMELABEL") != 1){
+      int vis_state;
+
+      fgets(buffer, 255, stream);
+      sscanf(buffer, "%i", &vis_state);
+      if(vis_state == 0){
+        outline_mode = SCENE_OUTLINE_HIDDEN;
+      }
+      else{
+        outline_mode = SCENE_OUTLINE_SCENE;
+      }
       continue;
     }
     if(MatchINI(buffer, "FRAMERATEVALUE") == 1){
