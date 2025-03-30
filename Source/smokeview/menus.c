@@ -7640,6 +7640,9 @@ void GeometryOutlineMenu(int value){
 void GeometryMenu(int value){
 
   switch(value){
+  case GEOM_OutlineC:
+    GeometryOutlineMenu(value);
+    break;
   case 5:
     global_scase.visFloor=1-global_scase.visFloor;
     break;
@@ -10234,17 +10237,16 @@ static int menu_count=0;
   CREATEMENU(geometryoutlinemenu,GeometryOutlineMenu);
   if(global_scase.isZoneFireModel==0){
     char skylabel[32] = "", label[128];
-    char label1a[128] = "", label1b[128] = "hidden";
     char label2a[128] = "", label2b[128] = "mesh";
     char label3a[128] = "", label3b[128] = "scene";
 
-    if(outline_mode == SCENE_OUTLINE_HIDDEN)strcpy(label1a, "*");
     if(outline_mode == SCENE_OUTLINE_MESH)strcpy(label2a,   "*");
     if(outline_mode == SCENE_OUTLINE_SCENE)strcpy(label3a,  "*");
     if(skyboxinfo != NULL)strcpy(skylabel,"(FDS scene)");
 
-    glutAddMenuEntry(ConcatLabels(label1a, label1b, skylabel, label), GEOM_OutlineA);
-    glutAddMenuEntry(ConcatLabels(label2a, label2b, skylabel, label), GEOM_OutlineB);
+    if(global_scase.meshescoll.nmeshes > 1){
+      glutAddMenuEntry(ConcatLabels(label2a, label2b, skylabel, label), GEOM_OutlineB);
+    }
     glutAddMenuEntry(ConcatLabels(label3a, label3b, skylabel, label), GEOM_OutlineC);
   }
   else{
@@ -10280,11 +10282,17 @@ static int menu_count=0;
     }
   }
   GLUTADDSUBMENU(_("Grid"),gridslicemenu);
-  if(outline_mode != SCENE_OUTLINE_HIDDEN || (skyboxinfo != NULL && visSkyboxoutline == 1)){
-    GLUTADDSUBMENU("*Outline",geometryoutlinemenu);
+  if(global_scase.meshescoll.nmeshes > 1||skyboxinfo!=NULL){
+    if(outline_mode != SCENE_OUTLINE_HIDDEN || (skyboxinfo != NULL && visSkyboxoutline == 1)){
+      GLUTADDSUBMENU("*Outline",geometryoutlinemenu);
+    }
+    else{
+      GLUTADDSUBMENU(_("Outline"),geometryoutlinemenu);
+    }
   }
   else{
-    GLUTADDSUBMENU(_("Outline"),geometryoutlinemenu);
+    if(outline_mode==SCENE_OUTLINE_HIDDEN)glutAddMenuEntry("Outline",  GEOM_OutlineC);
+    if(outline_mode!=SCENE_OUTLINE_HIDDEN)glutAddMenuEntry("*Outline", GEOM_OutlineC);
   }
   if(hide_scene == 1)glutAddMenuEntry(_("*bounding box(mouse down)"), GEOM_BOUNDING_BOX_MOUSE_DOWN);
   if(hide_scene != 1)glutAddMenuEntry(_("bounding box(mouse down)"), GEOM_BOUNDING_BOX_MOUSE_DOWN);
