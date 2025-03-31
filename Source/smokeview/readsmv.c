@@ -12134,6 +12134,8 @@ int ReadIni2(const char *inifile, int localfile){
   int i;
   FILE *stream;
   int have_tours=0, have_tour7=0;
+  int outline_mode_ini = -1;
+  int vis_state_ini    = -1;
 
   updatemenu = 1;
   updatefacelists = 1;
@@ -13691,10 +13693,7 @@ int ReadIni2(const char *inifile, int localfile){
     }
     if(MatchINI(buffer, "OUTLINEMODE") == 1){
       fgets(buffer, 255, stream);
-      sscanf(buffer, "%i %i", &outline_mode, &outline_color_flag);
-      if(global_scase.meshescoll.nmeshes<2){
-        outline_mode = CLAMP(outline_mode, 0, 1);
-      }
+      sscanf(buffer, "%i %i", &outline_mode_ini, &outline_color_flag);
       continue;
     }
     if(MatchINI(buffer, "SLICEDATAOUT") == 1){
@@ -14449,16 +14448,8 @@ int ReadIni2(const char *inifile, int localfile){
     if(MatchINI(buffer, "SHOWFRAME") == 1 &&
        MatchINI(buffer, "SHOWFRAMERATE") != 1 &&
        MatchINI(buffer, "SHOWFRAMELABEL") != 1){
-      int vis_state;
-
       fgets(buffer, 255, stream);
-      sscanf(buffer, "%i", &vis_state);
-      if(vis_state == 0){
-        outline_mode = SCENE_OUTLINE_HIDDEN;
-      }
-      else{
-        outline_mode = SCENE_OUTLINE_SCENE;
-      }
+      sscanf(buffer, "%i", &vis_state_ini);
       continue;
     }
     if(MatchINI(buffer, "FRAMERATEVALUE") == 1){
@@ -15824,6 +15815,23 @@ int ReadIni2(const char *inifile, int localfile){
       }
   }
   fclose(stream);
+  if(vis_state_ini == -1 && outline_mode_ini == -1){
+  }
+  else if(vis_state_ini != -1 && outline_mode_ini == -1){
+    if(vis_state_ini == 0){
+      outline_mode = SCENE_OUTLINE_HIDDEN;
+    }
+    else{
+      outline_mode = SCENE_OUTLINE_SCENE;
+    }
+  }
+  else if(vis_state_ini == -1 && outline_mode_ini != -1){
+  }
+  else{ /* vis_state != -1 && outline_mode != -1 */
+    if(vis_state_ini == 0){
+      outline_mode = SCENE_OUTLINE_HIDDEN;
+    }
+  }
   return 0;
 }
 
