@@ -15826,11 +15826,10 @@ int ReadIni2(const char *inifile, int localfile){
     }
   }
   else if(vis_state_ini == -1 && outline_mode_ini != -1){
+    outline_mode = outline_mode_ini;
   }
   else{ /* vis_state != -1 && outline_mode != -1 */
-    if(vis_state_ini == 0){
-      outline_mode = SCENE_OUTLINE_HIDDEN;
-    }
+    outline_mode = outline_mode_ini;
   }
   return 0;
 }
