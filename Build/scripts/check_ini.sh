@@ -10,8 +10,8 @@ if [ "$OUTLINE" == "" ]; then
   OUTLINE=0
 fi
 if [[ "$SHOWFRAME" == "0" ]] && [[ "$OUTLINE" != "0" ]]; then
-  echo ***warning: $FILE SHOWFRAME=$SHOWFRAME OUTLINE=$OUTLINE
+  echo ***error: $FILE SHOWFRAME=$SHOWFRAME OUTLINEMODE=$OUTLINE
 fi
 if [[ "$SHOWFRAME" != "0" ]] && [[ "$OUTLINE" == "0" ]]; then
-  echo ***warning: $FILE SHOWFRAME=$SHOWFRAME OUTLINE=$OUTLINE
+  echo ***warning: $FILE SHOWFRAME=$SHOWFRAME OUTLINEMODE=$OUTLINE
 fi
