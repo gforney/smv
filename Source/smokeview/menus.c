@@ -5122,6 +5122,7 @@ void LoadSliceMenu(int value){
             }
           }
         }
+        UpdateTimes();
         break;
       case MENU_SHOWSLICE_IN_GAS:
         GLUISliceInObstMenu2Dialog(ONLY_IN_GAS);
@@ -5497,6 +5498,7 @@ void LoadMultiSliceMenu(int value){
       file_count++;
 #endif
     }
+    UpdateTimes();
     STOP_TIMER(load_time);
 #ifndef pp_SLICEFRAME
     PrintFileLoadTimes(file_count,load_size,load_time);
