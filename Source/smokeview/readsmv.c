@@ -3354,6 +3354,9 @@ void UpdateSmoke3DTypes(void){
     smoke3dtypedata *typen;
 
     smoke3di = global_scase.smoke3dcoll.smoke3dinfo+i;
+#ifdef pp_SMOKE3D_FORCE
+    if(smoke3di->dummy == 1)continue;
+#endif
     labeli = smoke3di->label.shortlabel;
     doit = 1;
     for(j = 0; j<i; j++){
@@ -3361,6 +3364,9 @@ void UpdateSmoke3DTypes(void){
       char *labelj;
 
       smoke3dj = global_scase.smoke3dcoll.smoke3dinfo+j;
+#ifdef pp_SMOKE3D_FORCE
+      if(smoke3dj->dummy == 1)continue;
+#endif
       labelj = smoke3dj->label.shortlabel;
       if(strcmp(labeli, labelj)==0){
         doit = 0;
@@ -3386,12 +3392,18 @@ void UpdateSmoke3DTypes(void){
   for(i = 0; i<global_scase.smoke3dcoll.nsmoke3dinfo; i++){
     smoke3ddata *smoke3di;
     int j;
-    smokestatedata *smokestate;
+    smokestatedata *smokestate=NULL;
 
     smoke3di = global_scase.smoke3dcoll.smoke3dinfo+i;
+#ifdef pp_SMOKE3D_FORCE
+    if(smoke3di->dummy == 1)continue;
+#endif
+
     smoke3di->type = GetSmoke3DType(&global_scase, smoke3di->label.shortlabel);
 
-    NewMemory((void **)&smokestate, global_scase.smoke3dcoll.nsmoke3dtypes*sizeof(smokestatedata));
+    if(global_scase.smoke3dcoll.nsmoke3dtypes>0){
+      NewMemory((void **)&smokestate, global_scase.smoke3dcoll.nsmoke3dtypes*sizeof(smokestatedata));
+    }
     smoke3di->smokestate = smokestate;
     for(j = 0; j<global_scase.smoke3dcoll.nsmoke3dtypes; j++){
       smoke3di->smokestate[j].color = NULL;
@@ -5587,6 +5599,10 @@ int ParseSMOKE3DProcess(smv_case *scase, bufferstreamdata *stream, char *buffer,
     smoke3di->size_file = SMOKE3DBUFFER(len + 3 + 1);
     STRCPY(smoke3di->size_file, bufferptr);
     STRCAT(smoke3di->size_file, ".sz");
+#endif
+#ifdef pp_SMOKE3D_FORCE
+    smoke3di->dummy = 0;
+    if(strcmp(smoke3di->reg_file, "dummy.xyz") == 0)smoke3di->dummy = 1;
 #endif
     for(i=0; i<6; i++){
       smoke3di->alphas_smokedir[i] = smoke3di->alphas_smokebuffer + 256*i;
@@ -11766,12 +11782,49 @@ int ReadSMV_Configure(){
   return 0;
 }
 
+/* ------------------ InitScase ------------------------ */
+
 /// @brief Initialize a smokeview case (smv_case) which has already been
 /// allocated. This should be avoided and CreateScase/DestroyScase should be
 /// used instead.
 /// @param scase An uninitialized scase
 void InitScase(smv_case *scase) {
   // set all of the defaults that are non-zero
+
+  assert(scase->smoke3dcoll.nsmoke3dinfo == 0);
+  assert(scase->smoke3dcoll.smoke3dinfo == NULL);
+  assert(scase->smoke3dcoll.nsmoke3dtypes == 0);
+  assert(scase->smoke3dcoll.smoke3dtypes == NULL);
+  assert(scase->smoke3dcoll.smoke3d_other == 0);
+  assert(scase->smoke3dcoll.smoke3dinfo_sorted == NULL);
+
+  assert(scase->slicecoll.nsliceinfo == 0);
+  assert(scase->slicecoll.sliceinfo == NULL);
+  assert(scase->slicecoll.nmultisliceinfo == 0);
+  assert(scase->slicecoll.multisliceinfo == NULL);
+  assert(scase->slicecoll.nmultivsliceinfo == 0);
+  assert(scase->slicecoll.multivsliceinfo == NULL);
+  assert(scase->slicecoll.nvsliceinfo == 0);
+  assert(scase->slicecoll.vsliceinfo == NULL);
+
+  assert(NULL == 0);
+
+  scase->smoke3dcoll.nsmoke3dinfo       = 0;
+  scase->smoke3dcoll.smoke3dinfo        = NULL;
+  scase->smoke3dcoll.nsmoke3dtypes      = 0;
+  scase->smoke3dcoll.smoke3dtypes       = NULL;
+  scase->smoke3dcoll.smoke3d_other      = 0;
+  scase->smoke3dcoll.smoke3dinfo_sorted = NULL;
+
+  scase->slicecoll.nsliceinfo       = 0;
+  scase->slicecoll.sliceinfo        = NULL;
+  scase->slicecoll.nmultisliceinfo  = 0;
+  scase->slicecoll.multisliceinfo   = NULL;
+  scase->slicecoll.nmultivsliceinfo = 0;
+  scase->slicecoll.multivsliceinfo  = NULL;
+  scase->slicecoll.nvsliceinfo      = 0;
+  scase->slicecoll.vsliceinfo       = NULL;
+
   scase->tourcoll.ntourinfo = 0;
   scase->tourcoll.tourinfo = NULL;
   scase->tourcoll.tour_ntimes = 1000;
@@ -11823,10 +11876,14 @@ void InitScase(smv_case *scase) {
   scase->color_defs.block_ambient2=GetColorPtr(scase, block_ambient_orig);
   scase->color_defs.block_specular2=GetColorPtr(scase, block_specular_orig);
 
+  scase->visFrame = 1;
+
   InitLabelsCollection(&scase->labelscoll);
 
   InitObjectCollection(&scase->objectscoll);
 }
+
+/* ------------------ CreateScase ------------------------ */
 
 /// @brief Create and initalize and a smokeview case (smv_case).
 /// @return An initialized smv_case.
@@ -11836,6 +11893,8 @@ smv_case *CreateScase() {
   InitScase(scase);
   return scase;
 }
+
+/* ------------------ DestroyScase ------------------------ */
 
 /// @brief Cleanup and free the memory of an smv_case.
 /// @param scase An smv_case created with CreateScase.
@@ -11849,7 +11908,7 @@ void DestroyScase(smv_case *scase) {
 
 /// @brief Parse an SMV file.
 /// @param stream the file stream to parse.
-/// @return zero on sucess, non-zero on error
+/// @return zero on success, non-zero on error
 int ReadSMV(bufferstreamdata *stream){
   InitScase(&global_scase);
   //** initialize multi-threading
