@@ -115,24 +115,6 @@ intel_linux_64 : $(obj)
 # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV   OSX   VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
-# ------------- gnu_osx_64 ----------------
-
-gnu_osx_64 : CFLAGS    = -O0 -m64              -D pp_OSX -Wall -Wno-comment -Wno-deprecated-declarations -Wno-write-strings
-gnu_osx_64 : C_STANDARD    = -std=gnu99
-gnu_osx_64 : LFLAGS    = -m64 -L$(LIB_DIR)/gnu_osx_64
-ifeq ($(GLUT),freeglut)
-gnu_osx_64 : LFLAGS   += -L /opt/X11/lib -lX11 -lXmu -lGLU -lGL
-gnu_osx_64 : CFLAGS   += -D FREEGLUT_STATIC
-else
-gnu_osx_64 : LFLAGS   += -framework OpenGL -framework GLUT
-endif
-gnu_osx_64 : CC        = gcc
-gnu_osx_64 : CPP       = g++
-gnu_osx_64 : exe       = stars_osx_64
-
-gnu_osx_64 : $(obj)
-	$(CPP) -o $(bin)/$(exe) $(obj) $(LFLAGS)
-
 # ------------- clang_osx_64 ----------------
 
 clang_osx_64 : CFLAGS    = -O0 -m64              -D pp_OSX -Wall -Wno-comment -Wno-deprecated-declarations -Wno-write-strings

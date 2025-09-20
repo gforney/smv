@@ -72,15 +72,6 @@ gnu_linux_64 : exe       = hashfile_linux_64
 gnu_linux_64: $(obj)
 	$(CC) -m64 -o $(bin)/$(exe) $(obj) -lm
 
-# ------------- gnu linux 64 ----------------
-
-gnu_osx_64 : CFLAGS    = -O2 -m64 -Wall -D pp_GCC -D pp_OSX $(GITINFO) $(GNU_COMPINFO)
-gnu_osx_64 : CC        = gcc
-gnu_osx_64 : exe       = hashfile_osx_64
-
-gnu_osx_64: $(obj)
-	$(CC) -m64 -o $(bin)/$(exe) $(obj) -lm
-
 # ------------- clang linux 64 ----------------
 
 clang_osx_64 : CFLAGS    = -O2 -m64 -Wall -D pp_GCC -D pp_OSX $(GITINFO) $(GNU_COMPINFO)

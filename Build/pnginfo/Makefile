@@ -142,27 +142,6 @@ gnu_linux_64_db : exe       = pnginfo_linux_64_db
 gnu_linux_64_db : $(obj)
 	$(CC) -o $(bin)/$(exe) $(obj) $(LFLAGS)
 
-
-# ------------- gnu osx 64 ----------------
-
-gnu_osx_64 : CFLAGS    = -O0 -m64 -D pp_GCC -D pp_OSX $(GITINFO) $(GNU_COMPINFO)
-gnu_osx_64 : LFLAGS    = -L $(LIB_DIR)/gnu_osx_64 $(PNG_LIBS) $(SYSTEM_LIBS)
-gnu_osx_64 : CC        = gcc
-gnu_osx_64 : exe       = pnginfo_osx_64
-
-gnu_osx_64 : $(obj)
-	$(CC) -o $(bin)/$(exe) $(obj) $(LFLAGS)
-
-# ------------- gnu osx 64 db ----------------
-
-gnu_osx_64_db : CFLAGS    = -O0 -m64 -Wall -D _DEBUG -D pp_OSX -D pp_GCC -Wno-deprecated-declarations -Wno-write-strings $(GNU_COMPINFO) $(GITINFO)
-gnu_osx_64_db : LFLAGS    = -L $(LIB_DIR)/gnu_osx_64 $(PNG_LIBS) $(SYSTEM_LIBS)
-gnu_osx_64_db : CC        = gcc
-gnu_osx_64_db : exe       = pnginfo_osx_64_db
-
-gnu_osx_64_db : $(obj)
-	$(CC) -o $(bin)/$(exe) $(obj) $(LFLAGS)
-
 # ------------- clang osx 64 db ----------------
 
 clang_osx_64_db : CFLAGS    = -O0 -m64 -Wall -D _DEBUG -D pp_OSX -D pp_GCC -Wno-deprecated-declarations -Wno-write-strings $(GNU_COMPINFO) $(GITINFO)

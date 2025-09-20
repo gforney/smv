@@ -79,15 +79,6 @@ gcc_linux_64 : exe       = mergepo_linux_64
 gcc_linux_64 : $(obj)
 	$(CC) -o $(bin)/$(exe) $(obj) $(LFLAGS)
 
-# ------------- gnu osx 64 ----------------
-
-gcc_osx_64 : CFLAGS    = -O2 -m64 -D pp_OSX $(GITINFO) $(GNU_COMPINFO)
-gcc_osx_64 : CC        = gcc
-gcc_osx_64 : exe       = mergepo_osx_64
-
-gcc_osx_64 : $(obj)
-	$(CC) -o $(bin)/$(exe) $(obj)
-
 # ------------- clang osx 64 ----------------
 
 clang_osx_64 : CFLAGS    = -O2 -m64 -D pp_OSX $(GITINFO) $(GNU_COMPINFO)
