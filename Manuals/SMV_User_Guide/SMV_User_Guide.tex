@@ -4363,10 +4363,10 @@ Usage:
 \end{lstlisting}
 
 %%+++++++++++++++++++++++
-\hitemssfN{SETCBARLAB}
+%ssfkw SETCBARLAB}
 
 %%+++++++++++++++++++++++
-\hitemssfN{SETCBARRGB}
+%ssfkw SETCBARRGB}
 
 \elist
 
@@ -6874,8 +6874,6 @@ SHOWAVATAR
 %inikw V2_SLICE}
 %inikw V_BOUNDARY}
 
-
-
 \label{section:timedatabounds}
 This section describes the ini file keywords used by Smokeview:
 \begin{enumerate}
@@ -7037,9 +7035,9 @@ TLOAD
  1 10. 1 50. 1 3
 \end{lstlisting}
 
-\hitemini{V2\_BOUNDARY, V2\_PARTICLES, V2\_SLICE}Defines the minimum and maximum
-data bounds used for converting boundary, particle or slice file data values to color indices.
-The format of these keyword is
+\hitemini{V2\_BOUNDARY}Defines the minimum and maximum
+data bounds used for converting boundary file data values to color indices.
+The format of this keyword is
 \begin{lstlisting}
 V2_BOUNDARY
  setvalmin valmin setvalmax valmax quantity_label
@@ -7047,14 +7045,12 @@ V2_BOUNDARY
 where the parameters
 {\tt setvalmin}, {\tt valmin}, {\tt setvalmax}, {\tt valmax}\ and {\tt quantity\_label}.
 are described in Table \ref{tabV2bounds}.
-The format of the {\tt V2\_PARTICLES}\ and {\tt V2\_SLICE}\ keywords is the same.
 The parameter {\tt quantity\_label}\ is optional.  If it is blank then the bound
-parameters are applied to all boundary, particle or slice files.
+parameters are applied to all boundary files.
 If it is not blank they
-are applied to only boundary, particle or slice files with quantity {\tt quantity\_label}.
-Possible quantity labels are given in Table \ref{tabBNDF} for boundary files and Table \ref{tabSLCF} or slice files.
-Quantity labels may also be found in the .smv file for those quantities used
-on a {\tt \&BNDF, \&PART}\ or {\tt \&SLCF}\ namelists in the FDS input file.
+are applied to only boundary files with quantity {\tt quantity\_label}.
+Quantity labels may be found in the .smv file for those quantities used
+on a {\tt \&BNDF}\ namelist in the FDS input file.
 
 To specify boundary file bounds for temperature ranging from\
 30.0~\degC\ to 600.0~\degC\ use:
@@ -7064,6 +7060,24 @@ V2_BOUNDARY
 \end{lstlisting}
 where {\tt temp}\ is the Smokeview colorbar label displayed when
 showing a temperature boundary file.
+
+\hitemini{V2\_PARTICLES}Defines the minimum and maximum
+data bounds used for converting particle file data values to color indices.
+The format of this keyword is
+\begin{lstlisting}
+V2_PARTICLE
+ setvalmin valmin setvalmax valmax quantity_label
+\end{lstlisting}
+where the parameters
+{\tt setvalmin}, {\tt valmin}, {\tt setvalmax}, {\tt valmax}\ and {\tt quantity\_label}.
+are described in Table \ref{tabV2bounds}.
+The parameter {\tt quantity\_label}\ is optional.  If it is blank then the bound
+parameters are applied to all particle files.
+If it is not blank they
+are applied to only particle files with quantity {\tt quantity\_label}.
+Quantity labels may be found in the .smv file for those quantities used
+on a {\tt \&PART}\ namelists in the FDS input file.
+
 To specify particle file bounds for the U component of velocity ranging from
 -1.0~m/s to 2.0~m/s use:
 \begin{lstlisting}
@@ -7072,6 +7086,25 @@ V2_PARTICLES
 \end{lstlisting}
 where {\tt u}\ is the Smokeview colorbar labels displayed when
 showing the particle file and the U component of velocity.
+
+\hitemini{V2\_SLICE}Defines the minimum and maximum
+data bounds used for converting slice file data values to color indices.
+The format of this keyword is
+\begin{lstlisting}
+V2_SLICE
+ setvalmin valmin setvalmax valmax quantity_label
+\end{lstlisting}
+where the parameters
+{\tt setvalmin}, {\tt valmin}, {\tt setvalmax}, {\tt valmax}\ and {\tt quantity\_label}.
+are described in Table \ref{tabV2bounds}.
+The format of the {\tt V2\_SLICE}\ keywords is the same.
+The parameter {\tt quantity\_label}\ is optional.  If it is blank then the bound
+parameters are applied to all slice files.
+If it is not blank then it is
+applied to only slice files with quantity {\tt quantity\_label}.
+Quantity labels may be found in the .smv file for those quantities used
+on a {\tt \&SLCF}\ namelists in the FDS input file.
+
 To specify slice file bounds for temperature ranging from
 30.0~\degC\ to 600.0~\degC\ use:
 \begin{lstlisting}
@@ -7086,10 +7119,6 @@ To specify slice file bounds for a minimum temperature of
 V2_SLICE
 0 30.000000 2 1.0 temp
 \end{lstlisting}
-
-\input{BNDFlabels.tex}
-
-\input{SLCFlabels.tex}
 
 \hitemini{V2\_PLOT3D}Defines the minimum and maximum
 data bounds used for converting plot3D file data component values to color indices.
