@@ -7009,9 +7009,6 @@ C_SLICE
 
 %smvkw PATCHDATAOUT}
 
-\hitemini{PERCENTILELEVEL} Defines the minimum and maximum percentile levels for setting data bounds.
-The defaults are 0.01 for the minimum level and 0.99 for maximum level.
-
 \begin{lstlisting}
 PERCENTILLEVEL
  min_level max_level
@@ -7314,10 +7311,6 @@ the floor (lower bounding surface) should be drawn (1) or not drawn
 (0).
 (default: 1)
 
-\hitemini{SHOWFRAME}\ Specifies whether the frame surrounding
-the scene should be drawn (1) or not drawn (0). (default:
-1)
-
 \hitemini{SHOWFRAMELABEL}\ Specifies whether the frame number
 should be drawn (1) or not drawn (0). (default: 1)
 
@@ -7327,9 +7320,6 @@ the frame rate label should be drawn (1) or not drawn (0).
 
 \hitemini{SHOWGRIDLOC}\ Specifies where grid location should be drawn (1) or not
 drawn (0). (default: 0)
-
-\hitemini{SHOWHRRCUTOFF}Specifies whether the HRRPUV cutoff label should be (1)
-or should not be (0) displayed. (default: 0)
 
 \hitemini{SHOWISO}Specifies how an isosurface should be drawn: hidden (0),
 solid (1), outline (2) or with points (3).  (default: 1)
@@ -7623,12 +7613,9 @@ should not (0) be observed from the selected tour.
 blue coordinates.  Each color component is an integer ranging from
 0 to 255.  (default: 255, 128, 0)
 
-\hitemini{FIREDEPTH}\ Specifies the depth  at which the fire is 50
+\hitemini{FDEPTH}\ Specifies the depth  at which the fire is 50
 percent transparent. (default: 2.0)
 
-
-\hitemini{SMOKECULL}\ Cull (or do not draw) smoke if it is outside of
-the viewing frustum.  (default: 1)
 
 \hitemini{SMOKESKIP}\ To speed up smoke drawing, spatial frames may be
 skipped.  Allowable parameters are (0, 1, 2).  (default: 0)
