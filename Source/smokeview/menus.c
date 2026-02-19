@@ -2762,6 +2762,8 @@ void SmokeviewIniMenu(int value){
 /* ------------------ PeriodicReloads ------------------------ */
 
 void PeriodicReloads(int value){
+  assert(opengl_finalized == 1);
+  if(opengl_finalized == 0)return;
   if(periodic_reloads!=0){
     if(load_incremental==1)LoadUnloadMenu(RELOAD_INCREMENTAL_ALL);
     if(load_incremental==0)LoadUnloadMenu(RELOADALL);
@@ -2773,6 +2775,7 @@ void PeriodicReloads(int value){
 
 void PeriodicRefresh(int value){
   update_refresh = 0;
+  if(opengl_finalized == 0)return;
   if(periodic_refresh!=0){
     GLUTPOSTREDISPLAY;
     if(glui_refresh_rate>0){
@@ -2938,7 +2941,8 @@ void ReloadMenu(int value){
   default:
     periodic_reloads=1;
     msecs = value*60*1000;
-    glutTimerFunc((unsigned int)msecs,PeriodicReloads,msecs);
+    assert(opengl_finalized == 1);
+    if(opengl_finalized==1)glutTimerFunc((unsigned int)msecs,PeriodicReloads,msecs);
     break;
   }
 }
@@ -8855,6 +8859,8 @@ static int textureshowmenu=0;
 static int menu_count=0;
 #endif
 
+assert(opengl_finalized == 1);
+if(opengl_finalized == 0)return;
 //*** destroy existing menus
   updatemenu=0;
   GLUIUpdateShowHideButtons();

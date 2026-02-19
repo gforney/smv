@@ -739,14 +739,16 @@ int GetColorbarIndex(int x, int y){
   return CB_SELECT_CONTINUE;
 }
 
+/* ------------------ GlutGetModifiersNew ------------------------ */
+
 #define GLUTGETMODIFIERS GlutGetModifiersNew
 int GlutGetModifiersNew(void){
   int modifier=0;
 
-  if(opengl_finalized == 0)return KEY_NONE;
   switch(alt_ctrl_key_state){
   case KEY_NONE:
-    modifier = glutGetModifiers();
+    modifier = KEY_NONE;
+    if(opengl_finalized==1)modifier = glutGetModifiers();
     break;
   case KEY_CTRL:
     modifier = GLUT_ACTIVE_CTRL;
@@ -2317,12 +2319,15 @@ void Keyboard(unsigned char key, int flag){
       }
       break;
     case 'P':
-      glutAttachMenu(GLUT_RIGHT_BUTTON);
-      attachmenu_status = 1;
-      attachmenu_print = 1 - attachmenu_print;
-      if(attachmenu_print == 1){
-        if(attachmenu_status == 1)printf("menus attached(%i)\n",attachmenu_counter++);
-        if(attachmenu_status == 0)printf("menus detached(%i)\n",attachmenu_counter++);
+      assert(opengl_finalized == 1);
+      if(opengl_finalized == 1){
+        glutAttachMenu(GLUT_RIGHT_BUTTON);
+        attachmenu_status = 1;
+        attachmenu_print = 1 - attachmenu_print;
+        if(attachmenu_print == 1){
+          if(attachmenu_status == 1)printf("menus attached(%i)\n", attachmenu_counter++);
+          if(attachmenu_status == 0)printf("menus detached(%i)\n", attachmenu_counter++);
+        }
       }
       break;
     case 'p':
@@ -3181,6 +3186,8 @@ void SpecialKeyboardCB(int key, int x, int y){
 #define P3_MODE 1
   int keymode=EYE_MODE;
 
+  assert(opengl_finalized == 1);
+  if(opengl_finalized == 0)return;
   special_modifier = glutGetModifiers() & GLUT_ACTIVE_SHIFT;
 
   GLUTPOSTREDISPLAY;
@@ -3674,6 +3681,10 @@ void IdleCB(void){
   float thisinterval;
   int redisplay=0;
 
+  if(opengl_finalized == 0){
+    update_idle = 1;
+    return;
+  }
   if(render_status == RENDER_ON && from_DisplayCB==0)return;
   CheckMemory;
   if(use_graphics==1)SetMainWindow();
@@ -3820,6 +3831,8 @@ void ClearBuffers(int mode){
 /* ------------------ DoStereo ------------------------ */
 
 void DoStereo(void){
+  assert(opengl_finalized == 1);
+  if(opengl_finalized==0)return;
   if(stereotype==STEREO_TIME&&videoSTEREO==1){  // temporal stereo (shuttered glasses)
     glDrawBuffer(GL_BACK_LEFT);
     if(stereotype_frame==LEFT_EYE||stereotype_frame==BOTH_EYES){
@@ -4133,6 +4146,8 @@ void IdleDisplay(void){
 /* ------------------ DoNonStereo ------------------------ */
 
 void DoNonStereo(void){
+  assert(opengl_finalized == 1);
+  if(opengl_finalized == 0)return;
   if(render_status==RENDER_OFF){
     glDrawBuffer(GL_BACK);
     ShowScene(DRAWSCENE, VIEW_CENTER, 0, 0, 0, NULL);
@@ -4252,6 +4267,10 @@ void DisplayCB(void){
 /* ------------------ SetMainWindow ------------------------ */
 
 void SetMainWindow(void){
+  if(opengl_finalized == 0){
+    update_setmainwindow = 1;
+    return;
+  }
   glutSetWindow(mainwindow_id);
   GLUTPOSTREDISPLAY;
 }
@@ -4262,6 +4281,8 @@ void SetMainWindow(void){
 void ResizeWindow(int width, int height){
   float wscaled, hscaled;
 
+  assert(opengl_finalized == 1);
+  if(opengl_finalized == 0)return;
   if(render_mode == RENDER_360&&render_status==RENDER_ON)return;
   SetMainWindow();
   wscaled = (float)width/(float)max_screenWidth;

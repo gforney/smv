@@ -295,6 +295,7 @@ int SetupCase(char *filename){
   GLUIAlertSetup(mainwindow_id);
   GLUIStereoSetup(mainwindow_id);
   GLUI3dSmokeSetup(mainwindow_id);
+
   opengl_finalized = 1;
   PRINT_TIMER(timer_start, "all dialogs");
 
@@ -307,12 +308,12 @@ int SetupCase(char *filename){
   glutSetWindowTitle(global_scase.fdsprefix);
   InitMisc();
   GLUITrainerSetup(mainwindow_id);
-  glutDetachMenu(GLUT_RIGHT_BUTTON);
+  if(opengl_finalized==1)glutDetachMenu(GLUT_RIGHT_BUTTON);
   attachmenu_status = 0;
   THREADcontrol(checkfiles_threads, THREAD_LOCK);
   InitMenus();
   THREADcontrol(checkfiles_threads, THREAD_UNLOCK);
-  glutAttachMenu(GLUT_RIGHT_BUTTON);
+  if(opengl_finalized==1)glutAttachMenu(GLUT_RIGHT_BUTTON);
   attachmenu_status = 1;
   if(trainer_mode==1){
     GLUIShowTrainer();
