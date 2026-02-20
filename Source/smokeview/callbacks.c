@@ -748,7 +748,11 @@ int GlutGetModifiersNew(void){
   switch(alt_ctrl_key_state){
   case KEY_NONE:
     modifier = KEY_NONE;
-    if(opengl_finalized==1)modifier = glutGetModifiers();
+    if(opengl_finalized == 1){
+      BEFOREGLUT("glutGetModifiers");
+      modifier = glutGetModifiers();
+      AFTERGLUT;
+    }
     break;
   case KEY_CTRL:
     modifier = GLUT_ACTIVE_CTRL;
@@ -2321,7 +2325,9 @@ void Keyboard(unsigned char key, int flag){
     case 'P':
       assert(opengl_finalized == 1);
       if(opengl_finalized == 1){
+        BEFOREGLUT("glutAttachMenu");
         glutAttachMenu(GLUT_RIGHT_BUTTON);
+        AFTERGLUT;
         attachmenu_status = 1;
         attachmenu_print = 1 - attachmenu_print;
         if(attachmenu_print == 1){
@@ -3188,7 +3194,9 @@ void SpecialKeyboardCB(int key, int x, int y){
 
   assert(opengl_finalized == 1);
   if(opengl_finalized == 0)return;
+  BEFOREGLUT("glutGetModifiers");
   special_modifier = glutGetModifiers() & GLUT_ACTIVE_SHIFT;
+  AFTERGLUT;
 
   GLUTPOSTREDISPLAY;
 
@@ -3689,7 +3697,9 @@ void IdleCB(void){
   CheckMemory;
   if(use_graphics==1)SetMainWindow();
   UpdateShow();
+  BEFOREGLUT("glutGet");
   thistime     = glutGet(GLUT_ELAPSED_TIME);
+  AFTERGLUT;
   thisinterval = thistime - lasttime;
   frame_count++;
 
@@ -3844,7 +3854,11 @@ void DoStereo(void){
       ShowScene(DRAWSCENE,VIEW_RIGHT,0,0,0,NULL);
     }
     Render(VIEW_RIGHT);
-    if(buffertype==DOUBLE_BUFFER)glutSwapBuffers();
+    if(buffertype == DOUBLE_BUFFER){
+      BEFOREGLUT("glutSwapBuffers");
+      glutSwapBuffers();
+      AFTERGLUT;
+    }
   }
   else if(stereotype==STEREO_LR){             // left/right stereo
     int i;
@@ -3880,7 +3894,11 @@ void DoStereo(void){
         screenWidth = MAX(screenWidth, 1);
       }
       if(screeni!=NULL&&render_mode == RENDER_360 && render_status == RENDER_ON)screeni->screenbuffer = GetScreenBuffer();
-      if(buffertype == DOUBLE_BUFFER)glutSwapBuffers();
+      if(buffertype == DOUBLE_BUFFER){
+        BEFOREGLUT("glutSwapBuffers");
+        glutSwapBuffers();
+        AFTERGLUT;
+      }
     }
     if(render_status == RENDER_ON){
       if(render_mode == RENDER_360){
@@ -3918,7 +3936,11 @@ void DoStereo(void){
       glFlush();
     }
     Render(VIEW_CENTER);
-    if(buffertype==DOUBLE_BUFFER)glutSwapBuffers();
+    if(buffertype == DOUBLE_BUFFER){
+      BEFOREGLUT("glutSwapBuffers");
+      glutSwapBuffers();
+      AFTERGLUT;
+    }
   }
   else if(stereotype==STEREO_RC){             // red/cyan stereo
     glDrawBuffer(GL_BACK);
@@ -3941,7 +3963,11 @@ void DoStereo(void){
       glFlush();
     }
     Render(VIEW_CENTER);
-    if(buffertype==DOUBLE_BUFFER)glutSwapBuffers();
+    if(buffertype == DOUBLE_BUFFER){
+      BEFOREGLUT("glutSwapBuffers");
+      glutSwapBuffers();
+      AFTERGLUT;
+    }
   }
   else if(stereotype==STEREO_CUSTOM){             // custom red/blue stereo
     glDrawBuffer(GL_BACK);
@@ -3983,7 +4009,11 @@ void DoStereo(void){
       glFlush();
     }
     Render(VIEW_CENTER);
-    if(buffertype==DOUBLE_BUFFER)glutSwapBuffers();
+    if(buffertype == DOUBLE_BUFFER){
+      BEFOREGLUT("glutSwapBuffers");
+      glutSwapBuffers();
+      AFTERGLUT;
+    }
     ENABLE_LIGHTING;
     glEnable(GL_COLOR_MATERIAL);
     glEnable(GL_DITHER);
@@ -4155,7 +4185,11 @@ void DoNonStereo(void){
       update_rgb_test = 0;
       RGBTest();
     }
-    if(buffertype==DOUBLE_BUFFER)glutSwapBuffers();
+    if(buffertype == DOUBLE_BUFFER){
+      BEFOREGLUT("glutSwapBuffers");
+      glutSwapBuffers();
+      AFTERGLUT;
+    }
   }
   else{
     int stop_rendering;
@@ -4178,7 +4212,11 @@ void DoNonStereo(void){
         for(j = 0; j<resolution_multiplier; j++){
           ShowScene(DRAWSCENE, VIEW_CENTER, 1, j*screenWidth, i*screenHeight, NULL);
           screenbuffers[ibuffer++] = GetScreenBuffer();
-          if(buffertype==DOUBLE_BUFFER)glutSwapBuffers();
+          if(buffertype == DOUBLE_BUFFER){
+            BEFOREGLUT("glutSwapBuffers");
+            glutSwapBuffers();
+            AFTERGLUT;
+          }
         }
       }
 
@@ -4202,7 +4240,11 @@ void DoNonStereo(void){
         screeni = screeninfo+i;
         ShowScene(DRAWSCENE, VIEW_CENTER, 0, 0, 0, screeni);
         screeni->screenbuffer = GetScreenBuffer();
-        if(buffertype==DOUBLE_BUFFER)glutSwapBuffers();
+        if(buffertype == DOUBLE_BUFFER){
+          BEFOREGLUT("glutSwapBuffers");
+          glutSwapBuffers();
+          AFTERGLUT;
+        }
       }
       MergeRenderScreenBuffers360();
 
@@ -4227,7 +4269,11 @@ void DoNonStereo(void){
         for(j = 0; j<resolution_multiplier; j++){
           ShowScene(DRAWSCENE, VIEW_CENTER, 1, j*screenWidth, i*screenHeight, NULL);
           screenbuffers[ibuffer++] = GetScreenBuffer();
-          if(buffertype==DOUBLE_BUFFER)glutSwapBuffers();
+          if(buffertype == DOUBLE_BUFFER){
+            BEFOREGLUT("glutSwapBuffers");
+            glutSwapBuffers();
+            AFTERGLUT;
+          }
         }
       }
       GifAddFrameSpec();
@@ -4271,7 +4317,9 @@ void SetMainWindow(void){
     update_setmainwindow = 1;
     return;
   }
+  BEFOREGLUT("glutSetWindow");
   glutSetWindow(mainwindow_id);
+  AFTERGLUT;
   GLUTPOSTREDISPLAY;
 }
 
@@ -4297,6 +4345,8 @@ void ResizeWindow(int width, int height){
       height/=hscaled;
     }
   }
+  BEFOREGLUT("GlutReshapeWindow");
   glutReshapeWindow(width,height);
+  AFTERGLUT;
   GLUTPOSTREDISPLAY;
 }

@@ -143,6 +143,19 @@ SVEXTERN int SVDECL(clip_commandline, 0), SVDECL(special_modifier, 0);
 SVEXTERN int SVDECL(update_slicexyz, 0);
 SVEXTERN int SVDECL(update_splitcolorbar, 0);
 SVEXTERN int SVDECL(slice_plot_bound_option, 1);
+
+#ifdef pp_GLUT_DEBUG
+#ifdef INMAIN
+#ifdef _WIN32
+char glut_debug_sep = '\\';
+#else
+char glut_debug_sep = '/';
+#endif
+#else
+SVEXTERN char glut_debug_sep;
+#endif
+#endif
+
 #ifdef INMAIN
 SVEXTERN float geom_bounding_box[6] = {1000000000.0, -1000000000.0,
                                        1000000000.0, -1000000000.0,

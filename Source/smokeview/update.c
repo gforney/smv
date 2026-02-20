@@ -2950,7 +2950,13 @@ void UpdateDisplay(void){
     if(opengl_finalized==1)glutDetachMenu(GLUT_RIGHT_BUTTON);
     attachmenu_status = 0;
     THREADcontrol(checkfiles_threads, THREAD_LOCK);
+#ifdef pp_GLUT_DEBUG
+    printf("\n***before menu setup\n");
+#endif
     InitMenus();
+#ifdef pp_GLUT_DEBUG
+    printf("***after menu setup\n\n");
+#endif
     THREADcontrol(checkfiles_threads, THREAD_UNLOCK);
     if(opengl_finalized==1)glutAttachMenu(GLUT_RIGHT_BUTTON);
     attachmenu_status = 1;
