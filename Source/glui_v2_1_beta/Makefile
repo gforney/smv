@@ -8,11 +8,12 @@ LIB=lib
 
 ifeq ($(GLUT),freeglut)
   INCS = -I ../freeglut3.0.0/include
-  NOCLOSE=-D FREEGLUT_STATIC
+  NOCLOSE=-D FREEGLUT_STATIC -D pp_FREEGLUT
 else
   INCS = -I ../glui_gl
   NOCLOSE=-D pp_NOCLOSE
 endif
+NOCLOSE += -D GL_SILENCE_DEPRECATION
 
 CFLAGS=-D_CRT_SECURE_NO_WARNINGS -Wno-deprecated-declarations -Wdeprecated-declarations
 
