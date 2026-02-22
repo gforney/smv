@@ -5,6 +5,7 @@
 SOURCE_DIR = ../../../Source/
 BUILD_DIR = ../../../Build
 LIB_DIR = $(BUILD_DIR)/LIBS
+FREEGLUT_DIR=../../../../libs/freeglut
 
 SMV_TESTFLAG =
 SMV_TESTSTRING =
@@ -397,11 +398,7 @@ win_check : $(win_chk)
 # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV   OSX   VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 # VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
-ifeq ($(GLUT),freeglut)
-  SMV_LIBS_OSX =  -lglui  -lglut -lgd -ljpeg -lpng -lz
-else
-  SMV_LIBS_OSX =  -lglui        -lgd -ljpeg -lpng -lz
-endif
+SMV_LIBS_OSX =  -lglui -lgd -ljpeg -lpng -lz
 
 # ------------- gnu_osx_db ----------------
 
@@ -409,8 +406,9 @@ gnu_osx_db : CFLAGS    = -O0 -ggdb -m64 -D _DEBUG $(SMV_TESTFLAG) -Wall -Wno-com
 gnu_osx_db : C_STANDARD    = -std=gnu99
 gnu_osx_db : LFLAGS    = -m64 -L$(LIB_DIR)/gnu_osx $(SMV_LIBS_OSX) $(GLIBDIROPT) $(SMV_PROFILEFLAG)
 ifeq ($(GLUT),freeglut)
-gnu_osx_db : LFLAGS   += -L /opt/X11/lib -lX11 -lXmu -lGLU -lGL
-gnu_osx_db : CFLAGS   += -D FREEGLUT_STATIC
+gnu_osx_db : LFLAGS   += -framework CoreVideo -framework Cocoa -framework OpenGL
+gnu_osx_db : LFLAGS   += -L$(FREEGLUT_DIR)/lib -lglut
+gnu_osx_db : CFLAGS   += -D pp_FREEGLUT -I$(FREEGLUT_DIR)/include
 else
 gnu_osx_db : LFLAGS   += -framework OpenGL -framework GLUT
 endif
@@ -428,7 +426,8 @@ gnu_osx : C_STANDARD    = -std=gnu99
 gnu_osx : LFLAGS    = -m64 -L$(LIB_DIR)/gnu_osx $(SMV_LIBS_OSX) $(GLIBDIROPT) $(SMV_PROFILEFLAG)
 ifeq ($(GLUT),freeglut)
 gnu_osx : LFLAGS   += -framework CoreVideo -framework Cocoa -framework OpenGL
-gnu_osx : CFLAGS   += -D pp_FREEGLUT
+gnu_osx : LFLAGS   += -L$(FREEGLUT_DIR)/lib -lglut
+gnu_osx : CFLAGS   += -D pp_FREEGLUT -I$(FREEGLUT_DIR)/include
 else
 gnu_osx : LFLAGS   += -framework OpenGL -framework GLUT
 endif
