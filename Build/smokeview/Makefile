@@ -427,8 +427,8 @@ gnu_osx : CFLAGS    = -O0 -m64              -D NDEBUG $(SMV_TESTFLAG) -Wall -Wno
 gnu_osx : C_STANDARD    = -std=gnu99
 gnu_osx : LFLAGS    = -m64 -L$(LIB_DIR)/gnu_osx $(SMV_LIBS_OSX) $(GLIBDIROPT) $(SMV_PROFILEFLAG)
 ifeq ($(GLUT),freeglut)
-gnu_osx : LFLAGS   += -L /opt/X11/lib -lX11 -lXmu -lGLU -lGL
-gnu_osx : CFLAGS   += -D FREEGLUT_STATIC
+gnu_osx : LFLAGS   += -framework CoreVideo -framework Cocoa -framework OpenGL
+gnu_osx : CFLAGS   += -D pp_FREEGLUT
 else
 gnu_osx : LFLAGS   += -framework OpenGL -framework GLUT
 endif

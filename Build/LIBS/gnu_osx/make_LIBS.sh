@@ -41,12 +41,13 @@ fi
 
 # FREEGLUT
 if [ "$GLUT" == "freeglut" ]; then
-  echo building glut
-  cd $BUILDDIR/freeglut3.0.0/gnu_osx
-  ./make_freeglut.sh $OPTS >& $LIBDIR/glut.out &
-  pid_glut=$!
-else
-  echo ***using OSX provided glut
+  FREEGLUTLIB=/usr/local/lib/libglut.a
+  if [ -e $FREEGLUTLIB ]; then
+    cp $FREEGLUTLIB $LIBDIR/.
+    echo libglut.a copied
+  else
+    echo ***using OSX provided glut
+  fi
 fi
 
 # JPEG
@@ -78,13 +79,6 @@ wait $pid_glui
 cd $SRCDIR/glui_v2_1_beta
 echo glui library built
 cp libglui.a $LIBDIR/.
-
-if [ "$GLUT" == "freeglut" ]; then
-  wait $pid_glut
-  cd $BUILDDIR/freeglut3.0.0/gnu_osx
-  echo glut library built
-  cp libglut.a $LIBDIR/.
-fi
 
 wait $pid_jpeg
 cd $SRCDIR/jpeg-9b
