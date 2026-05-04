@@ -3383,45 +3383,35 @@ void GetBlackbodyColor(float T, float *rgb) {
 
 /* ------------------ GetSootTemp ------------------------ */
 
-void GetSootTemp(float *xyz, float *soot, float *temp){
+int GetSootTemp(float *xyz, float *soot, float *temp){
+  //placeholder for now
   *soot = 1.0;
   *temp = 1.0;
+  return 1;
 }
 
 /* ------------------ IntegrateFireColorOpacity ------------------------ */
 
-void IntegrateFireColorOpacity(float *xyzbeg, float *xyzend, int n, float *total_color, float *total_opacity){
-  float dx = (xyzbeg[0] - xyzend[0]);
-  float dy = (xyzbeg[1] - xyzend[1]);
-  float dz = (xyzbeg[2] - xyzend[2]);
-  float dxyz = sqrt(dx*dx + dy*dy + dz*dz)/(float)n;
+void IntegrateFireColorOpacity(float *xyzbeg, float *dxyz, int n, float *total_color, float *total_opacity){
   float k = 1.0;
   float total_transparency=1.0;
   float tref = 1000.0;
+  float dstep;
 
+  dstep = sqrt(dxyz[0]*dxyz[0] + dxyz[1]*dxyz[1] + dxyz[2]*dxyz[2]);
   total_color[0] = 0.0;
   total_color[1] = 0.0;
   total_color[2] = 0.0;
   for(int i = 0;i < n;i++){
     float xyz[3];
-    float factor;
     float sootdensity, temp;
     float transparency, intensity, color[3];
 
-    factor = (float)i/(float)(n-1);
-    if(i == 0){
-      memcpy(xyz, xyzbeg, 3 * sizeof(float));
-    }
-    else if(i == n - 1){
-      memcpy(xyz, xyzend, 3 * sizeof(float));
-    }
-    else{
-      xyz[0] = xyzbeg[0]*(1.0 - factor) + xyzend[0]*factor;
-      xyz[1] = xyzbeg[1]*(1.0 - factor) + xyzend[1]*factor;
-      xyz[2] = xyzbeg[2]*(1.0 - factor) + xyzend[2]*factor;
-    }
-    GetSootTemp(xyz, &sootdensity, &temp);
-    transparency = exp(-k*sootdensity*dxyz);
+    xyz[0] = xyzbeg[0] + ( float )i * dxyz[0];
+    xyz[1] = xyzbeg[1] + ( float )i * dxyz[1];
+    xyz[2] = xyzbeg[2] + ( float )i * dxyz[2];
+    if(GetSootTemp(xyz, &sootdensity, &temp)==0)break;
+    transparency = exp(-k*sootdensity*dstep);
     total_transparency *= transparency;
     intensity = pow(temp / tref, 4.0);
     GetBlackbodyColor(temp, color);
