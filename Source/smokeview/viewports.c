@@ -1617,7 +1617,7 @@ void GetSmokeDir(float *mm){
 void GetSceneDir(float *mm){
   int i;
   float absangle, cosangle, minangle;
-  int iminangle, alphadir;
+  int iminangle;
 
   float dx = sceneinfo->xyz_mid_smv[0] - eye_position_smv[0];
   float dy = sceneinfo->xyz_mid_smv[1] - eye_position_smv[1];
@@ -1639,17 +1639,14 @@ void GetSceneDir(float *mm){
     norm[2] = 0.0;
     switch(ABS(i)){
     case XDIR:
-      alphadir = ALPHA_X;
       if(i < 0)norm[0] = -1.0;
       if(i > 0)norm[0] = 1.0;
       break;
     case YDIR:
-      alphadir = ALPHA_Y;
       if(i < 0)norm[1] = -1.0;
       if(i > 0)norm[1] = 1.0;
       break;
     case ZDIR:
-      alphadir = ALPHA_Z;
       if(i < 0)norm[2] = -1.0;
       if(i > 0)norm[2] = 1.0;
       break;
