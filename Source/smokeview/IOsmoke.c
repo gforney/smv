@@ -3444,8 +3444,8 @@ float GetFireColorOpacity(float *xyzbeg, float *dxyz, int n, float k, float *col
     accum_intensity[2] += accum_tau*rel_intensity*color[2];
   }
   // scale and gamma correct color
-  float sum = 0.0;
-  sum = accum_intensity[0] + accum_intensity[1] + accum_intensity[2];
+
+  float sum = accum_intensity[0] + accum_intensity[1] + accum_intensity[2];
   accum_intensity[0] /= sum;
   accum_intensity[1] /= sum;
   accum_intensity[2] /= sum;
