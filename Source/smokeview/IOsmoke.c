@@ -3429,19 +3429,19 @@ float GetFireColorOpacity(float *xyzbeg, float *dxyz, int n, float k, float *col
   for(int i = 0;i < n;i++){
     float xyz[3];
     float sootdensity, temp;
-    float tau, rel_intensity, color[3];
+    float tau, rel_intensity, plankcolor[3];
 
     xyz[0] = xyzbeg[0] + ( float )i * dxyz[0];
     xyz[1] = xyzbeg[1] + ( float )i * dxyz[1];
     xyz[2] = xyzbeg[2] + ( float )i * dxyz[2];
     if(GetSootTemp(xyz, &sootdensity, &temp)==0)break;
     tau = exp(-k*sootdensity*dstep);
-    GetBlackbodyColor(temp, color);
+    GetBlackbodyColor(temp, plankcolor);
     rel_intensity = pow(temp / tref, 4.0);
     accum_tau *= tau;
-    accum_intensity[0] += accum_tau*rel_intensity*color[0];
-    accum_intensity[1] += accum_tau*rel_intensity*color[1];
-    accum_intensity[2] += accum_tau*rel_intensity*color[2];
+    accum_intensity[0] += accum_tau*rel_intensity*plankcolor[0];
+    accum_intensity[1] += accum_tau*rel_intensity*plankcolor[1];
+    accum_intensity[2] += accum_tau*rel_intensity*plankcolor[2];
   }
   // scale and gamma correct color
 
