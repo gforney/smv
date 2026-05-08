@@ -1616,16 +1616,14 @@ void GetSmokeDir(float *mm){
 
 void GetSceneDir(float *mm){
   int i;
-  float absangle, cosangle, minangle, mincosangle;
-  int iminangle, alphadir, minalphadir;
+  float absangle, cosangle, minangle;
+  int iminangle, alphadir;
 
   float dx = sceneinfo->xyz_mid_smv[0] - eye_position_smv[0];
   float dy = sceneinfo->xyz_mid_smv[1] - eye_position_smv[1];
   float dz = sceneinfo->xyz_mid_smv[2] - eye_position_smv[2];
   sceneinfo->eyedist = sqrt(dx * dx + dy * dy + dz * dz);
 
-  minalphadir = ALPHA_X;
-  mincosangle = 2.0;
   minangle = 1000.0;
   iminangle = -10;
   int ibeg, iend;
@@ -1671,10 +1669,8 @@ void GetSceneDir(float *mm){
     cosangle = CLAMP(cosangle, -1.0, 1.0);
     absangle = ABS(acos(cosangle) * RAD2DEG);
     if(absangle < minangle){
-      minalphadir = alphadir;
       iminangle = i;
       minangle = absangle;
-      mincosangle = ABS(cosangle);
     }
   }
   sceneinfo->smokedir = iminangle;
