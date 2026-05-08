@@ -3413,43 +3413,45 @@ int GetSootTemp(float *xyz, float *soot, float *temp){
   return 1;
 }
 
-/* ------------------ IntegrateFireColorOpacity ------------------------ */
+/* ------------------ GetFireColorOpacity ------------------------ */
 
-void IntegrateFireColorOpacity(float *xyzbeg, float *dxyz, int n, float *total_color, float *total_opacity){
-  float k = 1.0;
-  float total_transparency=1.0;
+float GetFireColorOpacity(float *xyzbeg, float *dxyz, int n, float k, float *color){
+  float accum_tau, accum_intensity[3];
   float tref = 1000.0;
   float dstep;
+  float opacity;
 
   dstep = sqrt(dxyz[0]*dxyz[0] + dxyz[1]*dxyz[1] + dxyz[2]*dxyz[2]);
-  total_color[0] = 0.0;
-  total_color[1] = 0.0;
-  total_color[2] = 0.0;
+  accum_tau = 1.0;
+  accum_intensity[0] = 0.0;
+  accum_intensity[1] = 0.0;
+  accum_intensity[2] = 0.0;
   for(int i = 0;i < n;i++){
     float xyz[3];
     float sootdensity, temp;
-    float transparency, intensity, color[3];
+    float tau, rel_intensity, color[3];
 
     xyz[0] = xyzbeg[0] + ( float )i * dxyz[0];
     xyz[1] = xyzbeg[1] + ( float )i * dxyz[1];
     xyz[2] = xyzbeg[2] + ( float )i * dxyz[2];
     if(GetSootTemp(xyz, &sootdensity, &temp)==0)break;
-    transparency = exp(-k*sootdensity*dstep);
-    total_transparency *= transparency;
-    intensity = pow(temp / tref, 4.0);
+    tau = exp(-k*sootdensity*dstep);
     GetBlackbodyColor(temp, color);
-    total_color[0] += intensity*color[0];
-    total_color[1] += intensity*color[1];
-    total_color[2] += intensity*color[2];
+    rel_intensity = pow(temp / tref, 4.0);
+    accum_tau *= tau;
+    accum_intensity[0] += accum_tau*rel_intensity*color[0];
+    accum_intensity[1] += accum_tau*rel_intensity*color[1];
+    accum_intensity[2] += accum_tau*rel_intensity*color[2];
   }
   // scale and gamma correct color
   float sum = 0.0;
-  sum = total_color[0] + total_color[1] + total_color[2];
-  total_color[0] /= sum;
-  total_color[1] /= sum;
-  total_color[2] /= sum;
-  total_color[0] = GammaCorrect(total_color[0]);
-  total_color[1] = GammaCorrect(total_color[1]);
-  total_color[2] = GammaCorrect(total_color[2]);
-  *total_opacity = 1.0 - total_transparency;
+  sum = accum_intensity[0] + accum_intensity[1] + accum_intensity[2];
+  accum_intensity[0] /= sum;
+  accum_intensity[1] /= sum;
+  accum_intensity[2] /= sum;
+  color[0] = GammaCorrect(accum_intensity[0]);
+  color[1] = GammaCorrect(accum_intensity[1]);
+  color[2] = GammaCorrect(accum_intensity[2]);
+  opacity = 1.0 - accum_tau;
+  return opacity;
 }
