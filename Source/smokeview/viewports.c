@@ -1481,9 +1481,9 @@ int CompareVolFaceListData(const void *arg1, const void *arg2){
   return 0;
 }
 
-/* ------------------ GetSmokeDir ------------------------ */
+/* ------------------ GetEyePositions ------------------------ */
 
-void GetSmokeDir(float *mm){
+void GetEyePositions(float *mm){
   /*
   ( m0 m4 m8  m12 ) (x)    (0)
   ( m1 m5 m9  m13 ) (y)    (0)
@@ -1499,55 +1499,36 @@ void GetSmokeDir(float *mm){
 
   m3=m7=m11=0, v^T=0, y=1   Q^TQ=I (Q is orthogonal), Qx+u=0 => x=-Q^Tu
   */
-  float dx, dy, dz;
-
   eye_position_smv[0] = -DOT3(mm + 0, mm + 12) / mscale[0];
   eye_position_smv[1] = -DOT3(mm + 4, mm + 12) / mscale[1];
   eye_position_smv[2] = -DOT3(mm + 8, mm + 12) / mscale[2];
   eye_position_fds[0] = SMV2FDS_X(eye_position_smv[0]);
   eye_position_fds[1] = SMV2FDS_Y(eye_position_smv[1]);
   eye_position_fds[2] = SMV2FDS_Z(eye_position_smv[2]);
+}
 
-#ifdef pp_GETMESH
-  for(int j = 0; j < global_scase.meshescoll.nmeshes + 1; j++){
-#else
+/* ------------------ GetSmokeDir ------------------------ */
+
+void GetSmokeDir(float *mm){
   for(int j = 0; j < global_scase.meshescoll.nmeshes; j++){
-#endif
     meshdata *meshj;
     int i;
     float absangle, cosangle, minangle, mincosangle;
     int iminangle, alphadir, minalphadir;
 
-#ifdef pp_GETMESH
-    if(j < global_scase.meshescoll.nmeshes){
-      meshj = global_scase.meshescoll.meshinfo + j;
-      dx = meshj->boxmiddle_smv[0] - eye_position_smv[0];
-      dy = meshj->boxmiddle_smv[1] - eye_position_smv[1];
-      dz = meshj->boxmiddle_smv[2] - eye_position_smv[2];
-      meshj->eyedist = sqrt(dx * dx + dy * dy + dz * dz);
-    }
-    else{
-      dx = sceneinfo->xyz_mid_smv[0] - eye_position_smv[0];
-      dy = sceneinfo->xyz_mid_smv[1] - eye_position_smv[1];
-      dz = sceneinfo->xyz_mid_smv[2] - eye_position_smv[2];
-      sceneinfo->eyedist = sqrt(dx * dx + dy * dy + dz * dz);
-    }
-#else
     meshj = global_scase.meshescoll.meshinfo + j;
-    dx = meshj->boxmiddle_smv[0] - eye_position_smv[0];
-    dy = meshj->boxmiddle_smv[1] - eye_position_smv[1];
-    dz = meshj->boxmiddle_smv[2] - eye_position_smv[2];
+    float dx = meshj->boxmiddle_smv[0] - eye_position_smv[0];
+    float dy = meshj->boxmiddle_smv[1] - eye_position_smv[1];
+    float dz = meshj->boxmiddle_smv[2] - eye_position_smv[2];
     meshj->eyedist = sqrt(dx * dx + dy * dy + dz * dz);
-#endif
 
     minalphadir = ALPHA_X;
     mincosangle = 2.0;
     minangle = 1000.0;
     iminangle = -10;
-    int ibeg, iend;
 
-    ibeg = -3;
-    iend = 3;
+    int ibeg = -3;
+    int iend = 3;
     for(i = ibeg; i <= iend; i++){
       float scalednorm[3], norm[3], normdir[3];
       int ii;
@@ -1600,16 +1581,7 @@ void GetSmokeDir(float *mm){
         }
       }
     }
-#ifdef pp_GETMESH
-    if(j < global_scase.meshescoll.nmeshes){
-      meshj->smokedir = iminangle;
-    }
-    else{
-      sceneinfo->smokedir = iminangle;
-    }
-#else
     meshj->smokedir = iminangle;
-#endif
     if(j < global_scase.meshescoll.nmeshes){
       if(meshj->smoke3d_soot != NULL){
         smoke3ddata *soot;
@@ -1640,7 +1612,75 @@ void GetSmokeDir(float *mm){
   }
 }
 
-/* ------------------ GetZoneSmokeDir ------------------------ */
+/* ------------------ GetSceneDir ------------------------ */
+
+void GetSceneDir(float *mm){
+  int i;
+  float absangle, cosangle, minangle, mincosangle;
+  int iminangle, alphadir, minalphadir;
+
+  float dx = sceneinfo->xyz_mid_smv[0] - eye_position_smv[0];
+  float dy = sceneinfo->xyz_mid_smv[1] - eye_position_smv[1];
+  float dz = sceneinfo->xyz_mid_smv[2] - eye_position_smv[2];
+  sceneinfo->eyedist = sqrt(dx * dx + dy * dy + dz * dz);
+
+  minalphadir = ALPHA_X;
+  mincosangle = 2.0;
+  minangle = 1000.0;
+  iminangle = -10;
+  int ibeg, iend;
+
+  ibeg = -3;
+  iend = 3;
+  for(i = ibeg; i <= iend; i++){
+    float scalednorm[3], norm[3], normdir[3];
+
+    if(i == 0)continue;
+    norm[0] = 0.0;
+    norm[1] = 0.0;
+    norm[2] = 0.0;
+    switch(ABS(i)){
+    case XDIR:
+      alphadir = ALPHA_X;
+      if(i < 0)norm[0] = -1.0;
+      if(i > 0)norm[0] = 1.0;
+      break;
+    case YDIR:
+      alphadir = ALPHA_Y;
+      if(i < 0)norm[1] = -1.0;
+      if(i > 0)norm[1] = 1.0;
+      break;
+    case ZDIR:
+      alphadir = ALPHA_Z;
+      if(i < 0)norm[2] = -1.0;
+      if(i > 0)norm[2] = 1.0;
+      break;
+    default:
+      assert(FFALSE);
+      break;
+    }
+    scalednorm[0] = norm[0] * mscale[0];
+    scalednorm[1] = norm[1] * mscale[1];
+    scalednorm[2] = norm[2] * mscale[2];
+
+    normdir[0] = DOT3SKIP(mm,     4, scalednorm, 1);
+    normdir[1] = DOT3SKIP(mm + 1, 4, scalednorm, 1);
+    normdir[2] = DOT3SKIP(mm + 2, 4, scalednorm, 1);
+
+    cosangle = normdir[2] / NORM3(normdir);
+    cosangle = CLAMP(cosangle, -1.0, 1.0);
+    absangle = ABS(acos(cosangle) * RAD2DEG);
+    if(absangle < minangle){
+      minalphadir = alphadir;
+      iminangle = i;
+      minangle = absangle;
+      mincosangle = ABS(cosangle);
+    }
+  }
+  sceneinfo->smokedir = iminangle;
+}
+
+  /* ------------------ GetZoneSmokeDir ------------------------ */
 
 void GetZoneSmokeDir(float *mm){
   /*
@@ -2272,11 +2312,14 @@ void ViewportScene(int quad, int view_mode, GLint screen_left, GLint screen_down
     if(global_scase.smoke3dcoll.nsmoke3dinfo>0&&show3dsmoke==1){
       INIT_PRINT_TIMER(timer_sort_smokemeshes);
       SortSmoke3dinfo();
+      GetEyePositions(modelview_scratch);
       GetSmokeDir(modelview_scratch);
+      GetSceneDir(modelview_scratch);
       PRINT_TIMER(timer_sort_smokemeshes,"SortSmoke3dinfo+GetSmokeDir");
       SNIFF_ERRORS("after GetSmokeDir");
     }
     else if(showslice==1&&(showall_3dslices==1||nslice_loaded>1)){
+      GetEyePositions(modelview_scratch);
       GetSmokeDir(modelview_scratch);
     }
     if(nface_transparent>0&&sort_transparent_faces==1)SortTransparentFaces(modelview_scratch);
