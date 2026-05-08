@@ -490,12 +490,12 @@ int InExterior(float *xyz){
   return 1;
 }
 
-#ifdef pp_GETMESH_TEST
-#define IJKSCELL(i,j,k) ((k)*nij+(j)*ni+(i))
+#ifdef pp_GETMESH
+#define SCENECELLINDEX(i,j,k) ((k)*nij+(j)*ni+(i))
 
-/* --------------------------  GetCellIndex ----------------------------------- */
+/* --------------------------  GetSceneCellIndex ----------------------------------- */
 
-int GetCellIndex(float *xyz){
+int GetSceneCellIndex(float *xyz){
   scenedata *sd = sceneinfo;
   int *ncells = sd->ncells;
   float *scene_min = sd->xyz_bar0;
@@ -507,7 +507,7 @@ int GetCellIndex(float *xyz){
   int kcell = (xyz[2] - scene_min[2]) / cell_dxyz[2];
   int jcell = (xyz[1] - scene_min[1]) / cell_dxyz[1];
   int icell = (xyz[0] - scene_min[0]) / cell_dxyz[0];
-  int cellindex = IJKSCELL(icell,jcell,kcell);
+  int cellindex = SCENECELLINDEX(icell,jcell,kcell);
   return cellindex;
 }
 
@@ -622,7 +622,7 @@ scenedata *InitSceneInfo(void){
         jcell = (y[j] - scene_min[1]) / cell_dxyz[1];
         for(int i = 1;i < meshi->ibar-1;i++){
           icell = (x[i] - scene_min[0]) / cell_dxyz[0];
-          int cellindex = IJKSCELL(icell, jcell, kcell);
+          int cellindex = SCENECELLINDEX(icell, jcell, kcell);
           celldata *ci = sd->cellinfo + cellindex;
           if(ci->hit == 0){
             ci->hit = 1;
@@ -635,9 +635,7 @@ scenedata *InitSceneInfo(void){
   }
   int nmeshes_total=0;
   for(int i=0;i<ncells_total;i++){
-    celldata *ci;
-    
-    ci = sd->cellinfo + i;
+    celldata *ci = sd->cellinfo + i;
     nmeshes_total += ci->nmeshes;
   }
   meshdata **meshlist2 = NULL;
@@ -685,9 +683,9 @@ meshdata *GetMeshWorker(float *xyz){
   if(xyz[0] < sceneinfo->xyz_bar0[0] || xyz[0] > sceneinfo->xyz_bar[0])return NULL;
   if(xyz[1] < sceneinfo->xyz_bar0[1] || xyz[1] > sceneinfo->xyz_bar[1])return NULL;
   if(xyz[2] < sceneinfo->xyz_bar0[2] || xyz[2] > sceneinfo->xyz_bar[2])return NULL;
-  int cellindex = GetCellIndex(xyz);
-  if(cellindex<0)return NULL;
-  celldata *ci = sceneinfo->cellinfo + cellindex;
+  int scenecellindex = GetSceneCellIndex(xyz);
+  if(scenecellindex<0)return NULL;
+  celldata *ci = sceneinfo->cellinfo + scenecellindex;
   if(ci->nmeshes==1)return ci->meshes[0];
   for(int i = 0; i < ci->nmeshes; i++){
     if(InMeshI(ci->meshes[i], xyz) == 1)return ci->meshes[i];

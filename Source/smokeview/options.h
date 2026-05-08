@@ -16,8 +16,8 @@
 //#define pp_OPACITY_DEBUG    // output hrrpuv opacity in center of each mesh
 //#define pp_GLUT_DEBUG       // add debug print for glut debugging
 #define pp_SPEEDUP            // speed up smokeview
-//#define pp_READ_KEYBOARD      // read keyboard in the command shell so the visualization can be paused 
-//#define pp_GETMESH_TEST
+//#define pp_READ_KEYBOARD    // read keyboard in the command shell so the visualization can be paused 
+#define pp_GETMESH            // fast method for determining mesh a point is in
 //#define pp_COMPRESS         // new compression code
 
 //*** options: windows

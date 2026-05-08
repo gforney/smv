@@ -1499,7 +1499,6 @@ void GetSmokeDir(float *mm){
 
   m3=m7=m11=0, v^T=0, y=1   Q^TQ=I (Q is orthogonal), Qx+u=0 => x=-Q^Tu
   */
-  int j;
   float dx, dy, dz;
 
   eye_position_smv[0] = -DOT3(mm + 0, mm + 12) / mscale[0];
@@ -1509,17 +1508,17 @@ void GetSmokeDir(float *mm){
   eye_position_fds[1] = SMV2FDS_Y(eye_position_smv[1]);
   eye_position_fds[2] = SMV2FDS_Z(eye_position_smv[2]);
 
-#ifdef pp_GETMESH_TEST
-  for(j = 0; j < global_scase.meshescoll.nmeshes + 1; j++){
+#ifdef pp_GETMESH
+  for(int j = 0; j < global_scase.meshescoll.nmeshes + 1; j++){
 #else
-  for(j = 0; j < global_scase.meshescoll.nmeshes; j++){
+  for(int j = 0; j < global_scase.meshescoll.nmeshes; j++){
 #endif
     meshdata *meshj;
     int i;
     float absangle, cosangle, minangle, mincosangle;
     int iminangle, alphadir, minalphadir;
 
-#ifdef pp_GETMESH_TEST
+#ifdef pp_GETMESH
     if(j < global_scase.meshescoll.nmeshes){
       meshj = global_scase.meshescoll.meshinfo + j;
       dx = meshj->boxmiddle_smv[0] - eye_position_smv[0];
@@ -1601,7 +1600,7 @@ void GetSmokeDir(float *mm){
         }
       }
     }
-#ifdef pp_GETMESH_TEST
+#ifdef pp_GETMESH
     if(j < global_scase.meshescoll.nmeshes){
       meshj->smokedir = iminangle;
     }

@@ -2846,7 +2846,7 @@ int ReadSMV_Configure(){
     }
   }
 
-#ifdef pp_GETMESH_TEST
+#ifdef pp_GETMESH
   scenedata *InitSceneInfo(void);
   INIT_PRINT_TIMER(timer_sceneinfo);
   sceneinfo = InitSceneInfo();
