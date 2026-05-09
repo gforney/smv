@@ -366,7 +366,8 @@ typedef struct _scenedata {
   float cell_dxyz[3];
   int ncells[3];
   int smokedir;
-  float xyz_bar0[3], xyz_bar[3], xyz_mid_smv[3];
+  float xyz0_fds[3], xyz_fds[3], xyz_mid_smv[3];
+  int vis[6];
   float eyedist;
 } scenedata;
 #endif

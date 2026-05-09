@@ -1671,6 +1671,15 @@ void GetSceneDir(float *mm){
     }
   }
   sceneinfo->smokedir = iminangle;
+  for(int i = 0;i < 6;i++){
+    sceneinfo->vis[i] = 0;
+  }
+  if(eye_position_fds[0] < sceneinfo->xyz0_fds[0])sceneinfo->vis[0] = 1;
+  if(eye_position_fds[0] > sceneinfo->xyz_fds[0])sceneinfo->vis[1] = 1;
+  if(eye_position_fds[1] < sceneinfo->xyz0_fds[1])sceneinfo->vis[2] = 1;
+  if(eye_position_fds[1] > sceneinfo->xyz_fds[1])sceneinfo->vis[3] = 1;
+  if(eye_position_fds[2] < sceneinfo->xyz0_fds[2])sceneinfo->vis[4] = 1;
+  if(eye_position_fds[2] > sceneinfo->xyz_fds[2])sceneinfo->vis[5] = 1;
 }
 
   /* ------------------ GetZoneSmokeDir ------------------------ */

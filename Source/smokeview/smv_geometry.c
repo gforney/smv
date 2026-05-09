@@ -498,7 +498,7 @@ int InExterior(float *xyz){
 int GetSceneCellIndex(float *xyz){
   scenedata *sd = sceneinfo;
   int *ncells = sd->ncells;
-  float *scene_min = sd->xyz_bar0;
+  float *scene_min = sd->xyz0_fds;
   float *cell_dxyz = sd->cell_dxyz;
   int ni  = ncells[0];
   int nj  = ncells[1];
@@ -519,22 +519,18 @@ scenedata *InitSceneInfo(void){
   NewMemory((void **)&sd, sizeof(scenedata));
 
   int *ncells = sd->ncells;
-  float *scene_min = sd->xyz_bar0;
-  float *scene_max = sd->xyz_bar;
+  float *scene_min = sd->xyz0_fds;
+  float *scene_max = sd->xyz_fds;
   float *scene_mid = sd->xyz_mid_smv;
   float *cell_dxyz = sd->cell_dxyz;
 
+  meshdata *meshi = global_scase.meshescoll.meshinfo;
+  memcpy(scene_min, meshi->boxmin_fds, 3 * sizeof(float));
+  memcpy(scene_max, meshi->boxmax_fds, 3 * sizeof(float));
+  cell_dxyz[0] = scene_max[0] - scene_min[0];
+  cell_dxyz[1] = scene_max[1] - scene_min[1];
+  cell_dxyz[2] = scene_max[2] - scene_min[2];
 
-  {
-    meshdata *meshi;
-
-    meshi = global_scase.meshescoll.meshinfo;
-    memcpy(scene_min, meshi->boxmin_fds, 3 * sizeof(float));
-    memcpy(scene_max, meshi->boxmax_fds, 3 * sizeof(float));
-    cell_dxyz[0] = scene_max[0] - scene_min[0];
-    cell_dxyz[1] = scene_max[1] - scene_min[1];
-    cell_dxyz[2] = scene_max[2] - scene_min[2];
-  }
   for(int i = 1; i < global_scase.meshescoll.nmeshes; i++){
     meshdata *meshi;
 
@@ -680,9 +676,9 @@ int InMeshI(meshdata *meshi, float *xyz){
 /* ------------------ GetMeshWorker ------------------------ */
 
 meshdata *GetMeshWorker(float *xyz){
-  if(xyz[0] < sceneinfo->xyz_bar0[0] || xyz[0] > sceneinfo->xyz_bar[0])return NULL;
-  if(xyz[1] < sceneinfo->xyz_bar0[1] || xyz[1] > sceneinfo->xyz_bar[1])return NULL;
-  if(xyz[2] < sceneinfo->xyz_bar0[2] || xyz[2] > sceneinfo->xyz_bar[2])return NULL;
+  if(xyz[0] < sceneinfo->xyz0_fds[0] || xyz[0] > sceneinfo->xyz_fds[0])return NULL;
+  if(xyz[1] < sceneinfo->xyz0_fds[1] || xyz[1] > sceneinfo->xyz_fds[1])return NULL;
+  if(xyz[2] < sceneinfo->xyz0_fds[2] || xyz[2] > sceneinfo->xyz_fds[2])return NULL;
   int scenecellindex = GetSceneCellIndex(xyz);
   if(scenecellindex<0)return NULL;
   celldata *ci = sceneinfo->cellinfo + scenecellindex;
