@@ -3457,3 +3457,66 @@ float GetFireColorOpacity(float *xyzbeg, float *dxyz, int n, float k, float *col
   opacity = 1.0 - accum_tau;
   return opacity;
 }
+
+/* ------------------ GetXyzEnd ------------------------ */
+
+void GetXyzEnd(float *eyepos_fds, float *xyzbeg, float *xyzend){
+
+}
+
+/* ------------------ ComputeSmoke3DImages ------------------------ */
+
+void ComputeSmoke3DImages(float dstep){
+  int ni, nj, nk;
+
+  ni = MAX(3,(sceneinfo->xyz_fds[0] - sceneinfo->xyz0_fds[0])/dstep + 0.5);
+  nj = MAX(3,(sceneinfo->xyz_fds[1] - sceneinfo->xyz0_fds[1])/dstep + 0.5);
+  nk = MAX(3,(sceneinfo->xyz_fds[2] - sceneinfo->xyz0_fds[2])/dstep + 0.5);
+  for(int i=0;i<6;i++){
+    float xyz0[3], xyz[3];
+    if(sceneinfo->vis[i] == 0)continue;
+    memcpy(xyz0, sceneinfo->xyz0_fds,3*sizeof(float));
+    memcpy(xyz,  sceneinfo->xyz_fds, 3*sizeof(float));
+    switch(i){
+    case 0:
+      xyz0[0] = sceneinfo->xyz0_fds[0];
+      xyz[0]  = sceneinfo->xyz0_fds[0];
+      break;
+    case 1:
+      xyz0[0] = sceneinfo->xyz_fds[0];
+      xyz[0]  = sceneinfo->xyz_fds[0];
+      break;
+    case 2:
+      xyz0[1] = sceneinfo->xyz0_fds[1];
+      xyz[1]  = sceneinfo->xyz0_fds[1];
+      break;
+    case 3:
+      xyz0[1] = sceneinfo->xyz_fds[1];
+      xyz[1]  = sceneinfo->xyz_fds[1];
+      break;
+    case 4:
+      xyz0[2] = sceneinfo->xyz0_fds[2];
+      xyz[2]  = sceneinfo->xyz0_fds[2];
+      break;
+    case 5:
+      xyz0[2] = sceneinfo->xyz_fds[2];
+      xyz[2]  = sceneinfo->xyz_fds[2];
+      break;
+    }
+    if(i == 0){
+      float xyzbeg[3], xyzend[3];
+
+      xyzbeg[0] = xyz0[0];
+      for(int k = 0;k < nk;k++){
+        float factork = (float)k / (float)(nk - 1);
+        xyzbeg[2] = xyz0[2]*(1.0 - factork) + xyz[2]*factork;
+        for(int j = 0;j < nj;j++){
+          float factorj = (float)j / (float)(nj - 1);
+          xyzbeg[1] = xyz0[1] * (1.0 - factorj) + xyz[1] * factorj;
+          GetXyzEnd(eye_position_fds, xyzbeg, xyzend);
+        }
+      }
+
+    }
+  }
+}
