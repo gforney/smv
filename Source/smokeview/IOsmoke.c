@@ -3421,7 +3421,7 @@ float GetFireColorOpacity(float *xyzbeg, float *dxyz, int n, float k, float *col
   float dstep;
   float opacity;
 
-  dstep = sqrt(dxyz[0]*dxyz[0] + dxyz[1]*dxyz[1] + dxyz[2]*dxyz[2]);
+  dstep = NORM3(dxyz);
   accum_tau = 1.0;
   accum_intensity[0] = 0.0;
   accum_intensity[1] = 0.0;
@@ -3429,23 +3429,25 @@ float GetFireColorOpacity(float *xyzbeg, float *dxyz, int n, float k, float *col
   for(int i = 0;i < n;i++){
     float xyz[3];
     float sootdensity, temp;
-    float tau, rel_intensity, plankcolor[3];
+    float tau, rel_intensity, blackbodycolor[3];
 
     xyz[0] = xyzbeg[0] + ( float )i * dxyz[0];
     xyz[1] = xyzbeg[1] + ( float )i * dxyz[1];
     xyz[2] = xyzbeg[2] + ( float )i * dxyz[2];
     if(GetSootTemp(xyz, &sootdensity, &temp)==0)break;
     tau = exp(-k*sootdensity*dstep);
-    GetBlackbodyColor(temp, plankcolor);
+    GetBlackbodyColor(temp, blackbodycolor);
+
     rel_intensity = pow(temp / tref, 4.0);
     accum_tau *= tau;
-    accum_intensity[0] += accum_tau*rel_intensity*plankcolor[0];
-    accum_intensity[1] += accum_tau*rel_intensity*plankcolor[1];
-    accum_intensity[2] += accum_tau*rel_intensity*plankcolor[2];
+    accum_intensity[0] += accum_tau*rel_intensity*blackbodycolor[0];
+    accum_intensity[1] += accum_tau*rel_intensity*blackbodycolor[1];
+    accum_intensity[2] += accum_tau*rel_intensity*blackbodycolor[2];
   }
+
   // scale and gamma correct color
 
-  float sum = accum_intensity[0] + accum_intensity[1] + accum_intensity[2];
+  float sum = NORM3(accum_intensity);
   accum_intensity[0] /= sum;
   accum_intensity[1] /= sum;
   accum_intensity[2] /= sum;
