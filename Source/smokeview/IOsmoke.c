@@ -3467,9 +3467,9 @@ void GetXyzEnd(float *eyepos_fds, float *xyzbeg, float *xyzend){
 /* ------------------ ComputeSmoke3DImages ------------------------ */
 
 void ComputeSmoke3DImages(float dstep){
-  int ni, nj, nk;
+  int nj, nk;
 
-  ni = MAX(3,(sceneinfo->xyz_fds[0] - sceneinfo->xyz0_fds[0])/dstep + 0.5);
+  //ni = MAX(3,(sceneinfo->xyz_fds[0] - sceneinfo->xyz0_fds[0])/dstep + 0.5);
   nj = MAX(3,(sceneinfo->xyz_fds[1] - sceneinfo->xyz0_fds[1])/dstep + 0.5);
   nk = MAX(3,(sceneinfo->xyz_fds[2] - sceneinfo->xyz0_fds[2])/dstep + 0.5);
   for(int i=0;i<6;i++){
