@@ -360,9 +360,14 @@ typedef struct _celldata {
 } celldata;
 
 /* --------------------------  scenedata ----------------------------------- */
-
+#define X_SCENEBUFFER 0
+#define Y_SCENEBUFFER 1
+#define Z_SCENEBUFFER 2
 typedef struct _scenedata {
   celldata *cellinfo;
+  unsigned char *buffer, *buffers[3];
+  int nx, ny, nz;
+  float bufferstep, depthstep;
   float cell_dxyz[3];
   int ncells[3];
   int smokedir;

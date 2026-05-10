@@ -511,6 +511,46 @@ int GetSceneCellIndex(float *xyz){
   return cellindex;
 }
 
+/* --------------------------  FreeSceneBuffers ----------------------------------- */
+
+void FreeSceneBuffers(scenedata *sd){
+  FREEMEMORY(sd->buffer);
+}
+
+/* --------------------------  InitSceneBuffers ----------------------------------- */
+
+void InitSceneBuffers(scenedata *sd, float step){
+  int nx, ny, nz, nbuffer;
+  float *xyz, *xyz0;
+  unsigned char *buffer = NULL;
+
+  xyz  = sd->xyz_fds;
+  xyz0 = sd->xyz0_fds;
+
+  nx = (xyz[0] - xyz0[0]) / step + 1;
+  ny = (xyz[1] - xyz0[1]) / step + 1;
+  nz = (xyz[2] - xyz0[2]) / step + 1;
+  nbuffer = 4*(nx*ny + nx*nz + ny*nz);
+
+  FREEMEMORY(sd->buffer);
+  NewMemory((void **)&buffer, nbuffer);
+  sd->buffer = buffer;
+  sd->nx = nx;
+  sd->ny = ny;
+  sd->nz = nz;
+  sd->bufferstep = step;
+  sd->depthstep  = step;
+
+  // yz
+  sd->buffers[0] = buffer;
+  buffer += 4*ny*nz;
+  // xz
+  sd->buffers[1] = buffer;
+  buffer += 4*nx*nz;
+  // xy
+  sd->buffers[2] = buffer;
+}
+
 /* --------------------------  InitSceneInfo ----------------------------------- */
 
 scenedata *InitSceneInfo(void){
@@ -567,6 +607,10 @@ scenedata *InitSceneInfo(void){
   meshdata **md = meshlist;
 
   sd->cellinfo = cellinfo;
+  sd->buffer = NULL;
+  for(int i = 0;i < 6;i++){
+    sd->buffers[i] = NULL;
+  }
 
   for(int k = 0;k < ncells[2];k++){
     float xyz_min[3], xyz_max[3];
@@ -649,7 +693,22 @@ scenedata *InitSceneInfo(void){
     }
     meshlist2 += ci->nmeshes;
   }
-  FREEMEMORY(meshlist);
+
+  meshdata *mesh0 = global_scase.meshescoll.meshinfo;
+  float step = (mesh0->xplt_fds[1] - mesh0->xplt_fds[0]);
+  for(int ii = 0;ii < nmeshes;ii++){
+    meshdata *meshi;
+    float *x, *y, *z;
+
+    meshi = global_scase.meshescoll.meshinfo + ii;
+    x = meshi->xplt_fds;
+    y = meshi->yplt_fds;
+    z = meshi->zplt_fds;
+    step = MIN(step, x[1] - x[0]);
+    step = MIN(step, y[1] - y[0]);
+    step = MIN(step, z[1] - z[0]);
+  }
+  InitSceneBuffers(sd, step);
   return sd;
 }
 
