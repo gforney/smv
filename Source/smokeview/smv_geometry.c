@@ -564,9 +564,9 @@ scenedata *InitSceneInfo(void){
   float *scene_mid = sd->xyz_mid_smv;
   float *cell_dxyz = sd->cell_dxyz;
 
-  meshdata *meshi = global_scase.meshescoll.meshinfo;
-  memcpy(scene_min, meshi->boxmin_fds, 3 * sizeof(float));
-  memcpy(scene_max, meshi->boxmax_fds, 3 * sizeof(float));
+  meshdata *mesh0 = global_scase.meshescoll.meshinfo;
+  memcpy(scene_min, mesh0->boxmin_fds, 3 * sizeof(float));
+  memcpy(scene_max, mesh0->boxmax_fds, 3 * sizeof(float));
   cell_dxyz[0] = scene_max[0] - scene_min[0];
   cell_dxyz[1] = scene_max[1] - scene_min[1];
   cell_dxyz[2] = scene_max[2] - scene_min[2];
@@ -694,7 +694,6 @@ scenedata *InitSceneInfo(void){
     meshlist2 += ci->nmeshes;
   }
 
-  meshdata *mesh0 = global_scase.meshescoll.meshinfo;
   float step = (mesh0->xplt_fds[1] - mesh0->xplt_fds[0]);
   for(int ii = 0;ii < nmeshes;ii++){
     meshdata *meshi;

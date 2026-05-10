@@ -3502,6 +3502,8 @@ void ComputeSmoke3DImages(float dstep){
       xyz0[2] = sceneinfo->xyz_fds[2];
       xyz[2]  = sceneinfo->xyz_fds[2];
       break;
+    default:
+      assert(0);
     }
     if(i == 0){
       float xyzbeg[3], xyzend[3];
