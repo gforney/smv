@@ -1615,7 +1615,6 @@ void GetSmokeDir(float *mm){
 /* ------------------ GetSceneDir ------------------------ */
 
 void GetSceneDir(float *mm){
-  int i;
   float absangle, cosangle, minangle;
   int iminangle;
 
@@ -1630,7 +1629,7 @@ void GetSceneDir(float *mm){
 
   ibeg = -3;
   iend = 3;
-  for(i = ibeg; i <= iend; i++){
+  for(int i = ibeg; i <= iend; i++){
     float scalednorm[3], norm[3], normdir[3];
 
     if(i == 0)continue;
