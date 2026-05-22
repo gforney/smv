@@ -608,7 +608,7 @@ scenedata *InitSceneInfo(void){
 
   sd->cellinfo = cellinfo;
   sd->buffer = NULL;
-  for(int i = 0;i < 6;i++){
+  for(int i = 0;i < 3;i++){
     sd->buffers[i] = NULL;
   }
 
