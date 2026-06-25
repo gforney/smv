@@ -11,7 +11,6 @@ function build_target() {
     popd
 }
 
-build_target convert
 build_target fds2fed
 build_target pnginfo
 build_target smokediff
