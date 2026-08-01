@@ -64,7 +64,6 @@ void OutputBoundaryData(patchdata *patchi){
     if(pt>patchout_tmax)break;
     vals = meshi->patchval + iframe*meshi->npatchsize;
 
-
     for(ipatch=0; ipatch<patchi->npatches; ipatch++){
       int i1, i2, j1, j2, k1, k2;
       int imin, imax, jmin, jmax, kmin, kmax;
@@ -574,7 +573,6 @@ void GetBoundaryDataZlib(patchdata *patchi, unsigned char *data, int ndata,
   // compressed size of frame
   // compressed buffer
 
-
   stream = fopen_m((char *)patchi->file, "rb");
   if(stream==NULL)return;
 
@@ -834,7 +832,6 @@ void GetBoundarySizeInfo(patchdata *patchi, int *nframes, int *buffersize){
 void ComputeLoadedPatchHist(char *label, histogramdata **histptr, float *global_min, float *global_max){
   histogramdata *hist;
   int i, have_data=0;
-
 
   for(i = 0; i<global_scase.npatchinfo; i++){
     patchdata *patchi;
@@ -1332,7 +1329,6 @@ FILE_SIZE ReadBoundaryBndf(int ifile, int load_flag, int *errorcode){
     }
 
     // determine if patch is on an internal mesh face
-
 
     if(pfi->dir==YDIR||pfi->dir==YDIRNEG)pfi->dir=-pfi->dir;
     dxx = 0.0;
@@ -1943,7 +1939,6 @@ FILE_SIZE ReadBoundaryBndf(int ifile, int load_flag, int *errorcode){
         OutputBoundaryData(patchj);
       }
     }
-
 
     CheckMemory;
     GLUIUpdateBoundaryListIndex(patchfilenum);
@@ -3632,7 +3627,6 @@ int CompareMeshResolution(int dir, meshdata *meshi, meshdata *meshj){
 }
 
 /* ------------------ IsPatchDuplicate ------------------------ */
-
 
 int IsBoundaryDuplicate(patchdata *patchi, int flag){
   int j;
