@@ -355,7 +355,7 @@ typedef struct _skyboxdata {
   texturedata face[6];
 } skyboxdata;
 
-#ifdef pp_GETMESH_TEST
+#ifdef pp_GETMESH
 /* --------------------------  celldata ----------------------------------- */
 
 typedef struct _celldata {
