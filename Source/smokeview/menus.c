@@ -2496,6 +2496,12 @@ void TextureShowMenu(int value){
       }
     }
   }
+  if(visGeomTextures==1){
+    show_faces_shaded = 0;
+  }
+  else{
+    show_faces_shaded = 1;
+  }
   GLUIUpdateTextureDisplay();
   updatemenu=1;
   GLUTPOSTREDISPLAY;
