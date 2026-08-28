@@ -3191,26 +3191,26 @@ float SetClipVal(int flag){
 
   for(i = 0; i<global_scase.meshescoll.nmeshes; i++){
     meshdata *meshi;
-    float *xplt, *yplt, *zplt;
+    float *xplt_fds, *yplt_fds, *zplt_fds;
     int plotx, ploty, plotz;
 
     meshi = global_scase.meshescoll.meshinfo+i;
 
     switch(flag){
       case 0:
-        xplt = meshi->xplt_fds;
+        xplt_fds = meshi->xplt_fds;
         plotx = meshi->iplotx_all[iplotx_all];
-        if(plotx>=0)return xplt[plotx];
+        if(plotx>=0)return xplt_fds[plotx];
         break;
       case 1:
-        yplt = meshi->yplt_fds;
+        yplt_fds = meshi->yplt_fds;
         ploty = meshi->iploty_all[iploty_all];
-        if(ploty>=0)return yplt[ploty];
+        if(ploty>=0)return yplt_fds[ploty];
         break;
       case 2:
-        zplt = meshi->zplt_fds;
+        zplt_fds = meshi->zplt_fds;
         plotz = meshi->iplotz_all[iplotz_all];
-        if(plotz>=0)return zplt[plotz];
+        if(plotz>=0)return zplt_fds[plotz];
         break;
       default:
         assert(FFALSE);

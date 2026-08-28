@@ -553,7 +553,7 @@ void DrawPlot3dTexture(meshdata *meshi){
   float dx, dy, dz;
   int plotx, ploty, plotz;
   int visx, visy, visz;
-  float *xplt, *yplt, *zplt;
+  float *xplt_smv, *yplt_smv, *zplt_smv;
   int ibar, jbar, kbar;
   isosurface *currentsurfptr,*currentsurf2ptr;
 
@@ -587,9 +587,9 @@ void DrawPlot3dTexture(meshdata *meshi){
   ibar = meshi->ibar;
   jbar = meshi->jbar;
   kbar = meshi->kbar;
-  xplt = meshi->xplt_smv;
-  yplt = meshi->yplt_smv;
-  zplt = meshi->zplt_smv;
+  xplt_smv = meshi->xplt_smv;
+  yplt_smv = meshi->yplt_smv;
+  zplt_smv = meshi->zplt_smv;
   c_iblank_x = meshi->c_iblank_x;
   c_iblank_y = meshi->c_iblank_y;
   c_iblank_z = meshi->c_iblank_z;
@@ -662,22 +662,22 @@ void DrawPlot3dTexture(meshdata *meshi){
             val[2] = CLAMP(PLOT3DCONVERT(val[2], ttmin, ttmax), 0.0, 1.0);
             val[3] = CLAMP(PLOT3DCONVERT(val[3], ttmin, ttmax), 0.0, 1.0);
             if(ABS(val[0]-val[3])<ABS(val[1]-val[2])){
-              glTexCoord1f(val[0]); glVertex3f(xplt[plotx],yplt[j],zplt[k]);
-              glTexCoord1f(val[2]); glVertex3f(xplt[plotx],yplt[j+1],zplt[k]);
-              glTexCoord1f(val[3]); glVertex3f(xplt[plotx],yplt[j+1],zplt[k+1]);
+              glTexCoord1f(val[0]); glVertex3f(xplt_smv[plotx],yplt_smv[j],zplt_smv[k]);
+              glTexCoord1f(val[2]); glVertex3f(xplt_smv[plotx],yplt_smv[j+1],zplt_smv[k]);
+              glTexCoord1f(val[3]); glVertex3f(xplt_smv[plotx],yplt_smv[j+1],zplt_smv[k+1]);
 
-              glTexCoord1f(val[0]); glVertex3f(xplt[plotx],yplt[j],zplt[k]);
-              glTexCoord1f(val[3]); glVertex3f(xplt[plotx],yplt[j+1],zplt[k+1]);
-              glTexCoord1f(val[1]); glVertex3f(xplt[plotx],yplt[j],zplt[k+1]);
+              glTexCoord1f(val[0]); glVertex3f(xplt_smv[plotx],yplt_smv[j],zplt_smv[k]);
+              glTexCoord1f(val[3]); glVertex3f(xplt_smv[plotx],yplt_smv[j+1],zplt_smv[k+1]);
+              glTexCoord1f(val[1]); glVertex3f(xplt_smv[plotx],yplt_smv[j],zplt_smv[k+1]);
             }
             else{
-              glTexCoord1f(val[0]); glVertex3f(xplt[plotx],yplt[j],zplt[k]);
-              glTexCoord1f(val[2]); glVertex3f(xplt[plotx],yplt[j+1],zplt[k]);
-              glTexCoord1f(val[1]); glVertex3f(xplt[plotx],yplt[j],zplt[k+1]);
+              glTexCoord1f(val[0]); glVertex3f(xplt_smv[plotx],yplt_smv[j],zplt_smv[k]);
+              glTexCoord1f(val[2]); glVertex3f(xplt_smv[plotx],yplt_smv[j+1],zplt_smv[k]);
+              glTexCoord1f(val[1]); glVertex3f(xplt_smv[plotx],yplt_smv[j],zplt_smv[k+1]);
 
-              glTexCoord1f(val[2]); glVertex3f(xplt[plotx],yplt[j+1],zplt[k]);
-              glTexCoord1f(val[3]); glVertex3f(xplt[plotx],yplt[j+1],zplt[k+1]);
-              glTexCoord1f(val[1]); glVertex3f(xplt[plotx],yplt[j],zplt[k+1]);
+              glTexCoord1f(val[2]); glVertex3f(xplt_smv[plotx],yplt_smv[j+1],zplt_smv[k]);
+              glTexCoord1f(val[3]); glVertex3f(xplt_smv[plotx],yplt_smv[j+1],zplt_smv[k+1]);
+              glTexCoord1f(val[1]); glVertex3f(xplt_smv[plotx],yplt_smv[j],zplt_smv[k+1]);
             }
           }
         }
@@ -705,8 +705,8 @@ void DrawPlot3dTexture(meshdata *meshi){
             dx=*dx_yzcopy/2.0;
             dy=*dy_yzcopy/2.0;
             dz=*dz_yzcopy/2.0;
-            glVertex3f(xplt[plotx]-dx,yplt[j]-dy,zplt[k]-dz);
-            glVertex3f(xplt[plotx]+dx,yplt[j]+dy,zplt[k]+dz);
+            glVertex3f(xplt_smv[plotx]-dx,yplt_smv[j]-dy,zplt_smv[k]-dz);
+            glVertex3f(xplt_smv[plotx]+dx,yplt_smv[j]+dy,zplt_smv[k]+dz);
           }
           dx_yzcopy+=vectorskip;
           dy_yzcopy+=vectorskip;
@@ -733,9 +733,9 @@ void DrawPlot3dTexture(meshdata *meshi){
           if((iblank==NULL||iblank[IJKNODE(plotx,j,k)]==GAS)&&vector_color[3]>0.5){
             glColor4fv(vector_color);
             glVertex3f(
-              xplt[plotx]+*dx_yzcopy/(float)2.0,
-              yplt[j]+*dy_yzcopy/(float)2.0,
-              zplt[k]+*dz_yzcopy/(float)2.0
+              xplt_smv[plotx]+*dx_yzcopy/(float)2.0,
+              yplt_smv[j]+*dy_yzcopy/(float)2.0,
+              zplt_smv[k]+*dz_yzcopy/(float)2.0
               );
           }
           dx_yzcopy+=vectorskip;
@@ -766,22 +766,22 @@ void DrawPlot3dTexture(meshdata *meshi){
           val[3] = CLAMP(PLOT3DCONVERT(val[3], ttmin, ttmax), 0.0, 1.0);
           if(c_iblank_y==NULL||c_iblank_y[IJKNODE(i, ploty, k)]==GASGAS){
             if(ABS(val[0]-val[3])<ABS(val[1]-val[2])){
-              glTexCoord1f(val[0]);  glVertex3f(xplt[i],   yplt[ploty], zplt[k]);
-              glTexCoord1f(val[2]);  glVertex3f(xplt[i+1], yplt[ploty], zplt[k]);
-              glTexCoord1f(val[3]);  glVertex3f(xplt[i+1], yplt[ploty], zplt[k+1]);
+              glTexCoord1f(val[0]);  glVertex3f(xplt_smv[i],   yplt_smv[ploty], zplt_smv[k]);
+              glTexCoord1f(val[2]);  glVertex3f(xplt_smv[i+1], yplt_smv[ploty], zplt_smv[k]);
+              glTexCoord1f(val[3]);  glVertex3f(xplt_smv[i+1], yplt_smv[ploty], zplt_smv[k+1]);
 
-              glTexCoord1f(val[0]);  glVertex3f(xplt[i],  yplt[ploty], zplt[k]);
-              glTexCoord1f(val[3]); glVertex3f(xplt[i+1], yplt[ploty], zplt[k+1]);
-              glTexCoord1f(val[1]); glVertex3f(xplt[i],   yplt[ploty], zplt[k+1]);
+              glTexCoord1f(val[0]);  glVertex3f(xplt_smv[i],  yplt_smv[ploty], zplt_smv[k]);
+              glTexCoord1f(val[3]); glVertex3f(xplt_smv[i+1], yplt_smv[ploty], zplt_smv[k+1]);
+              glTexCoord1f(val[1]); glVertex3f(xplt_smv[i],   yplt_smv[ploty], zplt_smv[k+1]);
             }
             else{
-              glTexCoord1f(val[0]);  glVertex3f(xplt[i],   yplt[ploty], zplt[k]);
-              glTexCoord1f(val[2]);  glVertex3f(xplt[i+1], yplt[ploty], zplt[k]);
-              glTexCoord1f(val[1]);  glVertex3f(xplt[i],   yplt[ploty], zplt[k+1]);
+              glTexCoord1f(val[0]);  glVertex3f(xplt_smv[i],   yplt_smv[ploty], zplt_smv[k]);
+              glTexCoord1f(val[2]);  glVertex3f(xplt_smv[i+1], yplt_smv[ploty], zplt_smv[k]);
+              glTexCoord1f(val[1]);  glVertex3f(xplt_smv[i],   yplt_smv[ploty], zplt_smv[k+1]);
 
-              glTexCoord1f(val[2]); glVertex3f(xplt[i+1], yplt[ploty], zplt[k]);
-              glTexCoord1f(val[3]); glVertex3f(xplt[i+1], yplt[ploty], zplt[k+1]);
-              glTexCoord1f(val[1]); glVertex3f(xplt[i],   yplt[ploty], zplt[k+1]);
+              glTexCoord1f(val[2]); glVertex3f(xplt_smv[i+1], yplt_smv[ploty], zplt_smv[k]);
+              glTexCoord1f(val[3]); glVertex3f(xplt_smv[i+1], yplt_smv[ploty], zplt_smv[k+1]);
+              glTexCoord1f(val[1]); glVertex3f(xplt_smv[i],   yplt_smv[ploty], zplt_smv[k+1]);
             }
           }
         }
@@ -811,8 +811,8 @@ void DrawPlot3dTexture(meshdata *meshi){
             dx=*dx_xzcopy/2.0;
             dy=*dy_xzcopy/2.0;
             dz=*dz_xzcopy/2.0;
-            glVertex3f(xplt[i]-dx,yplt[ploty]-dy,zplt[k]-dz);
-            glVertex3f(xplt[i]+dx,yplt[ploty]+dy,zplt[k]+dz);
+            glVertex3f(xplt_smv[i]-dx,yplt_smv[ploty]-dy,zplt_smv[k]-dz);
+            glVertex3f(xplt_smv[i]+dx,yplt_smv[ploty]+dy,zplt_smv[k]+dz);
           }
           dx_xzcopy+=vectorskip;
           dy_xzcopy+=vectorskip;
@@ -841,7 +841,7 @@ void DrawPlot3dTexture(meshdata *meshi){
             dx=*dx_xzcopy/2.0;
             dy=*dy_xzcopy/2.0;
             dz=*dz_xzcopy/2.0;
-            glVertex3f(xplt[i]+dx,yplt[ploty]+dy,zplt[k]+dz);
+            glVertex3f(xplt_smv[i]+dx,yplt_smv[ploty]+dy,zplt_smv[k]+dz);
           }
           dx_xzcopy+=vectorskip;
           dy_xzcopy+=vectorskip;
@@ -879,22 +879,22 @@ void DrawPlot3dTexture(meshdata *meshi){
           val[3] = CLAMP(PLOT3DCONVERT(val[3], ttmin, ttmax), 0.0, 1.0);
           if(c_iblank_z==NULL||c_iblank_z[IJKNODE(i, j, plotz)]==GASGAS){
             if(ABS(val[0]-val[3])<ABS(val[1]-val[2])){
-               glTexCoord1f(val[0]); glVertex3f(xplt[i],   yplt[j],   zplt[plotz]);
-               glTexCoord1f(val[2]); glVertex3f(xplt[i+1], yplt[j],   zplt[plotz]);
-               glTexCoord1f(val[3]); glVertex3f(xplt[i+1], yplt[j+1], zplt[plotz]);
+               glTexCoord1f(val[0]); glVertex3f(xplt_smv[i],   yplt_smv[j],   zplt_smv[plotz]);
+               glTexCoord1f(val[2]); glVertex3f(xplt_smv[i+1], yplt_smv[j],   zplt_smv[plotz]);
+               glTexCoord1f(val[3]); glVertex3f(xplt_smv[i+1], yplt_smv[j+1], zplt_smv[plotz]);
 
-               glTexCoord1f(val[0]); glVertex3f(xplt[i],   yplt[j],   zplt[plotz]);
-               glTexCoord1f(val[3]); glVertex3f(xplt[i+1], yplt[j+1], zplt[plotz]);
-               glTexCoord1f(val[1]); glVertex3f(xplt[i],   yplt[j+1], zplt[plotz]);
+               glTexCoord1f(val[0]); glVertex3f(xplt_smv[i],   yplt_smv[j],   zplt_smv[plotz]);
+               glTexCoord1f(val[3]); glVertex3f(xplt_smv[i+1], yplt_smv[j+1], zplt_smv[plotz]);
+               glTexCoord1f(val[1]); glVertex3f(xplt_smv[i],   yplt_smv[j+1], zplt_smv[plotz]);
             }
             else{
-               glTexCoord1f(val[0]); glVertex3f(xplt[i],   yplt[j],   zplt[plotz]);
-               glTexCoord1f(val[2]); glVertex3f(xplt[i+1], yplt[j],   zplt[plotz]);
-               glTexCoord1f(val[1]); glVertex3f(xplt[i],   yplt[j+1], zplt[plotz]);
+               glTexCoord1f(val[0]); glVertex3f(xplt_smv[i],   yplt_smv[j],   zplt_smv[plotz]);
+               glTexCoord1f(val[2]); glVertex3f(xplt_smv[i+1], yplt_smv[j],   zplt_smv[plotz]);
+               glTexCoord1f(val[1]); glVertex3f(xplt_smv[i],   yplt_smv[j+1], zplt_smv[plotz]);
 
-               glTexCoord1f(val[2]); glVertex3f(xplt[i+1], yplt[j],   zplt[plotz]);
-               glTexCoord1f(val[3]); glVertex3f(xplt[i+1], yplt[j+1], zplt[plotz]);
-               glTexCoord1f(val[1]); glVertex3f(xplt[i],   yplt[j+1], zplt[plotz]);
+               glTexCoord1f(val[2]); glVertex3f(xplt_smv[i+1], yplt_smv[j],   zplt_smv[plotz]);
+               glTexCoord1f(val[3]); glVertex3f(xplt_smv[i+1], yplt_smv[j+1], zplt_smv[plotz]);
+               glTexCoord1f(val[1]); glVertex3f(xplt_smv[i],   yplt_smv[j+1], zplt_smv[plotz]);
             }
           }
         }
@@ -924,8 +924,8 @@ void DrawPlot3dTexture(meshdata *meshi){
             dx=*dx_xycopy/2.0;
             dy=*dy_xycopy/2.0;
             dz=*dz_xycopy/2.0;
-            glVertex3f(xplt[i]-dx,yplt[j]-dy,zplt[plotz]-dz);
-            glVertex3f(xplt[i]+dx,yplt[j]+dy,zplt[plotz]+dz);
+            glVertex3f(xplt_smv[i]-dx,yplt_smv[j]-dy,zplt_smv[plotz]-dz);
+            glVertex3f(xplt_smv[i]+dx,yplt_smv[j]+dy,zplt_smv[plotz]+dz);
           }
           dx_xycopy+=vectorskip;
           dy_xycopy+=vectorskip;
@@ -952,9 +952,9 @@ void DrawPlot3dTexture(meshdata *meshi){
           if((iblank==NULL||iblank[IJKNODE(i,j,plotz)]==GAS)&&vector_color[3]>0.5){
             glColor4fv(vector_color);
             glVertex3f(
-              xplt[i]+*dx_xycopy/(float)2.0,
-              yplt[j]+*dy_xycopy/(float)2.0,
-              zplt[plotz]+*dz_xycopy/(float)2.0
+              xplt_smv[i]+*dx_xycopy/(float)2.0,
+              yplt_smv[j]+*dy_xycopy/(float)2.0,
+              zplt_smv[plotz]+*dz_xycopy/(float)2.0
               );
           }
           dx_xycopy+=vectorskip;
@@ -998,7 +998,7 @@ void UpdateSurface(void){
   int colorindex,colorindex2;
   float level,level2;
   int ibar, jbar, kbar;
-  float *xplt, *yplt, *zplt;
+  float *xplt_smv, *yplt_smv, *zplt_smv;
   isosurface *currentsurfptr,*currentsurf2ptr;
   float *qdata;
   char *iblank_cell;
@@ -1016,9 +1016,9 @@ void UpdateSurface(void){
     jbar=meshi->jbar;
     kbar=meshi->kbar;
     plot3dsize=(ibar+1)*(jbar+1)*(kbar+1);
-    xplt=meshi->xplt_smv;
-    yplt=meshi->yplt_smv;
-    zplt=meshi->zplt_smv;
+    xplt_smv=meshi->xplt_smv;
+    yplt_smv=meshi->yplt_smv;
+    zplt_smv=meshi->zplt_smv;
     iblank_cell=meshi->c_iblank_cell;
 
     currentsurfptr = meshi->currentsurf;
@@ -1037,12 +1037,12 @@ void UpdateSurface(void){
     FreeSurface(currentsurfptr);
     InitIsoSurface(currentsurfptr, level, rgb_plot3d_contour[colorindex],-999);
     GetIsoSurface(currentsurfptr,qdata+(plotn-1)*plot3dsize,NULL,iblank_cell,level,
-      xplt,ibar+1,yplt,jbar+1,zplt,kbar+1);
+      xplt_smv,ibar+1,yplt_smv,jbar+1,zplt_smv,kbar+1);
     GetNormalSurface(currentsurfptr);
     CompressIsoSurface(currentsurfptr,1,
-        xplt[0],xplt[ibar],
-        yplt[0],yplt[jbar],
-        zplt[0],zplt[kbar]);
+        xplt_smv[0],xplt_smv[ibar],
+        yplt_smv[0],yplt_smv[jbar],
+        zplt_smv[0],zplt_smv[kbar]);
     SmoothIsoSurface(currentsurfptr);
 
     if(surfincrement!=0){
@@ -1053,12 +1053,12 @@ void UpdateSurface(void){
       FreeSurface(currentsurf2ptr);
       InitIsoSurface(currentsurf2ptr, level2, rgb_plot3d_contour[colorindex2],-999);
       GetIsoSurface(currentsurf2ptr,qdata+(plotn-1)*plot3dsize,NULL,iblank_cell,level2,
-        xplt,ibar+1,yplt,jbar+1,zplt,kbar+1);
+        xplt_smv,ibar+1,yplt_smv,jbar+1,zplt_smv,kbar+1);
       GetNormalSurface(currentsurf2ptr);
       CompressIsoSurface(currentsurf2ptr,1,
-        xplt[0],xplt[ibar],
-        yplt[0],yplt[jbar],
-        zplt[0],zplt[kbar]);
+        xplt_smv[0],xplt_smv[ibar],
+        yplt_smv[0],yplt_smv[jbar],
+        zplt_smv[0],zplt_smv[kbar]);
       SmoothIsoSurface(currentsurf2ptr);
 
       isolevelindex2=colorindex2;
@@ -1171,7 +1171,7 @@ void UpdatePlotSliceMesh(meshdata *mesh_in, int slicedir){
   int i, j, k;
   int plotx, ploty, plotz;
   int ibar, jbar, kbar;
-  float *xplt, *yplt, *zplt;
+  float *xplt_smv, *yplt_smv, *zplt_smv;
   meshdata *meshi;
   contour *plot3dcontour1ptr, *plot3dcontour2ptr, *plot3dcontour3ptr;
   unsigned char *yzcolorbase, *xzcolorbase, *xycolorbase;
@@ -1198,9 +1198,9 @@ void UpdatePlotSliceMesh(meshdata *mesh_in, int slicedir){
   ibar = meshi->ibar;
   jbar = meshi->jbar;
   kbar = meshi->kbar;
-  xplt = meshi->xplt_smv;
-  yplt = meshi->yplt_smv;
-  zplt = meshi->zplt_smv;
+  xplt_smv = meshi->xplt_smv;
+  yplt_smv = meshi->yplt_smv;
+  zplt_smv = meshi->zplt_smv;
   c_iblank_x = meshi->c_iblank_x;
   c_iblank_y = meshi->c_iblank_y;
   c_iblank_z = meshi->c_iblank_z;
@@ -1292,8 +1292,8 @@ void UpdatePlotSliceMesh(meshdata *mesh_in, int slicedir){
     }
     FreeContour(plot3dcontour1ptr);
     InitContour(plot3dcontour1ptr, rgb_plot3d_contour, global_scase.nrgb);
-    SetContourSlice(plot3dcontour1ptr, 1, xplt[plotx]);
-    GetContours(yplt, zplt, jbar + 1, kbar + 1, yzcolorfbase, iblank_yz, p3levels[plotn - 1], DONT_GET_AREAS, DATA_FORTRAN, plot3dcontour1ptr);
+    SetContourSlice(plot3dcontour1ptr, 1, xplt_smv[plotx]);
+    GetContours(yplt_smv, zplt_smv, jbar + 1, kbar + 1, yzcolorfbase, iblank_yz, p3levels[plotn - 1], DONT_GET_AREAS, DATA_FORTRAN, plot3dcontour1ptr);
     FREEMEMORY(iblank_yz);
   }
   else if(ploty >= 0 && slicedir == YDIR){
@@ -1341,8 +1341,8 @@ void UpdatePlotSliceMesh(meshdata *mesh_in, int slicedir){
     }
     FreeContour(plot3dcontour2ptr);
     InitContour(plot3dcontour2ptr, rgb_plot3d_contour, global_scase.nrgb);
-    SetContourSlice(plot3dcontour2ptr, 2, yplt[ploty]);
-    GetContours(xplt, zplt, ibar + 1, kbar + 1, xzcolorfbase, iblank_xz, p3levels[plotn - 1], DONT_GET_AREAS, DATA_FORTRAN, plot3dcontour2ptr);
+    SetContourSlice(plot3dcontour2ptr, 2, yplt_smv[ploty]);
+    GetContours(xplt_smv, zplt_smv, ibar + 1, kbar + 1, xzcolorfbase, iblank_xz, p3levels[plotn - 1], DONT_GET_AREAS, DATA_FORTRAN, plot3dcontour2ptr);
     FREEMEMORY(iblank_xz);
   }
   else if(plotz >= 0 && slicedir == ZDIR){
@@ -1390,8 +1390,8 @@ void UpdatePlotSliceMesh(meshdata *mesh_in, int slicedir){
     }
     FreeContour(plot3dcontour3ptr);
     InitContour(plot3dcontour3ptr, rgb_plot3d_contour, global_scase.nrgb);
-    SetContourSlice(plot3dcontour3ptr, 3, zplt[plotz]);
-    GetContours(xplt, yplt, ibar + 1, jbar + 1, xycolorfbase, iblank_xy, p3levels[plotn - 1], DONT_GET_AREAS, DATA_FORTRAN, plot3dcontour3ptr);
+    SetContourSlice(plot3dcontour3ptr, 3, zplt_smv[plotz]);
+    GetContours(xplt_smv, yplt_smv, ibar + 1, jbar + 1, xycolorfbase, iblank_xy, p3levels[plotn - 1], DONT_GET_AREAS, DATA_FORTRAN, plot3dcontour3ptr);
     FREEMEMORY(iblank_xy);
   }
 }
@@ -1479,13 +1479,13 @@ void UpdateShowStep(int val, int slicedir){
 
 void DrawGrid(const meshdata *meshi){
   int i, j, k;
-  float *xplt, *yplt, *zplt;
+  float *xplt_smv, *yplt_smv, *zplt_smv;
   int ibar, jbar, kbar;
   int plotx, ploty, plotz;
 
-  xplt = meshi->xplt_smv;
-  yplt = meshi->yplt_smv;
-  zplt = meshi->zplt_smv;
+  xplt_smv = meshi->xplt_smv;
+  yplt_smv = meshi->yplt_smv;
+  zplt_smv = meshi->zplt_smv;
   ibar = meshi->ibar;
   jbar = meshi->jbar;
   kbar = meshi->kbar;
@@ -1563,34 +1563,34 @@ void DrawGrid(const meshdata *meshi){
     glBegin(GL_LINES);
     if(visx_all==1&&plotx>=0){
       for(j=0; j<jbar+1; j+=skipj){
-        glVertex3f(xplt[plotx],yplt[j],zplt[0]);
-        glVertex3f(xplt[plotx],yplt[j],zplt[kbar]);
+        glVertex3f(xplt_smv[plotx],yplt_smv[j],zplt_smv[0]);
+        glVertex3f(xplt_smv[plotx],yplt_smv[j],zplt_smv[kbar]);
       }
       for(k=0; k<kbar+1; k+=skipk){
-        glVertex3f(xplt[plotx],yplt[0],zplt[k]);
-        glVertex3f(xplt[plotx],yplt[jbar],zplt[k]);
+        glVertex3f(xplt_smv[plotx],yplt_smv[0],zplt_smv[k]);
+        glVertex3f(xplt_smv[plotx],yplt_smv[jbar],zplt_smv[k]);
       }
     }
 
     if(visy_all==1&&ploty>=0){
       for(i=0; i<ibar+1; i+=skipi){
-        glVertex3f(xplt[i],yplt[ploty],zplt[0]);
-        glVertex3f(xplt[i],yplt[ploty],zplt[kbar]);
+        glVertex3f(xplt_smv[i],yplt_smv[ploty],zplt_smv[0]);
+        glVertex3f(xplt_smv[i],yplt_smv[ploty],zplt_smv[kbar]);
       }
       for(k=0; k<kbar+1; k+=skipk){
-        glVertex3f(   xplt[0],yplt[ploty],zplt[k]);
-        glVertex3f(xplt[ibar],yplt[ploty],zplt[k]);
+        glVertex3f(   xplt_smv[0],yplt_smv[ploty],zplt_smv[k]);
+        glVertex3f(xplt_smv[ibar],yplt_smv[ploty],zplt_smv[k]);
       }
     }
 
     if(visz_all==1&&plotz>=0){
       for(i=0; i<ibar+1; i+=skipi){
-        glVertex3f(xplt[i],   yplt[0],zplt[plotz]);
-        glVertex3f(xplt[i],yplt[jbar],zplt[plotz]);
+        glVertex3f(xplt_smv[i],   yplt_smv[0],zplt_smv[plotz]);
+        glVertex3f(xplt_smv[i],yplt_smv[jbar],zplt_smv[plotz]);
       }
       for(j=0; j<jbar+1; j+=skipj){
-        glVertex3f(xplt[0],yplt[j],zplt[plotz]);
-        glVertex3f(xplt[ibar],yplt[j],zplt[plotz]);
+        glVertex3f(xplt_smv[0],yplt_smv[j],zplt_smv[plotz]);
+        glVertex3f(xplt_smv[ibar],yplt_smv[j],zplt_smv[plotz]);
       }
     }
 
@@ -1688,7 +1688,7 @@ void InitPlot3dTimeList(void){
 
 void GetPlot3dUVW(float xyz[3], float uvw[3]){
   int i;
-  float *xplt, *yplt, *zplt;
+  float *xplt_fds, *yplt_fds, *zplt_fds;
 
   uvw[0]=0.0;
   uvw[1]=0.0;
@@ -1703,15 +1703,15 @@ void GetPlot3dUVW(float xyz[3], float uvw[3]){
 
     meshi = global_scase.meshescoll.meshinfo + i;
 
-    xplt = meshi->xplt_fds;
-    yplt = meshi->yplt_fds;
-    zplt = meshi->zplt_fds;
-    if(xyz[0]<xplt[0]||xyz[1]<yplt[0]||xyz[2]<zplt[0])continue;
+    xplt_fds = meshi->xplt_fds;
+    yplt_fds = meshi->yplt_fds;
+    zplt_fds = meshi->zplt_fds;
+    if(xyz[0]<xplt_fds[0]||xyz[1]<yplt_fds[0]||xyz[2]<zplt_fds[0])continue;
 
     ibar = meshi->ibar;
     jbar = meshi->jbar;
     kbar = meshi->kbar;
-    if(xyz[0]>xplt[ibar-1]||xyz[1]>yplt[jbar-1]||xyz[2]>zplt[kbar-1])continue;
+    if(xyz[0]>xplt_fds[ibar-1]||xyz[1]>yplt_fds[jbar-1]||xyz[2]>zplt_fds[kbar-1])continue;
 
     nx = ibar+1;
     ny = jbar+1;
@@ -1725,15 +1725,15 @@ void GetPlot3dUVW(float xyz[3], float uvw[3]){
     if(qdata==NULL)continue;
     if(udata==NULL&&vdata==NULL&&wdata==NULL)continue;
 
-    ix = ibar*(xyz[0]-xplt[0])/(xplt[ibar]-xplt[0]);
+    ix = ibar*(xyz[0]-xplt_fds[0])/(xplt_fds[ibar]-xplt_fds[0]);
     if(ix<0)ix=0;
     if(ix>ibar)ix=ibar;
 
-    iy = jbar*(xyz[1]-yplt[0])/(yplt[jbar]-yplt[0]);
+    iy = jbar*(xyz[1]-yplt_fds[0])/(yplt_fds[jbar]-yplt_fds[0]);
     if(iy<0)iy=0;
     if(iy>jbar)iy=jbar;
 
-    iz = kbar*(xyz[2]-zplt[0])/(zplt[kbar]-zplt[0]);
+    iz = kbar*(xyz[2]-zplt_fds[0])/(zplt_fds[kbar]-zplt_fds[0]);
     if(iz<0)iz=0;
     if(iz>kbar)iz=kbar;
 

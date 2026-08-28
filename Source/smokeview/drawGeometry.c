@@ -31,13 +31,13 @@ void DrawCircVentsApproxSolid(int option){
   for(i=0; i<global_scase.meshescoll.nmeshes; i++){
     int j;
     meshdata *meshi;
-    float *xplt, *yplt, *zplt;
+    float *xplt_smv, *yplt_smv, *zplt_smv;
     float dx, dxyz;
 
     meshi = global_scase.meshescoll.meshinfo + i;
-    xplt = meshi->xplt_smv;
-    yplt = meshi->yplt_smv;
-    zplt = meshi->zplt_smv;
+    xplt_smv = meshi->xplt_smv;
+    yplt_smv = meshi->yplt_smv;
+    zplt_smv = meshi->zplt_smv;
     dxyz = SCALE2SMV(xyzmaxdiff/400.0);
 
     for(j=0; j<meshi->ncvents; j++){
@@ -63,15 +63,15 @@ void DrawCircVentsApproxSolid(int option){
       switch(cvi->dir){
         case UP_X:
         case DOWN_X:
-          xx=xplt[cvi->imin]+dx;
+          xx=xplt_smv[cvi->imin]+dx;
           for(kk=cvi->kmin; kk<cvi->kmax; kk++){
-            zz = zplt[kk];
-            zz2 = zplt[kk+1];
+            zz = zplt_smv[kk];
+            zz2 = zplt_smv[kk+1];
             for(jj=cvi->jmin; jj<cvi->jmax; jj++){
               int in_circle;
 
-              yy = yplt[jj];
-              yy2 = yplt[jj+1];
+              yy = yplt_smv[jj];
+              yy2 = yplt_smv[jj+1];
 
               INCIRCLE(xx,(yy+yy2)/2.0,(zz+zz2)/2.0,in_circle);
               if(in_circle==NO)continue;
@@ -96,15 +96,15 @@ void DrawCircVentsApproxSolid(int option){
           break;
         case UP_Y:
         case DOWN_Y:
-          yy=yplt[cvi->jmin]+dx;
+          yy=yplt_smv[cvi->jmin]+dx;
           for(kk=cvi->kmin; kk<cvi->kmax; kk++){
-            zz = zplt[kk];
-            zz2 = zplt[kk+1];
+            zz = zplt_smv[kk];
+            zz2 = zplt_smv[kk+1];
             for(ii=cvi->imin; ii<cvi->imax; ii++){
               int in_circle;
 
-              xx = xplt[ii];
-              xx2 = xplt[ii+1];
+              xx = xplt_smv[ii];
+              xx2 = xplt_smv[ii+1];
 
               INCIRCLE((xx+xx2)/2.0,yy,(zz+zz2)/2.0,in_circle);
               if(in_circle==NO)continue;
@@ -129,15 +129,15 @@ void DrawCircVentsApproxSolid(int option){
           break;
         case UP_Z:
         case DOWN_Z:
-          zz=zplt[cvi->kmin]+dx;
+          zz=zplt_smv[cvi->kmin]+dx;
           for(jj=cvi->jmin; jj<cvi->jmax; jj++){
-            yy = yplt[jj];
-            yy2 = yplt[jj+1];
+            yy = yplt_smv[jj];
+            yy2 = yplt_smv[jj+1];
             for(ii=cvi->imin; ii<cvi->imax; ii++){
               int in_circle;
 
-              xx = xplt[ii];
-              xx2 = xplt[ii+1];
+              xx = xplt_smv[ii];
+              xx2 = xplt_smv[ii+1];
 
               INCIRCLE((xx+xx2)/2.0,(yy+yy2)/2.0,zz,in_circle);
               if(in_circle==NO)continue;
@@ -181,13 +181,13 @@ void DrawCircVentsApproxOutline(int option){
   for(i=0; i<global_scase.meshescoll.nmeshes; i++){
     int j;
     meshdata *meshi;
-    float *xplt, *yplt, *zplt;
+    float *xplt_smv, *yplt_smv, *zplt_smv;
     float dx, dxyz;
 
     meshi = global_scase.meshescoll.meshinfo + i;
-    xplt = meshi->xplt_smv;
-    yplt = meshi->yplt_smv;
-    zplt = meshi->zplt_smv;
+    xplt_smv = meshi->xplt_smv;
+    yplt_smv = meshi->yplt_smv;
+    zplt_smv = meshi->zplt_smv;
 
     dxyz = SCALE2SMV(xyzmaxdiff/400.0);
 
@@ -217,17 +217,17 @@ void DrawCircVentsApproxOutline(int option){
       switch(cvi->dir){
         case UP_X:
         case DOWN_X:
-          xx=xplt[cvi->imin]+dx;
+          xx=xplt_smv[cvi->imin]+dx;
           for(kk=cvi->kmin; kk<cvi->kmax; kk++){
-            zz0 = zplt[MAX(kk-1,cvi->kmin)];
-            zz = zplt[kk];
-            zz2 = zplt[kk+1];
-            zz3 = zplt[MIN(kk+2,cvi->kmax)];
+            zz0 = zplt_smv[MAX(kk-1,cvi->kmin)];
+            zz = zplt_smv[kk];
+            zz2 = zplt_smv[kk+1];
+            zz3 = zplt_smv[MIN(kk+2,cvi->kmax)];
             for(jj=cvi->jmin; jj<cvi->jmax; jj++){
-              yy0 = yplt[MAX(jj-1,cvi->jmin)];
-              yy = yplt[jj];
-              yy2 = yplt[jj+1];
-              yy3 = yplt[MIN(jj+2,cvi->jmax)];
+              yy0 = yplt_smv[MAX(jj-1,cvi->jmin)];
+              yy = yplt_smv[jj];
+              yy2 = yplt_smv[jj+1];
+              yy3 = yplt_smv[MIN(jj+2,cvi->jmax)];
 
               INCIRCLE(xx,(yy+yy2)/2.0,(zz+zz2)/2.0,in_circle);
               if(in_circle==NO)continue;
@@ -259,17 +259,17 @@ void DrawCircVentsApproxOutline(int option){
           break;
         case UP_Y:
         case DOWN_Y:
-          yy=yplt[cvi->jmin]+dx;
+          yy=yplt_smv[cvi->jmin]+dx;
           for(kk=cvi->kmin; kk<cvi->kmax; kk++){
-            zz0 = zplt[MAX(kk-1,cvi->kmin)];
-            zz = zplt[kk];
-            zz2 = zplt[kk+1];
-            zz3 = zplt[MIN(kk+2,cvi->kmax)];
+            zz0 = zplt_smv[MAX(kk-1,cvi->kmin)];
+            zz = zplt_smv[kk];
+            zz2 = zplt_smv[kk+1];
+            zz3 = zplt_smv[MIN(kk+2,cvi->kmax)];
             for(ii=cvi->imin; ii<cvi->imax; ii++){
-              xx0 = xplt[MAX(ii-1,cvi->imin)];
-              xx = xplt[ii];
-              xx2 = xplt[ii+1];
-              xx3 = xplt[MIN(ii+2,cvi->imax)];
+              xx0 = xplt_smv[MAX(ii-1,cvi->imin)];
+              xx = xplt_smv[ii];
+              xx2 = xplt_smv[ii+1];
+              xx3 = xplt_smv[MIN(ii+2,cvi->imax)];
 
               INCIRCLE((xx+xx2)/2.0,yy,(zz+zz2)/2.0,in_circle);
               if(in_circle==NO)continue;
@@ -302,17 +302,17 @@ void DrawCircVentsApproxOutline(int option){
           break;
         case UP_Z:
         case DOWN_Z:
-          zz=zplt[cvi->kmin]+dx;
+          zz=zplt_smv[cvi->kmin]+dx;
           for(jj=cvi->jmin; jj<cvi->jmax; jj++){
-            yy0 = yplt[MAX(jj-1,cvi->jmin)];
-            yy = yplt[jj];
-            yy2 = yplt[jj+1];
-            yy3 = yplt[MIN(jj+2,cvi->jmax)];
+            yy0 = yplt_smv[MAX(jj-1,cvi->jmin)];
+            yy = yplt_smv[jj];
+            yy2 = yplt_smv[jj+1];
+            yy3 = yplt_smv[MIN(jj+2,cvi->jmax)];
             for(ii=cvi->imin; ii<cvi->imax; ii++){
-              xx0 = xplt[MAX(ii-1,cvi->imin)];
-              xx = xplt[ii];
-              xx2 = xplt[ii+1];
-              xx3 = xplt[MIN(ii+2,cvi->imax)];
+              xx0 = xplt_smv[MAX(ii-1,cvi->imin)];
+              xx = xplt_smv[ii];
+              xx2 = xplt_smv[ii+1];
+              xx3 = xplt_smv[MIN(ii+2,cvi->imax)];
 
               INCIRCLE((xx+xx2)/2.0,(yy+yy2)/2.0,zz,in_circle);
               if(in_circle==NO)continue;
@@ -707,12 +707,12 @@ void DrawObstOutlines(void){
     float xmin, xmax, ymin, ymax, zmin, zmax;
     meshdata *meshi;
     float *color, *oldcolor=NULL;
-    float *xplt, *yplt, *zplt;
+    float *xplt_fds, *yplt_fds, *zplt_fds;
 
     meshi = global_scase.meshescoll.meshinfo + n;
-    xplt = meshi->xplt_fds;
-    yplt = meshi->yplt_fds;
-    zplt = meshi->zplt_fds;
+    xplt_fds = meshi->xplt_fds;
+    yplt_fds = meshi->yplt_fds;
+    zplt_fds = meshi->zplt_fds;
     for(i = 0; i < meshi->nbptrs; i++){
       blockagedata *bc;
 
@@ -724,12 +724,12 @@ void DrawObstOutlines(void){
         glColor3fv(color);
         oldcolor = color;
       }
-      xmin = xplt[bc->ijk[0]];
-      xmax = xplt[bc->ijk[1]];
-      ymin = yplt[bc->ijk[2]];
-      ymax = yplt[bc->ijk[3]];
-      zmin = zplt[bc->ijk[4]];
-      zmax = zplt[bc->ijk[5]];
+      xmin = xplt_fds[bc->ijk[0]];
+      xmax = xplt_fds[bc->ijk[1]];
+      ymin = yplt_fds[bc->ijk[2]];
+      ymax = yplt_fds[bc->ijk[3]];
+      zmin = zplt_fds[bc->ijk[4]];
+      zmax = zplt_fds[bc->ijk[5]];
       glVertex3f(xmin, ymin, zmin);
       glVertex3f(xmin, ymin, zmax);
       glVertex3f(xmax, ymin, zmin);
@@ -1107,13 +1107,13 @@ void SetCVentDirs(void){
     meshdata *meshi;
     int iv,i,j,k;
     unsigned char *blank;
-    float *xplt, *yplt, *zplt;
+    float *xplt_cen_smv, *yplt_cen_smv, *zplt_cen_smv;
 
     meshi=global_scase.meshescoll.meshinfo+ii;
 
-    xplt = meshi->xplt_cen_smv;
-    yplt = meshi->yplt_cen_smv;
-    zplt = meshi->zplt_cen_smv;
+    xplt_cen_smv = meshi->xplt_cen_smv;
+    yplt_cen_smv = meshi->yplt_cen_smv;
+    zplt_cen_smv = meshi->zplt_cen_smv;
     for(iv = 0; iv < meshi->ncvents; iv++){
       cventdata *cvi;
       int nx=0, ny=0;
@@ -1163,12 +1163,12 @@ void SetCVentDirs(void){
           for(k = cvi->kmin; k < cvi->kmax; k++){
             float dz;
 
-            dz = zplt[k] - FDS2SMV_Z(cvi->origin[2]);
+            dz = zplt_cen_smv[k] - FDS2SMV_Z(cvi->origin[2]);
             for(j = cvi->jmin; j < cvi->jmax; j++){
               float dy;
               float drad;
 
-              dy = yplt[j] - FDS2SMV_Y(cvi->origin[1]);
+              dy = yplt_cen_smv[j] - FDS2SMV_Y(cvi->origin[1]);
               drad = sqrt(dy * dy + dz * dz);
               if(SCALE2SMV(drad) > cvi->radius){
                 blank[IJCIRC(j - cvi->jmin, k - cvi->kmin)] = 0;
@@ -1181,12 +1181,12 @@ void SetCVentDirs(void){
           for(k = cvi->kmin; k < cvi->kmax; k++){
             float dz;
 
-            dz = zplt[k] - FDS2SMV_Z(cvi->origin[2]);
+            dz = zplt_cen_smv[k] - FDS2SMV_Z(cvi->origin[2]);
             for(i = cvi->imin; i < cvi->imax; i++){
               float dx;
               float drad;
 
-              dx = xplt[i] - FDS2SMV_X(cvi->origin[0]);
+              dx = xplt_cen_smv[i] - FDS2SMV_X(cvi->origin[0]);
               drad = sqrt(dx * dx + dz * dz);
               if(SCALE2SMV(drad) > cvi->radius){
                 blank[IJCIRC(i - cvi->imin, k - cvi->kmin)] = 0;
@@ -1199,12 +1199,12 @@ void SetCVentDirs(void){
           for(j = cvi->jmin; j < cvi->jmax; j++){
             float dy;
 
-            dy = yplt[j] - FDS2SMV_Y(cvi->origin[1]);
+            dy = yplt_cen_smv[j] - FDS2SMV_Y(cvi->origin[1]);
             for(i = cvi->imin; i < cvi->imax; i++){
               float dx;
               float drad;
 
-              dx = xplt[i] - FDS2SMV_X(cvi->origin[0]);
+              dx = xplt_cen_smv[i] - FDS2SMV_X(cvi->origin[0]);
               drad = sqrt(dx * dx + dy * dy);
               if(SCALE2SMV(drad) > cvi->radius){
                 blank[IJCIRC(i - cvi->imin, j - cvi->jmin)] = 0;
@@ -1268,9 +1268,7 @@ void SetVentDirs(void){
   n_openvents = 0;
   for(ii=0; ii<global_scase.meshescoll.nmeshes; ii++){
     meshdata *meshi;
-    float *xplttemp;
-    float *yplttemp;
-    float *zplttemp;
+    float *xplt_smv, *yplt_smv, *zplt_smv;
     int ibar, jbar, kbar;
     char *c_iblank;
     int orien;
@@ -1287,9 +1285,9 @@ void SetVentDirs(void){
     jbar = meshi->jbar;
     kbar = meshi->kbar;
     c_iblank = meshi->c_iblank_cell;
-    xplttemp=meshi->xplt_smv;
-    yplttemp=meshi->yplt_smv;
-    zplttemp=meshi->zplt_smv;
+    xplt_smv=meshi->xplt_smv;
+    yplt_smv=meshi->yplt_smv;
+    zplt_smv=meshi->zplt_smv;
 
     for(iv=0; iv<meshi->nvents+12; iv++){
       ventdata *vi;
@@ -1307,7 +1305,7 @@ void SetVentDirs(void){
       switch(dir){
       case XDIR:
         vi->dir2=XDIR;
-        offset=ventoffset_factor*(xplttemp[1]-xplttemp[0]);
+        offset=ventoffset_factor*(xplt_smv[1]-xplt_smv[0]);
         if(vi->imin==0){
           orien=1;
         }
@@ -1360,7 +1358,7 @@ void SetVentDirs(void){
         break;
       case YDIR:
         vi->dir2=YDIR;
-        offset=ventoffset_factor*(yplttemp[1]-yplttemp[0]);
+        offset=ventoffset_factor*(yplt_smv[1]-yplt_smv[0]);
         if(vi->jmin==0){
           orien=1;
         }
@@ -1413,7 +1411,7 @@ void SetVentDirs(void){
         break;
       case ZDIR:
         vi->dir2=ZDIR;
-        offset=ventoffset_factor*(zplttemp[1]-zplttemp[0]);
+        offset=ventoffset_factor*(zplt_smv[1]-zplt_smv[0]);
         if(vi->kmin==0){
           orien=1;
         }
@@ -1477,20 +1475,20 @@ void SetVentDirs(void){
 
 int InBlockage(const meshdata *meshi,float x, float y, float z){
   int i;
-  float *xplt, *yplt, *zplt;
+  float *xplt_smv, *yplt_smv, *zplt_smv;
 
-  xplt=meshi->xplt_smv;
-  yplt=meshi->yplt_smv;
-  zplt=meshi->zplt_smv;
+  xplt_smv=meshi->xplt_smv;
+  yplt_smv=meshi->yplt_smv;
+  zplt_smv=meshi->zplt_smv;
 
   for(i=0; i<meshi->nbptrs; i++){
     blockagedata *bc;
     float xmin, xmax, ymin, ymax, zmin, zmax;
 
     bc=meshi->blockageinfoptrs[i];
-    xmin = xplt[bc->ijk[IMIN]]; xmax = xplt[bc->ijk[IMAX]];
-    ymin = yplt[bc->ijk[JMIN]]; ymax = yplt[bc->ijk[JMAX]];
-    zmin = zplt[bc->ijk[KMIN]]; zmax = zplt[bc->ijk[KMAX]];
+    xmin = xplt_smv[bc->ijk[IMIN]]; xmax = xplt_smv[bc->ijk[IMAX]];
+    ymin = yplt_smv[bc->ijk[JMIN]]; ymax = yplt_smv[bc->ijk[JMAX]];
+    zmin = zplt_smv[bc->ijk[KMIN]]; zmax = zplt_smv[bc->ijk[KMAX]];
     if(xmin<x && x<xmax && ymin<y && y<ymax && zmin<z && z<zmax){
       return 1;
     }
@@ -1889,7 +1887,7 @@ void ObstOrVent2Faces(const meshdata *meshi, blockagedata *bc,
   float zminmax[2]={0.0,1.0}, zminmax2[2]={0.0,1.0};
   float xx[8], yy[8], zz[8];
   float xx2[8], yy2[8], zz2[8];
-  float *xplt, *yplt, *zplt;
+  float *xplt_smv, *yplt_smv, *zplt_smv;
   int ii[8] = {0,1,1,0,0,1,1,0};
   int jj[8] = {0,0,1,1,0,0,1,1};
   int kk[8] = {0,0,0,0,1,1,1,1};
@@ -1912,18 +1910,18 @@ void ObstOrVent2Faces(const meshdata *meshi, blockagedata *bc,
 
   assert((bc==NULL&&vi!=NULL)||(bc!=NULL&&vi==NULL));
 
-  xplt = meshi->xplt_smv;
-  yplt = meshi->yplt_smv;
-  zplt = meshi->zplt_smv;
+  xplt_smv = meshi->xplt_smv;
+  yplt_smv = meshi->yplt_smv;
+  zplt_smv = meshi->zplt_smv;
   assert((bc!=NULL&&vi==NULL)||(bc==NULL&&vi!=NULL));
   if(bc!=NULL){
     jend=6;
-    xminmax[0] = xplt[bc->ijk[IMIN]];
-    xminmax[1] = xplt[bc->ijk[IMAX]];
-    yminmax[0] = yplt[bc->ijk[JMIN]];
-    yminmax[1] = yplt[bc->ijk[JMAX]];
-    zminmax[0] = zplt[bc->ijk[KMIN]];
-    zminmax[1] = zplt[bc->ijk[KMAX]];
+    xminmax[0] = xplt_smv[bc->ijk[IMIN]];
+    xminmax[1] = xplt_smv[bc->ijk[IMAX]];
+    yminmax[0] = yplt_smv[bc->ijk[JMIN]];
+    yminmax[1] = yplt_smv[bc->ijk[JMAX]];
+    zminmax[0] = zplt_smv[bc->ijk[KMIN]];
+    zminmax[1] = zplt_smv[bc->ijk[KMAX]];
 
     xminmax2[0] = bc->xmin;
     xminmax2[1] = bc->xmax;
@@ -1934,12 +1932,12 @@ void ObstOrVent2Faces(const meshdata *meshi, blockagedata *bc,
   }
   if(vi!=NULL){
     jend=1;
-    xminmax[0] = xplt[vi->imin];
-    xminmax[1] = xplt[vi->imax];
-    yminmax[0] = yplt[vi->jmin];
-    yminmax[1] = yplt[vi->jmax];
-    zminmax[0] = zplt[vi->kmin];
-    zminmax[1] = zplt[vi->kmax];
+    xminmax[0] = xplt_smv[vi->imin];
+    xminmax[1] = xplt_smv[vi->imax];
+    yminmax[0] = yplt_smv[vi->jmin];
+    yminmax[1] = yplt_smv[vi->jmax];
+    zminmax[0] = zplt_smv[vi->kmin];
+    zminmax[1] = zplt_smv[vi->kmax];
 
     xminmax2[0] = vi->xmin;
     xminmax2[1] = vi->xmax;

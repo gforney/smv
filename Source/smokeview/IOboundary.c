@@ -38,7 +38,7 @@ void OutputBoundaryData(patchdata *patchi){
 #endif
   int iframe;
   float *vals;
-  float *xplt, *yplt, *zplt;
+  float *xplt_fds, *yplt_fds, *zplt_fds;
   FILE *csvstream=NULL;
   char *patchfile, csvfile[1024];
   meshdata *meshi;
@@ -55,9 +55,9 @@ void OutputBoundaryData(patchdata *patchi){
   fprintf(csvstream,"time interval:,%f,%f\n",patchout_tmin,patchout_tmax);
   fprintf(csvstream,"region:,%f,%f,%f,%f,%f,%f\n\n",patchout_xmin,patchout_xmax,patchout_ymin,patchout_ymax,patchout_zmin,patchout_zmax);
 
-  xplt = meshi->xplt_fds;
-  yplt = meshi->yplt_fds;
-  zplt = meshi->zplt_fds;
+  xplt_fds = meshi->xplt_fds;
+  yplt_fds = meshi->yplt_fds;
+  zplt_fds = meshi->zplt_fds;
 
   for(iframe=0; iframe<patchi->ntimes; iframe++){
     int ipatch;
@@ -91,14 +91,14 @@ void OutputBoundaryData(patchdata *patchi){
         continue;
       }
       if(output_patch == 0){
-        if(patchout_xmin<patchout_xmax &&              (patchout_xmax<xplt[i1]||patchout_xmin>xplt[i2]))skip = 1;
-        if(patchout_ymin<patchout_ymax && skip == 0 && (patchout_ymax<yplt[j1]||patchout_ymin>yplt[j2]))skip = 1;
-        if(patchout_zmin<patchout_zmax && skip == 0 && (patchout_zmax<zplt[k1]||patchout_zmin>zplt[k2]))skip = 1;
+        if(patchout_xmin<patchout_xmax &&              (patchout_xmax<xplt_fds[i1]||patchout_xmin>xplt_fds[i2]))skip = 1;
+        if(patchout_ymin<patchout_ymax && skip == 0 && (patchout_ymax<yplt_fds[j1]||patchout_ymin>yplt_fds[j2]))skip = 1;
+        if(patchout_zmin<patchout_zmax && skip == 0 && (patchout_zmax<zplt_fds[k1]||patchout_zmin>zplt_fds[k2]))skip = 1;
       }
 #else
-      if(patchout_xmin<patchout_xmax              && (patchout_xmax<xplt[i1] || patchout_xmin>xplt[i2]))skip = 1;
-      if(patchout_ymin<patchout_ymax && skip == 0 && (patchout_ymax<yplt[j1] || patchout_ymin>yplt[j2]))skip = 1;
-      if(patchout_zmin<patchout_zmax && skip == 0 && (patchout_zmax<zplt[k1] || patchout_zmin>zplt[k2]))skip = 1;
+      if(patchout_xmin<patchout_xmax              && (patchout_xmax<xplt_fds[i1] || patchout_xmin>xplt_fds[i2]))skip = 1;
+      if(patchout_ymin<patchout_ymax && skip == 0 && (patchout_ymax<yplt_fds[j1] || patchout_ymin>yplt_fds[j2]))skip = 1;
+      if(patchout_zmin<patchout_zmax && skip == 0 && (patchout_zmax<zplt_fds[k1] || patchout_zmin>zplt_fds[k2]))skip = 1;
 #endif
       if(skip == 1){
         vals += framesize;
@@ -113,36 +113,36 @@ void OutputBoundaryData(patchdata *patchi){
 #ifdef pp_BNDF_DEBUG
       if(output_patch == 0){
         for(i=i1; i<i2; i++){
-          if(xplt[i]<=patchout_xmin&&patchout_xmin<=xplt[i+1])imin=i;
-          if(xplt[i]<=patchout_xmax&&patchout_xmax<=xplt[i+1])imax=i;
+          if(xplt_fds[i]<=patchout_xmin&&patchout_xmin<=xplt_fds[i+1])imin=i;
+          if(xplt_fds[i]<=patchout_xmax&&patchout_xmax<=xplt_fds[i+1])imax=i;
         }
         for(j=j1; j<j2; j++){
-          if(yplt[j]<=patchout_ymin&&patchout_ymin<=yplt[j+1])jmin=j;
-          if(yplt[j]<=patchout_ymax&&patchout_ymax<=yplt[j+1])jmax=j;
+          if(yplt_fds[j]<=patchout_ymin&&patchout_ymin<=yplt_fds[j+1])jmin=j;
+          if(yplt_fds[j]<=patchout_ymax&&patchout_ymax<=yplt_fds[j+1])jmax=j;
         }
         for(k=k1; k<k2; k++){
-          if(zplt[k]<=patchout_zmin&&patchout_zmin<=zplt[k+1])kmin=k;
-          if(zplt[k]<=patchout_zmax&&patchout_zmax<=zplt[k+1])kmax=k;
+          if(zplt_fds[k]<=patchout_zmin&&patchout_zmin<=zplt_fds[k+1])kmin=k;
+          if(zplt_fds[k]<=patchout_zmax&&patchout_zmax<=zplt_fds[k+1])kmax=k;
         }
       }
 #else
       for(i=i1; i<i2; i++){
-        if(xplt[i]<=patchout_xmin&&patchout_xmin<=xplt[i+1])imin=i;
-        if(xplt[i]<=patchout_xmax&&patchout_xmax<=xplt[i+1])imax=i;
+        if(xplt_fds[i]<=patchout_xmin&&patchout_xmin<=xplt_fds[i+1])imin=i;
+        if(xplt_fds[i]<=patchout_xmax&&patchout_xmax<=xplt_fds[i+1])imax=i;
       }
       for(j=j1; j<j2; j++){
-        if(yplt[j]<=patchout_ymin&&patchout_ymin<=yplt[j+1])jmin=j;
-        if(yplt[j]<=patchout_ymax&&patchout_ymax<=yplt[j+1])jmax=j;
+        if(yplt_fds[j]<=patchout_ymin&&patchout_ymin<=yplt_fds[j+1])jmin=j;
+        if(yplt_fds[j]<=patchout_ymax&&patchout_ymax<=yplt_fds[j+1])jmax=j;
       }
       for(k=k1; k<k2; k++){
-        if(zplt[k]<=patchout_zmin&&patchout_zmin<=zplt[k+1])kmin=k;
-        if(zplt[k]<=patchout_zmax&&patchout_zmax<=zplt[k+1])kmax=k;
+        if(zplt_fds[k]<=patchout_zmin&&patchout_zmin<=zplt_fds[k+1])kmin=k;
+        if(zplt_fds[k]<=patchout_zmax&&patchout_zmax<=zplt_fds[k+1])kmax=k;
       }
 #endif
 
       fprintf(csvstream,"\ntime:,%f,patch %i, of, %i\n",pt,ipatch+1,patchi->npatches);
       fprintf(csvstream,"region:,%i,%i,%i,%i,%i,%i\n",i1,i2,j1,j2,k1,k2);
-      fprintf(csvstream,",%f,%f,%f,%f,%f,%f\n\n",xplt[i1],xplt[i2],yplt[j1],yplt[j2],zplt[k1],zplt[k2]);
+      fprintf(csvstream,",%f,%f,%f,%f,%f,%f\n\n",xplt_fds[i1],xplt_fds[i2],yplt_fds[j1],yplt_fds[j2],zplt_fds[k1],zplt_fds[k2]);
       if(i1==i2){
         for(k=k1; k<=k2; k++){
           int out;
@@ -150,12 +150,12 @@ void OutputBoundaryData(patchdata *patchi){
           if(k==k1){
             fprintf(csvstream,"Z\\Y,");
             for(j=jmin; j<=jmax; j++){
-              fprintf(csvstream,"%f,",yplt[j]);
+              fprintf(csvstream,"%f,",yplt_fds[j]);
             }
             fprintf(csvstream,"\n");
           }
           if(k>=kmin&&k<=kmax){
-            fprintf(csvstream,"%f,",zplt[k]);
+            fprintf(csvstream,"%f,",zplt_fds[k]);
           }
 
           out=0;
@@ -176,12 +176,12 @@ void OutputBoundaryData(patchdata *patchi){
           if(k==k1){
             fprintf(csvstream,"Z\\X,");
             for(i=imin; i<=imax; i++){
-              fprintf(csvstream,"%f,",xplt[i]);
+              fprintf(csvstream,"%f,",xplt_fds[i]);
             }
             fprintf(csvstream,"\n");
           }
           if(k>=kmin&&k<=kmax){
-            fprintf(csvstream,"%f,",zplt[k]);
+            fprintf(csvstream,"%f,",zplt_fds[k]);
           }
 
           out=0;
@@ -202,12 +202,12 @@ void OutputBoundaryData(patchdata *patchi){
           if(j==j1){
             fprintf(csvstream,"Y\\X,");
             for(i=imin; i<=imax; i++){
-              fprintf(csvstream,"%f,",xplt[i]);
+              fprintf(csvstream,"%f,",xplt_fds[i]);
             }
             fprintf(csvstream,"\n");
           }
           if(j>=jmin&&j<=jmax){
-            fprintf(csvstream,"%f,",yplt[j]);
+            fprintf(csvstream,"%f,",yplt_fds[j]);
           }
 
           out=0;
@@ -1111,7 +1111,7 @@ FILE_SIZE ReadBoundaryBndf(int ifile, int load_flag, int *errorcode){
   int headersize, framesize;
   int statfile;
   STRUCTSTAT statbuffer;
-  float *xplttemp,*yplttemp,*zplttemp;
+  float *xplt_smv,*yplt_smv,*zplt_smv;
   int blocknumber;
   patchdata *patchi;
   meshdata *meshi;
@@ -1219,9 +1219,9 @@ FILE_SIZE ReadBoundaryBndf(int ifile, int load_flag, int *errorcode){
   }
   patchi->extreme_max=0;
   patchi->extreme_min=0;
-  xplttemp=meshi->xplt_smv;
-  yplttemp=meshi->yplt_smv;
-  zplttemp=meshi->zplt_smv;
+  xplt_smv=meshi->xplt_smv;
+  yplt_smv=meshi->yplt_smv;
+  zplt_smv=meshi->zplt_smv;
   do_threshold=0;
 
   if(activate_threshold==1){
@@ -1448,15 +1448,15 @@ FILE_SIZE ReadBoundaryBndf(int ifile, int load_flag, int *errorcode){
             else{
               dy_factor=0.0;
             }
-            *xyzpatchcopy_offset++    = xplttemp[i1]+dxx2;
-            *xyzpatchcopy_offset++    = yplttemp[j];
-            *xyzpatchcopy_offset++    = zplttemp[k];
-            *xyzpatchcopy_no_offset++ = xplttemp[i1];
-            *xyzpatchcopy_no_offset++ = yplttemp[j];
-            *xyzpatchcopy_no_offset++ = zplttemp[k];
-            *xyzpatch_ignitecopy++    = xplttemp[i1]+dxx;
-            *xyzpatch_ignitecopy++    = yplttemp[j]+dy_factor;
-            *xyzpatch_ignitecopy++    = zplttemp[k]+dz_factor;
+            *xyzpatchcopy_offset++    = xplt_smv[i1]+dxx2;
+            *xyzpatchcopy_offset++    = yplt_smv[j];
+            *xyzpatchcopy_offset++    = zplt_smv[k];
+            *xyzpatchcopy_no_offset++ = xplt_smv[i1];
+            *xyzpatchcopy_no_offset++ = yplt_smv[j];
+            *xyzpatchcopy_no_offset++ = zplt_smv[k];
+            *xyzpatch_ignitecopy++    = xplt_smv[i1]+dxx;
+            *xyzpatch_ignitecopy++    = yplt_smv[j]+dy_factor;
+            *xyzpatch_ignitecopy++    = zplt_smv[k]+dz_factor;
           }
         }
       }
@@ -1485,15 +1485,15 @@ FILE_SIZE ReadBoundaryBndf(int ifile, int load_flag, int *errorcode){
             else{
               dy_factor=0.0;
             }
-            *xyzpatchcopy_offset++    = xplttemp[i1]+dxx2;
-            *xyzpatchcopy_offset++    = yplttemp[j];
-            *xyzpatchcopy_offset++    = zplttemp[k];
-            *xyzpatchcopy_no_offset++ = xplttemp[i1];
-            *xyzpatchcopy_no_offset++ = yplttemp[j];
-            *xyzpatchcopy_no_offset++ = zplttemp[k];
-            *xyzpatch_ignitecopy++    = xplttemp[i1]+dxx;
-            *xyzpatch_ignitecopy++    = yplttemp[j]+dy_factor;
-            *xyzpatch_ignitecopy++    = zplttemp[k]+dz_factor;
+            *xyzpatchcopy_offset++    = xplt_smv[i1]+dxx2;
+            *xyzpatchcopy_offset++    = yplt_smv[j];
+            *xyzpatchcopy_offset++    = zplt_smv[k];
+            *xyzpatchcopy_no_offset++ = xplt_smv[i1];
+            *xyzpatchcopy_no_offset++ = yplt_smv[j];
+            *xyzpatchcopy_no_offset++ = zplt_smv[k];
+            *xyzpatch_ignitecopy++    = xplt_smv[i1]+dxx;
+            *xyzpatch_ignitecopy++    = yplt_smv[j]+dy_factor;
+            *xyzpatch_ignitecopy++    = zplt_smv[k]+dz_factor;
           }
         }
       }
@@ -1540,15 +1540,15 @@ FILE_SIZE ReadBoundaryBndf(int ifile, int load_flag, int *errorcode){
             else{
               dx_factor = 0.0;
             }
-            *xyzpatchcopy_offset++    = xplttemp[i];
-            *xyzpatchcopy_offset++    = yplttemp[j1] + dyy2;
-            *xyzpatchcopy_offset++    = zplttemp[k];
-            *xyzpatchcopy_no_offset++ = xplttemp[i];
-            *xyzpatchcopy_no_offset++ = yplttemp[j1];
-            *xyzpatchcopy_no_offset++ = zplttemp[k];
-            *xyzpatch_ignitecopy++    = xplttemp[i] + dx_factor;
-            *xyzpatch_ignitecopy++    = yplttemp[j1] + dyy;
-            *xyzpatch_ignitecopy++    = zplttemp[k] + dz_factor;
+            *xyzpatchcopy_offset++    = xplt_smv[i];
+            *xyzpatchcopy_offset++    = yplt_smv[j1] + dyy2;
+            *xyzpatchcopy_offset++    = zplt_smv[k];
+            *xyzpatchcopy_no_offset++ = xplt_smv[i];
+            *xyzpatchcopy_no_offset++ = yplt_smv[j1];
+            *xyzpatchcopy_no_offset++ = zplt_smv[k];
+            *xyzpatch_ignitecopy++    = xplt_smv[i] + dx_factor;
+            *xyzpatch_ignitecopy++    = yplt_smv[j1] + dyy;
+            *xyzpatch_ignitecopy++    = zplt_smv[k] + dz_factor;
           }
         }
       }
@@ -1577,15 +1577,15 @@ FILE_SIZE ReadBoundaryBndf(int ifile, int load_flag, int *errorcode){
             else{
               dx_factor=0.0;
             }
-            *xyzpatchcopy_offset++    = xplttemp[i];
-            *xyzpatchcopy_offset++    = yplttemp[j1]+dyy2;
-            *xyzpatchcopy_offset++    = zplttemp[k];
-            *xyzpatchcopy_no_offset++ = xplttemp[i];
-            *xyzpatchcopy_no_offset++ = yplttemp[j1];
-            *xyzpatchcopy_no_offset++ = zplttemp[k];
-            *xyzpatch_ignitecopy++    = xplttemp[i]+dx_factor;
-            *xyzpatch_ignitecopy++    = yplttemp[j1]+dyy;
-            *xyzpatch_ignitecopy++    = zplttemp[k]+dz_factor;
+            *xyzpatchcopy_offset++    = xplt_smv[i];
+            *xyzpatchcopy_offset++    = yplt_smv[j1]+dyy2;
+            *xyzpatchcopy_offset++    = zplt_smv[k];
+            *xyzpatchcopy_no_offset++ = xplt_smv[i];
+            *xyzpatchcopy_no_offset++ = yplt_smv[j1];
+            *xyzpatchcopy_no_offset++ = zplt_smv[k];
+            *xyzpatch_ignitecopy++    = xplt_smv[i]+dx_factor;
+            *xyzpatch_ignitecopy++    = yplt_smv[j1]+dyy;
+            *xyzpatch_ignitecopy++    = zplt_smv[k]+dz_factor;
           }
         }
       }
@@ -1632,15 +1632,15 @@ FILE_SIZE ReadBoundaryBndf(int ifile, int load_flag, int *errorcode){
             else{
               dx_factor=0.0;
             }
-            *xyzpatchcopy_offset++    = xplttemp[i];
-            *xyzpatchcopy_offset++    = yplttemp[j];
-            *xyzpatchcopy_offset++    = zplttemp[k1]+dzz2;
-            *xyzpatchcopy_no_offset++ = xplttemp[i];
-            *xyzpatchcopy_no_offset++ = yplttemp[j];
-            *xyzpatchcopy_no_offset++ = zplttemp[k1];
-            *xyzpatch_ignitecopy++    = xplttemp[i]+dx_factor;
-            *xyzpatch_ignitecopy++    = yplttemp[j]+dy_factor;
-            *xyzpatch_ignitecopy++    = zplttemp[k1]+dzz;
+            *xyzpatchcopy_offset++    = xplt_smv[i];
+            *xyzpatchcopy_offset++    = yplt_smv[j];
+            *xyzpatchcopy_offset++    = zplt_smv[k1]+dzz2;
+            *xyzpatchcopy_no_offset++ = xplt_smv[i];
+            *xyzpatchcopy_no_offset++ = yplt_smv[j];
+            *xyzpatchcopy_no_offset++ = zplt_smv[k1];
+            *xyzpatch_ignitecopy++    = xplt_smv[i]+dx_factor;
+            *xyzpatch_ignitecopy++    = yplt_smv[j]+dy_factor;
+            *xyzpatch_ignitecopy++    = zplt_smv[k1]+dzz;
           }
         }
       }
@@ -1671,15 +1671,15 @@ FILE_SIZE ReadBoundaryBndf(int ifile, int load_flag, int *errorcode){
             else{
               dx_factor=0.0;
             }
-            *xyzpatchcopy_offset++    = xplttemp[i];
-            *xyzpatchcopy_offset++    = yplttemp[j];
-            *xyzpatchcopy_offset++    = zplttemp[k1]+dzz2;
-            *xyzpatchcopy_no_offset++ = xplttemp[i];
-            *xyzpatchcopy_no_offset++ = yplttemp[j];
-            *xyzpatchcopy_no_offset++ = zplttemp[k1];
-            *xyzpatch_ignitecopy++    = xplttemp[i]+dx_factor;
-            *xyzpatch_ignitecopy++    = yplttemp[j]+dy_factor;
-            *xyzpatch_ignitecopy++    = zplttemp[k1]+dzz;
+            *xyzpatchcopy_offset++    = xplt_smv[i];
+            *xyzpatchcopy_offset++    = yplt_smv[j];
+            *xyzpatchcopy_offset++    = zplt_smv[k1]+dzz2;
+            *xyzpatchcopy_no_offset++ = xplt_smv[i];
+            *xyzpatchcopy_no_offset++ = yplt_smv[j];
+            *xyzpatchcopy_no_offset++ = zplt_smv[k1];
+            *xyzpatch_ignitecopy++    = xplt_smv[i]+dx_factor;
+            *xyzpatch_ignitecopy++    = yplt_smv[j]+dy_factor;
+            *xyzpatch_ignitecopy++    = zplt_smv[k1]+dzz;
           }
         }
       }
@@ -2367,15 +2367,15 @@ void DrawBoundaryTexture(const meshdata *meshi){
 
   if(global_scase.nterraininfo > 0||is_time_arrival == 1){
     float delta_z=0.0;
-    float *xplt, *yplt, *zplt;
+    float *xplt_smv, *yplt_smv, *zplt_smv;
     float dx, dy, dz;
 
-    xplt = global_scase.meshescoll.meshinfo->zplt_smv;
-    yplt = global_scase.meshescoll.meshinfo->yplt_smv;
-    zplt = global_scase.meshescoll.meshinfo->zplt_smv;
-    dx = xplt[1] - xplt[0];
-    dy = yplt[1] - yplt[0];
-    dz = zplt[1] - zplt[0];
+    xplt_smv = global_scase.meshescoll.meshinfo->zplt_smv;
+    yplt_smv = global_scase.meshescoll.meshinfo->yplt_smv;
+    zplt_smv = global_scase.meshescoll.meshinfo->zplt_smv;
+    dx = xplt_smv[1] - xplt_smv[0];
+    dy = yplt_smv[1] - yplt_smv[0];
+    dz = zplt_smv[1] - zplt_smv[0];
     delta_z = MIN(dx, dy);
     delta_z = MIN(delta_z, dz);
     if(global_scase.nterraininfo > 0){
@@ -3737,7 +3737,7 @@ void GetBoundaryParams(void){
     float *xyz_min, *xyz_max;
     int *ijk;
     meshdata *meshi;
-    float *xplt, *yplt, *zplt;
+    float *xplt_smv, *yplt_smv, *zplt_smv;
     float dxyz[3];
 
     patchi = global_scase.patchinfo + i;
@@ -3757,17 +3757,17 @@ void GetBoundaryParams(void){
     ijk = patchi->ijk;
     meshi = global_scase.meshescoll.meshinfo + patchi->blocknumber;
 
-    xplt = meshi->xplt_smv;
-    yplt = meshi->yplt_smv;
-    zplt = meshi->zplt_smv;
+    xplt_smv = meshi->xplt_smv;
+    yplt_smv = meshi->yplt_smv;
+    zplt_smv = meshi->zplt_smv;
 
-    xyz_min[0] = xplt[ijk[0]];
-    xyz_min[1] = yplt[ijk[2]];
-    xyz_min[2] = zplt[ijk[4]];
+    xyz_min[0] = xplt_smv[ijk[0]];
+    xyz_min[1] = yplt_smv[ijk[2]];
+    xyz_min[2] = zplt_smv[ijk[4]];
 
-    xyz_max[0] = xplt[ijk[1]];
-    xyz_max[1] = yplt[ijk[3]];
-    xyz_max[2] = zplt[ijk[5]];
+    xyz_max[0] = xplt_smv[ijk[1]];
+    xyz_max[1] = yplt_smv[ijk[3]];
+    xyz_max[2] = zplt_smv[ijk[5]];
 
     dxyz[0] = ABS(xyz_max[0] - xyz_min[0]);
     dxyz[1] = ABS(xyz_max[1] - xyz_min[1]);

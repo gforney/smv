@@ -738,7 +738,7 @@ float GetZCellVal(meshdata *meshi,float xval, float yval, float *zval_offset, in
   if(zval_offset!=NULL)*zval_offset=0.0;
   for(imesh=meshstart; imesh<global_scase.meshescoll.nmeshes; imesh++){
     meshdata *meshj;
-    float *xplt, *yplt;
+    float *xplt_fds, *yplt_fds;
     int ibar, jbar;
 
     if(imesh==-1){
@@ -748,11 +748,11 @@ float GetZCellVal(meshdata *meshi,float xval, float yval, float *zval_offset, in
       meshj=global_scase.meshescoll.meshinfo+imesh;
       if(meshi==meshj)continue;
     }
-    xplt = meshj->xplt_fds;
-    yplt = meshj->yplt_fds;
+    xplt_fds = meshj->xplt_fds;
+    yplt_fds = meshj->yplt_fds;
     ibar = meshj->ibar;
     jbar = meshj->jbar;
-    if(xplt[0]<=xval&&xval<=xplt[ibar]&&yplt[0]<=yval&&yval<=yplt[jbar]){
+    if(xplt_fds[0]<=xval&&xval<=xplt_fds[ibar]&&yplt_fds[0]<=yval&&yval<=yplt_fds[jbar]){
       float dx, dy;
       terraindata *terri;
       int ival, jval;
@@ -761,11 +761,11 @@ float GetZCellVal(meshdata *meshi,float xval, float yval, float *zval_offset, in
       float *zcell;
       float zval_return;
 
-      dx = xplt[1]-xplt[0];
-      dy = yplt[1]-yplt[0];
-      ival = (xval-xplt[0])/dx;
+      dx = xplt_fds[1]-xplt_fds[0];
+      dy = yplt_fds[1]-yplt_fds[0];
+      ival = (xval-xplt_fds[0])/dx;
       if(ival>=ibar)ival=ibar-1;
-      jval = (yval-yplt[0])/dy;
+      jval = (yval-yplt_fds[0])/dy;
       if(jval>=jbar)jval=jbar-1;
       terri=meshj->terrain;
       nxcell = terri->ibar;
@@ -793,7 +793,7 @@ float GetZCellValOffset(meshdata *meshi,float xval, float yval, int *loc){
 
   for(imesh=meshstart; imesh<global_scase.meshescoll.nmeshes; imesh++){
     meshdata *meshj;
-    float *xplt, *yplt;
+    float *xplt_fds, *yplt_fds;
     int ibar, jbar;
 
     if(imesh==-1){
@@ -808,11 +808,11 @@ float GetZCellValOffset(meshdata *meshi,float xval, float yval, int *loc){
     xval = SMV2FDS_X(xval);
     yval = SMV2FDS_Y(yval);
 
-    xplt = meshj->xplt_fds;
-    yplt = meshj->yplt_fds;
+    xplt_fds = meshj->xplt_fds;
+    yplt_fds = meshj->yplt_fds;
     ibar = meshj->ibar;
     jbar = meshj->jbar;
-    if(xplt[0]<=xval&&xval<=xplt[ibar]&&yplt[0]<=yval&&yval<=yplt[jbar]){
+    if(xplt_fds[0]<=xval&&xval<=xplt_fds[ibar]&&yplt_fds[0]<=yval&&yval<=yplt_fds[jbar]){
       terraindata *terri;
       int ival, jval;
       float dx, dy;
@@ -820,11 +820,11 @@ float GetZCellValOffset(meshdata *meshi,float xval, float yval, int *loc){
       float *zcell,zval;
       float zvaloffset;
 
-      dx = xplt[1]-xplt[0];
-      dy = yplt[1]-yplt[0];
-      ival = (xval-xplt[0])/dx;
+      dx = xplt_fds[1]-xplt_fds[0];
+      dy = yplt_fds[1]-yplt_fds[0];
+      ival = (xval-xplt_fds[0])/dx;
       if(ival>=ibar)ival=ibar-1;
-      jval = (yval-yplt[0])/dy;
+      jval = (yval-yplt_fds[0])/dy;
       if(jval>=jbar)jval=jbar-1;
       terri=meshj->terrain;
       nxcell = terri->ibar;

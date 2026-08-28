@@ -280,7 +280,7 @@ void SetClipControls(int val){
   }
   if(val >= 1 && val <= global_scase.meshescoll.nmeshes){
     meshdata *meshi;
-    float *xplt, *yplt, *zplt;
+    float *xplt_fds, *yplt_fds, *zplt_fds;
 
     float dxclip, dyclip, dzclip;
 
@@ -290,16 +290,16 @@ void SetClipControls(int val){
 
     meshi = global_scase.meshescoll.meshinfo + val - 1;
 
-    xplt = meshi->xplt_fds;
-    yplt = meshi->yplt_fds;
-    zplt = meshi->zplt_fds;
+    xplt_fds = meshi->xplt_fds;
+    yplt_fds = meshi->yplt_fds;
+    zplt_fds = meshi->zplt_fds;
 
-    clipinfo.xmin = xplt[0] - dxclip;
-    clipinfo.ymin = yplt[0] - dyclip;
-    clipinfo.zmin = zplt[0] - dzclip;
-    clipinfo.xmax = xplt[meshi->ibar] + dxclip;
-    clipinfo.ymax = yplt[meshi->jbar] + dyclip;
-    clipinfo.zmax = zplt[meshi->kbar] + dzclip;
+    clipinfo.xmin = xplt_fds[0] - dxclip;
+    clipinfo.ymin = yplt_fds[0] - dyclip;
+    clipinfo.zmin = zplt_fds[0] - dzclip;
+    clipinfo.xmax = xplt_fds[meshi->ibar] + dxclip;
+    clipinfo.ymax = yplt_fds[meshi->jbar] + dyclip;
+    clipinfo.zmax = zplt_fds[meshi->kbar] + dzclip;
   }
   SPINNER_clip_xmin->set_float_val(clipinfo.xmin);
   SPINNER_clip_ymin->set_float_val(clipinfo.ymin);
