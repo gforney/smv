@@ -1268,7 +1268,6 @@ void SetVentDirs(void){
   n_openvents = 0;
   for(ii=0; ii<global_scase.meshescoll.nmeshes; ii++){
     meshdata *meshi;
-    float *xplt_smv, *yplt_smv, *zplt_smv;
     int ibar, jbar, kbar;
     char *c_iblank;
     int orien;
@@ -1285,9 +1284,6 @@ void SetVentDirs(void){
     jbar = meshi->jbar;
     kbar = meshi->kbar;
     c_iblank = meshi->c_iblank_cell;
-    xplt_smv=meshi->xplt_smv;
-    yplt_smv=meshi->yplt_smv;
-    zplt_smv=meshi->zplt_smv;
 
     for(iv=0; iv<meshi->nvents+12; iv++){
       ventdata *vi;
