@@ -1946,7 +1946,7 @@ extern "C" void GLUIToggleRollout(procdata *procinfo, int nprocinfo, int motion_
   }
 }
 
-  /* ------------------ GLUISceneMotionCB ------------------------ */
+/* ------------------ GLUISceneMotionCB ------------------------ */
 
 extern "C" void GLUISceneMotionCB(int var){
   float dx, dy;
@@ -2002,8 +2002,8 @@ extern "C" void GLUISceneMotionCB(int var){
       nearclip=0.00001;
       SPINNER_nearclip->set_float_val(nearclip);
     }
-    if(farclip<0.0){
-      farclip=0.00001;
+    if(farclip<nearclip){
+      farclip=4.0;
       SPINNER_farclip->set_float_val(farclip);
     }
     return;

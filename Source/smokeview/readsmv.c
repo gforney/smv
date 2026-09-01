@@ -755,21 +755,6 @@ blocktype: 0 regular block non-textured
 r g b           colors used if colorindex==-3
 */
 
-/* ------------------ UpdateVentOffset ------------------------ */
-
-void UpdateVentOffset(void){
-  int i;
-
-  for(i = 0; i < global_scase.meshescoll.nmeshes; i++){
-    meshdata *meshi;
-
-    meshi = global_scase.meshescoll.meshinfo + i;
-    meshi->vent_offset[XXX] = ventoffset_factor*(meshi->xplt_smv[1] - meshi->xplt_smv[0]);
-    meshi->vent_offset[YYY] = ventoffset_factor*(meshi->yplt_smv[1] - meshi->yplt_smv[0]);
-    meshi->vent_offset[ZZZ] = ventoffset_factor*(meshi->zplt_smv[1] - meshi->zplt_smv[0]);
-  }
-}
-
 /* ------------------ UpdateBlockType ------------------------ */
 
 void UpdateBlockType(void){
@@ -1666,7 +1651,6 @@ void UpdateMeshCoords(void){
       vi->zvent2plot=FDS2SMV_Z(offset[ZZZ]+vi->zvent2);
     }
   }
-  UpdateVentOffset();
   if(global_scase.smoke3dcoll.nsmoke3dinfo>0)NewMemory((void **)&global_scase.smoke3dcoll.smoke3dinfo_sorted,global_scase.smoke3dcoll.nsmoke3dinfo*sizeof(smoke3ddata *));
   NewMemory((void **)&meshvisptr,global_scase.meshescoll.nmeshes*sizeof(int));
   for(i=0; i<global_scase.meshescoll.nmeshes; i++){
@@ -4919,6 +4903,7 @@ int ReadIni2(const char *inifile, int localfile){
       fgets(buffer, 255, stream);
       sscanf(buffer, "%f %f", &nearclip, &farclip);
       farclip_save = farclip;
+      UpdateVentOffset(nearclip, farclip, 1);
       continue;
     }
     if(MatchINI(buffer, "SHOWTRACERSALWAYS") == 1){
@@ -5132,9 +5117,9 @@ int ReadIni2(const char *inifile, int localfile){
       sscanf(buffer, "%i ", &titlesafe_offset);
       continue;
     }
-    if(MatchINI(buffer, "VENTOFFSET") == 1){
+    if(MatchINI(buffer, "VENT2OFFSET") == 1){
       fgets(buffer, 255, stream);
-      sscanf(buffer, "%f ", &ventoffset_factor);
+      sscanf(buffer, "%f ", &ventoffset_smv_ini);
       continue;
     }
     if(MatchINI(buffer, "SHOWBLOCKS") == 1){
@@ -7895,8 +7880,8 @@ void WriteIni(int flag,char *filename){
   fprintf(fileout," %f\n",vectorpointsize);
   fprintf(fileout, "VENTLINEWIDTH\n");
   fprintf(fileout, " %f\n", global_scase.ventlinewidth);
-  fprintf(fileout, "VENTOFFSET\n");
-  fprintf(fileout, " %f\n", ventoffset_factor);
+  fprintf(fileout, "VENT2OFFSET\n");
+  fprintf(fileout, " %f\n", ventoffset_smv);
   fprintf(fileout, "WINDOWOFFSET\n");
   fprintf(fileout, " %i\n", titlesafe_offsetBASE);
   if(use_graphics == 1 &&

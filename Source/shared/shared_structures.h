@@ -321,7 +321,6 @@ typedef struct _meshdata {
   int itextureoffset;
 
   int maxtimes_boundary;
-  float vent_offset[3];
   int select_min, select_max;
 
   struct _clipdata *box_clipinfo;

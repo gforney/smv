@@ -721,7 +721,7 @@ EXTERNCPP void UpdateBlockType(void);
 EXTERNCPP void UpdateLoadedLists(void);
 EXTERNCPP void UpdateSMVDynamic(char *file);
 EXTERNCPP void UpdateUseTextures(void);
-EXTERNCPP void UpdateVentOffset(void);
+EXTERNCPP void UpdateVentOffset(float nnear, float ffar, int flag);
 EXTERNCPP void WriteIni(int flag,char *file);
 
 //*** renderimage.c headers

@@ -1717,6 +1717,8 @@ void InitVars(void){
       p3chopmax[iii]    = 0.0f;
     }
   }
+//*** define vent offset
+  UpdateVentOffset(nearclip, farclip,1);
 }
 
 /* ------------------ FreeVars ------------------------ */

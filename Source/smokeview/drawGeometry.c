@@ -1277,7 +1277,7 @@ void SetVentDirs(void){
     int i, j, k;
     int breakloop;
     int ventdir;
-    float voffset, offset;
+    float voffset;
 
     meshi=global_scase.meshescoll.meshinfo+ii;
 
@@ -1305,7 +1305,6 @@ void SetVentDirs(void){
       switch(dir){
       case XDIR:
         vi->dir2=XDIR;
-        offset=ventoffset_factor*(xplt_smv[1]-xplt_smv[0]);
         if(vi->imin==0){
           orien=1;
         }
@@ -1341,11 +1340,11 @@ void SetVentDirs(void){
         }
         if(orien==1){
           ventdir=UP_X;
-          voffset=offset;
+          voffset= ventoffset_smv;
         }
         else{
           ventdir=DOWN_X;
-          voffset=-offset;
+          voffset=-ventoffset_smv;
         }
         if(iv<meshi->nvents)vi->dir=ventdir;
         if(vi->dummy != 0){
@@ -1358,7 +1357,6 @@ void SetVentDirs(void){
         break;
       case YDIR:
         vi->dir2=YDIR;
-        offset=ventoffset_factor*(yplt_smv[1]-yplt_smv[0]);
         if(vi->jmin==0){
           orien=1;
         }
@@ -1394,11 +1392,11 @@ void SetVentDirs(void){
         }
         if(orien==1){
           ventdir=UP_Y;
-          voffset=offset;
+          voffset=ventoffset_smv;
         }
         else{
           ventdir=DOWN_Y;
-          voffset=-offset;
+          voffset=-ventoffset_smv;
         }
         if(iv<meshi->nvents)vi->dir=ventdir;
         if(vi->dummy != 0){
@@ -1411,7 +1409,6 @@ void SetVentDirs(void){
         break;
       case ZDIR:
         vi->dir2=ZDIR;
-        offset=ventoffset_factor*(zplt_smv[1]-zplt_smv[0]);
         if(vi->kmin==0){
           orien=1;
         }
@@ -1447,11 +1444,11 @@ void SetVentDirs(void){
         }
         if(orien==1){
           ventdir=UP_Z;
-          voffset=offset;
+          voffset= ventoffset_smv;
         }
         else{
           ventdir=DOWN_Z;
-          voffset=-offset;
+          voffset=-ventoffset_smv;
         }
         if(iv<meshi->nvents)vi->dir=ventdir;
         if(vi->dummy != 0){
@@ -2110,7 +2107,7 @@ void ObstOrVent2Faces(const meshdata *meshi, blockagedata *bc,
     switch(faceptr->dir){
      case DOWN_Y:
        faceptr->normal[1]=(float)-1.0;
-       if(facetype==VENT_face&&vi!=NULL&&vi->dummy==0)offset[YYY] = -meshi->vent_offset[YYY];
+       if(facetype==VENT_face&&vi!=NULL&&vi->dummy==0)offset[YYY] = -ventoffset_smv;
        faceptr->jmax=faceptr->jmin;
        xtex = xx;
        ytex = zz;
@@ -2122,7 +2119,7 @@ void ObstOrVent2Faces(const meshdata *meshi, blockagedata *bc,
        break;
      case UP_X:
        faceptr->normal[0]=(float)1.0;
-       if(facetype==VENT_face&&vi!=NULL&&vi->dummy==0)offset[XXX] = meshi->vent_offset[XXX];
+       if(facetype==VENT_face&&vi!=NULL&&vi->dummy==0)offset[XXX] = ventoffset_smv;
        faceptr->imin=faceptr->imax;
        xtex = yy;
        ytex = zz;
@@ -2134,7 +2131,7 @@ void ObstOrVent2Faces(const meshdata *meshi, blockagedata *bc,
        break;
      case UP_Y:
        faceptr->normal[1]=(float)1.0;
-       if(facetype==VENT_face&&vi!=NULL&&vi->dummy==0)offset[YYY] = meshi->vent_offset[YYY];
+       if(facetype==VENT_face&&vi!=NULL&&vi->dummy==0)offset[YYY] = ventoffset_smv;
        faceptr->jmin=faceptr->jmax;
        xtex = xx;
        ytex = zz;
@@ -2145,7 +2142,7 @@ void ObstOrVent2Faces(const meshdata *meshi, blockagedata *bc,
        if(bc!=NULL)faceptr->interior = bc->interior[3];
        break;
      case DOWN_X:
-       if(facetype==VENT_face&&vi!=NULL&&vi->dummy==0)offset[XXX] = -meshi->vent_offset[XXX];
+       if(facetype==VENT_face&&vi!=NULL&&vi->dummy==0)offset[XXX] = -ventoffset_smv;
        xtex = yy;
        ytex = zz;
        xtex2 = yy2;
@@ -2157,7 +2154,7 @@ void ObstOrVent2Faces(const meshdata *meshi, blockagedata *bc,
        if(bc!=NULL)faceptr->interior = bc->interior[0];
        break;
      case DOWN_Z:
-       if(facetype==VENT_face&&vi!=NULL&&vi->dummy==0)offset[ZZZ] = -meshi->vent_offset[ZZZ];
+       if(facetype==VENT_face&&vi!=NULL&&vi->dummy==0)offset[ZZZ] = -ventoffset_smv;
        xtex = xx;
        ytex = yy;
        xtex2 = xx2;
@@ -2169,7 +2166,7 @@ void ObstOrVent2Faces(const meshdata *meshi, blockagedata *bc,
        if(bc!=NULL)faceptr->interior = bc->interior[4];
        break;
      case UP_Z:
-       if(facetype==VENT_face&&vi!=NULL&&vi->dummy==0)offset[ZZZ] = meshi->vent_offset[ZZZ];
+       if(facetype==VENT_face&&vi!=NULL&&vi->dummy==0)offset[ZZZ] = ventoffset_smv;
        xtex = xx;
        ytex = yy;
        xtex2 = xx2;
