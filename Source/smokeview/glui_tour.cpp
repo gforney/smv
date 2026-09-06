@@ -20,15 +20,10 @@ GLUI *glui_tour=NULL;
 GLUI_Rollout *ROLLOUT_keyframe = NULL;
 GLUI_Rollout *ROLLOUT_circular = NULL;
 
-GLUI_Panel *PANEL_misc = NULL;
 GLUI_Panel *PANEL_node = NULL;
 GLUI_Panel *PANEL_tour = NULL;
-GLUI_Panel *PANEL_settingskeyframe=NULL;
-GLUI_Panel *PANEL_path=NULL;
 GLUI_Panel *PANEL_tour1=NULL;
-GLUI_Panel *PANEL_tour3=NULL;
 GLUI_Panel *PANEL_close_tour=NULL;
-GLUI_Panel *PANEL_pos=NULL;
 GLUI_Panel *PANEL_tourposition=NULL;
 GLUI_Panel *PANEL_tournavigate=NULL;
 GLUI_Panel *PANEL_tourview=NULL;
