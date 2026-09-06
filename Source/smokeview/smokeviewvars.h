@@ -1407,7 +1407,7 @@ SVEXTERN int SVDECL(windowresized,0);
 
 SVEXTERN int SVDECL(updatemenu,0), SVDECL(first_display,2);
 SVEXTERN int SVDECL(updatezoommenu,0),SVDECL(updatezoomini,0);
-SVEXTERN int SVDECL(use_graphics,1);
+SVEXTERN int SVDECL(use_graphics,1), SVDECL(opengl_setup, 0);
 
 SVEXTERN int SVDECL(updatefacelists,0);
 
@@ -1484,8 +1484,10 @@ SVEXTERN float SVDECL(vector_headdiameter,0.2);
 
 SVEXTERN float SVDECL(highlight_linewidth, 4.0);
 SVEXTERN float solidlinewidth;
-SVEXTERN float SVDECL(sliceoffset_factor,0.1), SVDECL(ventoffset_factor,0.2), SVDECL(boundaryoffset, 0.0);
+SVEXTERN float SVDECL(sliceoffset_factor,0.1), SVDECL(boundaryoffset, 0.0);
 SVEXTERN int SVDECL(visBLOCKold,-1);
+SVEXTERN float SVDECL(ventoffset_smv, 0.002);
+SVEXTERN float SVDECL(ventoffset_smv_ini, -1.0);
 
 SVEXTERN int SVDECL(planar_terrain_slice,0);
 SVEXTERN int SVDECL(nrgb_ini,-1);

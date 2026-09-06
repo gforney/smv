@@ -33,7 +33,6 @@ GLUI_Panel *PANEL_360 = NULL;
 GLUI_Panel *PANEL_360_debug = NULL;
 GLUI_Panel *PANEL_custom_view=NULL;
 GLUI_Panel *PANEL_render_file = NULL;
-GLUI_Panel *PANEL_render_format = NULL;
 GLUI_Panel *PANEL_movie_type = NULL;
 GLUI_Panel *PANEL_user_center = NULL;
 #ifdef ROTATE_TRANSLATE
@@ -50,7 +49,6 @@ GLUI_Panel *PANEL_height=NULL;
 #ifdef ROTATE_TRANSLATE
 GLUI_Panel *PANEL_translate2 = NULL;
 #endif
-GLUI_Panel *PANEL_translate3 = NULL;
 GLUI_Panel *PANEL_anglebuttons=NULL;
 GLUI_Panel *PANEL_reset1=NULL;
 GLUI_Panel *PANEL_reset2=NULL;
@@ -128,13 +126,9 @@ GLUI_Checkbox *CHECKBOX_overwrite_image = NULL;
 GLUI_Checkbox *CHECKBOX_fix_window_aspect = NULL;
 GLUI_Checkbox *CHECKBOX_use_geom_factors = NULL;
 GLUI_Checkbox *CHECKBOX_use_customview=NULL;
-GLUI_Checkbox *CHECKBOX_custom_view = NULL;
-GLUI_Checkbox *CHECKBOX_clip_show_rotation_center = NULL;
-GLUI_Checkbox *CHECKBOX_render360 = NULL;
 GLUI_Checkbox *CHECKBOX_screenview = NULL;
 GLUI_Checkbox *CHECKBOX_show_rotation_center=NULL;
 GLUI_Checkbox *CHECKBOX_clip_rendered_scene=NULL;
-GLUI_Checkbox *CHECKBOX_general_rotation=NULL;
 GLUI_Checkbox *CHECKBOX_blockpath=NULL;
 GLUI_Checkbox *CHECKBOX_gslice_data=NULL;
 GLUI_Checkbox *CHECKBOX_showgravity_vector=NULL;
@@ -1946,7 +1940,7 @@ extern "C" void GLUIToggleRollout(procdata *procinfo, int nprocinfo, int motion_
   }
 }
 
-  /* ------------------ GLUISceneMotionCB ------------------------ */
+/* ------------------ GLUISceneMotionCB ------------------------ */
 
 extern "C" void GLUISceneMotionCB(int var){
   float dx, dy;
@@ -2002,8 +1996,8 @@ extern "C" void GLUISceneMotionCB(int var){
       nearclip=0.00001;
       SPINNER_nearclip->set_float_val(nearclip);
     }
-    if(farclip<0.0){
-      farclip=0.00001;
+    if(farclip<nearclip){
+      farclip=4.0;
       SPINNER_farclip->set_float_val(farclip);
     }
     return;

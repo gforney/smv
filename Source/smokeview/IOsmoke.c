@@ -285,7 +285,7 @@ void DrawSmoke3DGPU(smoke3ddata *smoke3di){
   float constval, x1, x3, z1, z3, yy1, y3;
   int is1, is2, js1, js2, ks1, ks2;
 
-  float *xplt, *yplt, *zplt;
+  float *xplt_smv, *yplt_smv, *zplt_smv;
   float *znode_offset, z_offset[4];
 
   int xyzindex1[6], xyzindex2[6], *xyzindex, node;
@@ -352,9 +352,9 @@ void DrawSmoke3DGPU(smoke3ddata *smoke3di){
     znode_offset = meshi->terrain->znode_offset;
   }
 
-  xplt = meshi->xplt_smv;
-  yplt = meshi->yplt_smv;
-  zplt = meshi->zplt_smv;
+  xplt_smv = meshi->xplt_smv;
+  yplt_smv = meshi->yplt_smv;
+  zplt_smv = meshi->zplt_smv;
   alphaf_in = smoke3di->smokeframe_in;
 
   is1 = smoke3di->is1;
@@ -430,14 +430,14 @@ void DrawSmoke3DGPU(smoke3ddata *smoke3di){
       i = iii;
       if(ssmokedir<0)i = is1+is2-iii-1;
       iterm = (i-smoke3di->is1);
-      constval = xplt[i]+0.001;
+      constval = xplt_smv[i]+0.001;
       for(k = ks1; k<ks2; k+=smoke3d_skip_vert){
         int k2;
 
         k2 = MIN(k+smoke3d_skip_vert, ks2);
         kterm = (k-ks1)*nxy;
-        z1 = zplt[k];
-        z3 = zplt[k2];
+        z1 = zplt_smv[k];
+        z3 = zplt_smv[k2];
         znode[0] = z1;
         znode[1] = z1;
         znode[2] = z3;
@@ -447,8 +447,8 @@ void DrawSmoke3DGPU(smoke3ddata *smoke3di){
 
           j2 = MIN(j+smoke3d_skip_horiz, js2);
           jterm = (j-js1)*nx;
-          yy1 = yplt[j];
-          y3 = yplt[j2];
+          yy1 = yplt_smv[j];
+          y3 = yplt_smv[j2];
           ynode[0] = yy1;
           ynode[1] = y3;
           ynode[2] = y3;
@@ -502,15 +502,15 @@ void DrawSmoke3DGPU(smoke3ddata *smoke3di){
     for(jjj = slice_beg; jjj<slice_end; jjj += smoke3d_skip_frontback){
       j = jjj;
       if(ssmokedir<0)j = js1+js2-jjj-1;
-      constval = yplt[j]+0.001;
+      constval = yplt_smv[j]+0.001;
       jterm = (j-js1)*nx;
       for(k = ks1; k<ks2; k+=smoke3d_skip_vert){
         int k2;
 
         k2 = MIN(k+smoke3d_skip_vert, ks2);
         kterm = (k-ks1)*nxy;
-        z1 = zplt[k];
-        z3 = zplt[k2];
+        z1 = zplt_smv[k];
+        z3 = zplt_smv[k2];
 
         znode[0] = z1;
         znode[1] = z1;
@@ -521,8 +521,8 @@ void DrawSmoke3DGPU(smoke3ddata *smoke3di){
 
           i2 = MIN(i+smoke3d_skip_horiz, is2);
           iterm = (i-is1);
-          x1 = xplt[i];
-          x3 = xplt[i2];
+          x1 = xplt_smv[i];
+          x3 = xplt_smv[i2];
 
           xnode[0] = x1;
           xnode[1] = x3;
@@ -575,7 +575,7 @@ void DrawSmoke3DGPU(smoke3ddata *smoke3di){
     for(kkk = slice_beg; kkk<slice_end; kkk += smoke3d_skip_frontback){
       k = kkk;
       if(ssmokedir<0)k = ks1+ks2-kkk-1;
-      constval = zplt[k]+0.001;
+      constval = zplt_smv[k]+0.001;
       kterm = (k-ks1)*nxy;
       for(j = js1; j<js2; j+=smoke3d_skip_vert){
         int j2;
@@ -583,8 +583,8 @@ void DrawSmoke3DGPU(smoke3ddata *smoke3di){
         j2 = MIN(j+smoke3d_skip_vert, js2);
         jterm = (j-js1)*nx;
 
-        yy1 = yplt[j];
-        y3 = yplt[j2];
+        yy1 = yplt_smv[j];
+        y3 = yplt_smv[j2];
 
         ynode[0] = yy1;
         ynode[1] = yy1;
@@ -595,8 +595,8 @@ void DrawSmoke3DGPU(smoke3ddata *smoke3di){
 
           i2 = MIN(i+smoke3d_skip_horiz, is2);
           iterm = (i-is1);
-          x1 = xplt[i];
-          x3 = xplt[i2];
+          x1 = xplt_smv[i];
+          x3 = xplt_smv[i2];
 
           xnode[0] = x1;
           xnode[1] = x3;
@@ -718,7 +718,7 @@ int DrawSmoke3D(smoke3ddata *smoke3di){
   int is1, is2, js1, js2, ks1, ks2;
   float *znode_offset=NULL, z_offset[4];
 
-  float *xplt, *yplt, *zplt;
+  float *xplt_smv, *yplt_smv, *zplt_smv;
   unsigned char *smokealpha_ptr, *smokecolor_ptr;
   unsigned char *alphaf_out, *alphaf_ptr;
   unsigned char *colorptr;
@@ -754,9 +754,9 @@ int DrawSmoke3D(smoke3ddata *smoke3di){
     znode_offset = meshi->terrain->znode_offset;
   }
 
-  xplt = meshi->xplt_smv;
-  yplt = meshi->yplt_smv;
-  zplt = meshi->zplt_smv;
+  xplt_smv = meshi->xplt_smv;
+  yplt_smv = meshi->yplt_smv;
+  zplt_smv = meshi->zplt_smv;
   iblank_smoke3d = meshi->iblank_smoke3d;
   alphaf_out = smoke3di->smokeframe_out;
 
@@ -854,7 +854,7 @@ int DrawSmoke3D(smoke3ddata *smoke3di){
       i = iii;
       if(ssmokedir<0)i = is1+is2-iii-1;
       iterm = (i-smoke3di->is1);
-      constval = xplt[i]+0.001;
+      constval = xplt_smv[i]+0.001;
       for(k = ks1; k<ks2; k+=smoke3d_skip_vert){
         int k2, koffset;
 
@@ -862,8 +862,8 @@ int DrawSmoke3D(smoke3ddata *smoke3di){
         koffset = k2 - k;
 
         kterm = (k-ks1)*nxy;
-        z1 = zplt[k];
-        z3 = zplt[k2];
+        z1 = zplt_smv[k];
+        z3 = zplt_smv[k2];
         znode[0] = z1;
         znode[1] = z1;
         znode[2] = z3;
@@ -875,8 +875,8 @@ int DrawSmoke3D(smoke3ddata *smoke3di){
           joffset = j2 - j;
 
           jterm = (j-js1)*nx;
-          yy1 = yplt[j];
-          y3 = yplt[j2];
+          yy1 = yplt_smv[j];
+          y3 = yplt_smv[j2];
           ynode[0] = yy1;
           ynode[1] = y3;
           ynode[2] = y3;
@@ -945,7 +945,7 @@ int DrawSmoke3D(smoke3ddata *smoke3di){
     for(jjj = slice_beg; jjj<slice_end; jjj += smoke3d_skip_frontback){
       j = jjj;
       if(ssmokedir<0)j = js1+js2-jjj-1;
-      constval = yplt[j]+0.001;
+      constval = yplt_smv[j]+0.001;
       jterm = (j-js1)*nx;
       for(k = ks1; k<ks2; k+=smoke3d_skip_vert){
         int k2, koffset;
@@ -953,8 +953,8 @@ int DrawSmoke3D(smoke3ddata *smoke3di){
         k2 = MIN(k+smoke3d_skip_vert,ks2);
         koffset = k2 - k;
         kterm = (k-ks1)*nxy;
-        z1 = zplt[k];
-        z3 = zplt[k2];
+        z1 = zplt_smv[k];
+        z3 = zplt_smv[k2];
 
         znode[0] = z1;
         znode[1] = z1;
@@ -966,8 +966,8 @@ int DrawSmoke3D(smoke3ddata *smoke3di){
           i2 = MIN(i+smoke3d_skip_horiz,is2);
           ioffset = i2 - i;
           iterm = (i-is1);
-          x1 = xplt[i];
-          x3 = xplt[i2];
+          x1 = xplt_smv[i];
+          x3 = xplt_smv[i2];
 
           xnode[0] = x1;
           xnode[1] = x3;
@@ -1035,7 +1035,7 @@ int DrawSmoke3D(smoke3ddata *smoke3di){
     for(kkk = slice_beg; kkk<slice_end; kkk += smoke3d_skip_frontback){
       k = kkk;
       if(ssmokedir<0)k = ks1+ks2-kkk-1;
-      constval = zplt[k]+0.001;
+      constval = zplt_smv[k]+0.001;
       kterm = (k-ks1)*nxy;
       for(j = js1; j<js2; j+=smoke3d_skip_vert){
         int j2,joffset;
@@ -1044,8 +1044,8 @@ int DrawSmoke3D(smoke3ddata *smoke3di){
         joffset = j2 - j;
         jterm = (j-js1)*nx;
 
-        yy1 = yplt[j];
-        y3 = yplt[j2];
+        yy1 = yplt_smv[j];
+        y3 = yplt_smv[j2];
 
         ynode[0] = yy1;
         ynode[1] = yy1;
@@ -1057,8 +1057,8 @@ int DrawSmoke3D(smoke3ddata *smoke3di){
           i2 = MIN(i+smoke3d_skip_horiz,is2);
           ioffset = i2 - i;
           iterm = (i-is1);
-          x1 = xplt[i];
-          x3 = xplt[i2];
+          x1 = xplt_smv[i];
+          x3 = xplt_smv[i2];
 
           xnode[0] = x1;
           xnode[1] = x3;
@@ -2828,7 +2828,7 @@ void MakeIBlankSmoke3D(void){
   for(ic=global_scase.meshescoll.nmeshes-1; ic>=0; ic--){
     meshdata *mesh_smoke3d;
     unsigned char *iblank_smoke3d;
-    float *xplt, *yplt, *zplt;
+    float *xplt_smv, *yplt_smv, *zplt_smv;
     float dx, dy, dz;
     int nx, ny, nxy;
     int ibar, jbar, kbar;
@@ -2841,12 +2841,12 @@ void MakeIBlankSmoke3D(void){
     if(iblank_smoke3d==NULL)continue;
     mesh_smoke3d->iblank_smoke3d_defined = 1;
 
-    xplt=mesh_smoke3d->xplt_smv;
-    yplt=mesh_smoke3d->yplt_smv;
-    zplt=mesh_smoke3d->zplt_smv;
-    dx = xplt[1]-xplt[0];
-    dy = yplt[1]-yplt[0];
-    dz = zplt[1]-zplt[0];
+    xplt_smv=mesh_smoke3d->xplt_smv;
+    yplt_smv=mesh_smoke3d->yplt_smv;
+    zplt_smv=mesh_smoke3d->zplt_smv;
+    dx = xplt_smv[1]-xplt_smv[0];
+    dy = yplt_smv[1]-yplt_smv[0];
+    dz = zplt_smv[1]-zplt_smv[0];
 
     ibar = mesh_smoke3d->ibar;
     jbar = mesh_smoke3d->jbar;
@@ -2869,9 +2869,9 @@ void MakeIBlankSmoke3D(void){
           int ijk;
 
           ijk = IJKNODE(i, j, k);
-          x = xplt[i];
-          y = yplt[j];
-          z = zplt[k];
+          x = xplt_smv[i];
+          y = yplt_smv[j];
+          z = zplt_smv[k];
           if(InMeshSmoke(x,y,z,ic-1,LOWERMESHES)>=0)iblank_smoke3d[ijk]=SOLID;
         }
       }
@@ -2900,9 +2900,9 @@ void MakeIBlankSmoke3D(void){
         int ijk;
 
         ijk = IJKNODE(0, j, k);
-        x = xplt[0];
-        y = yplt[j];
-        z = zplt[k];
+        x = xplt_smv[0];
+        y = yplt_smv[j];
+        z = zplt_smv[k];
         if(InMeshSmoke(x-dx,y,z,ic,ALLMESHES)<0){
           iblank_smoke3d[ijk]=SOLID;
         }
@@ -2911,9 +2911,9 @@ void MakeIBlankSmoke3D(void){
         }
 
         ijk = IJKNODE(ibar,j,k);
-        x = xplt[ibar];
-        y = yplt[j];
-        z = zplt[k];
+        x = xplt_smv[ibar];
+        y = yplt_smv[j];
+        z = zplt_smv[k];
         if(InMeshSmoke(x+dx,y,z,ic,ALLMESHES)<0){
           iblank_smoke3d[ijk]=SOLID;
         }
@@ -2929,9 +2929,9 @@ void MakeIBlankSmoke3D(void){
         int ijk;
 
         ijk = IJKNODE(i, 0, k);
-        x = xplt[i];
-        y = yplt[0];
-        z = zplt[k];
+        x = xplt_smv[i];
+        y = yplt_smv[0];
+        z = zplt_smv[k];
         if(InMeshSmoke(x,y-dy,z,ic,ALLMESHES)<0){
           iblank_smoke3d[ijk]=SOLID;
         }
@@ -2940,9 +2940,9 @@ void MakeIBlankSmoke3D(void){
         }
 
         ijk = IJKNODE(i,jbar,k);
-        x = xplt[i];
-        y = yplt[jbar];
-        z = zplt[k];
+        x = xplt_smv[i];
+        y = yplt_smv[jbar];
+        z = zplt_smv[k];
         if(InMeshSmoke(x,y+dy,z,ic,ALLMESHES)<0){
           iblank_smoke3d[ijk]=SOLID;
         }
@@ -2958,9 +2958,9 @@ void MakeIBlankSmoke3D(void){
         int ijk;
 
         ijk = IJKNODE(i, j, 0);
-        x = xplt[i];
-        y = yplt[j];
-        z = zplt[0];
+        x = xplt_smv[i];
+        y = yplt_smv[j];
+        z = zplt_smv[0];
         if(InMeshSmoke(x,y,z-dz,ic,ALLMESHES)<0){
           iblank_smoke3d[ijk]=SOLID;
         }
@@ -2969,9 +2969,9 @@ void MakeIBlankSmoke3D(void){
         }
 
         ijk = IJKNODE(i,j,kbar);
-        x = xplt[i];
-        y = yplt[j];
-        z = zplt[kbar];
+        x = xplt_smv[i];
+        y = yplt_smv[j];
+        z = zplt_smv[kbar];
         if(InMeshSmoke(x,y,z+dz,ic,ALLMESHES)<0){
           iblank_smoke3d[ijk]=SOLID;
         }
