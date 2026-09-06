@@ -51,11 +51,9 @@ GLUI_Button *BUTTON_cb_node_prev    = NULL;
 GLUI_Button *BUTTON_cb_next         = NULL;
 GLUI_Button *BUTTON_cb_prev         = NULL;
 GLUI_Button *BUTTON_cb_save_as      = NULL;
-GLUI_Button *BUTTON_cb_new          = NULL;
 GLUI_Button *BUTTON_cb_delete       = NULL;
 GLUI_Button *BUTTON_cb_addpoint     = NULL;
 GLUI_Button *BUTTON_cb_deletepoint  = NULL;
-GLUI_Button *BUTTON_cb_savesettings = NULL;
 GLUI_Button *BUTTON_cb_update       = NULL;
 GLUI_Button *BUTTON_cb_close        = NULL;
 
@@ -63,7 +61,6 @@ GLUI_RadioGroup *RADIO_cb_coord_type        = NULL;
 GLUI_RadioGroup *RADIO_cb_simple_type       = NULL;
 GLUI_RadioButton *RADIOBUTTON_cb_gtr_5nodes = NULL;
 
-GLUI_Checkbox *CHECKBOX_cb_interp    = NULL;
 GLUI_Checkbox *CHECKBOX_cb_plot_dist = NULL;
 
 GLUI_EditText *EDITTEXT_cb_label    = NULL;

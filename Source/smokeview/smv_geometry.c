@@ -79,16 +79,16 @@ void UpdatePlotxyzAll(void){
 
   for(i = 0; i < global_scase.meshescoll.nmeshes; i++){
     meshdata *meshi;
-    float *xplt, *yplt, *zplt, *dxyz;
+    float *xplt_fds, *yplt_fds, *zplt_fds, *dxyz;
 
     meshi = global_scase.meshescoll.meshinfo + i;
-    xplt = meshi->xplt_fds;
-    yplt = meshi->yplt_fds;
-    zplt = meshi->zplt_fds;
+    xplt_fds = meshi->xplt_fds;
+    yplt_fds = meshi->yplt_fds;
+    zplt_fds = meshi->zplt_fds;
     dxyz = meshi->dxyz_fds;
-    dxyz[0] = ABS(xplt[1] - xplt[0]);
-    dxyz[1] = ABS(yplt[1] - yplt[0]);
-    dxyz[2] = ABS(zplt[1] - zplt[0]);
+    dxyz[0] = ABS(xplt_fds[1] - xplt_fds[0]);
+    dxyz[1] = ABS(yplt_fds[1] - yplt_fds[0]);
+    dxyz[2] = ABS(zplt_fds[1] - zplt_fds[0]);
   }
 
   FREEMEMORY(plotx_all);
@@ -450,19 +450,19 @@ scenedata *InitSceneInfo(void){
 
 int InMeshI(meshdata *meshi, float *xyz){
   int ibar, jbar, kbar;
-  float *xplt, *yplt, *zplt;
+  float *xplt_fds, *yplt_fds, *zplt_fds;
 
   ibar = meshi->ibar;
   jbar = meshi->jbar;
   kbar = meshi->kbar;
 
-  xplt = meshi->xplt_fds;
-  yplt = meshi->yplt_fds;
-  zplt = meshi->zplt_fds;
+  xplt_fds = meshi->xplt_fds;
+  yplt_fds = meshi->yplt_fds;
+  zplt_fds = meshi->zplt_fds;
 
-  if(xyz[0] < xplt[0] || xyz[0]>xplt[ibar])return 0;
-  if(xyz[1] < yplt[0] || xyz[1]>yplt[jbar])return 0;
-  if(xyz[2] < zplt[0] || xyz[2]>zplt[kbar])return 0;
+  if(xyz[0] < xplt_fds[0] || xyz[0]>xplt_fds[ibar])return 0;
+  if(xyz[1] < yplt_fds[0] || xyz[1]>yplt_fds[jbar])return 0;
+  if(xyz[2] < zplt_fds[0] || xyz[2]>zplt_fds[kbar])return 0;
   return 1;
 }
 
@@ -500,7 +500,7 @@ meshdata *GetMesh(float *xyz){
   for(i=0; i<global_scase.meshescoll.nmeshes; i++){
     meshdata *meshi;
     int ibar, jbar, kbar;
-    float *xplt, *yplt, *zplt;
+    float *xplt_fds, *yplt_fds, *zplt_fds;
 
     meshi = global_scase.meshescoll.meshinfo + i;
 
@@ -508,14 +508,14 @@ meshdata *GetMesh(float *xyz){
     jbar = meshi->jbar;
     kbar = meshi->kbar;
 
-    xplt = meshi->xplt_fds;
-    yplt = meshi->yplt_fds;
-    zplt = meshi->zplt_fds;
+    xplt_fds = meshi->xplt_fds;
+    yplt_fds = meshi->yplt_fds;
+    zplt_fds = meshi->zplt_fds;
 
     if(
-      xplt[0]<=xyz[0]&&xyz[0]<xplt[ibar]&&
-      yplt[0]<=xyz[1]&&xyz[1]<yplt[jbar]&&
-      zplt[0]<=xyz[2]&&xyz[2]<zplt[kbar]){
+      xplt_fds[0]<=xyz[0]&&xyz[0]<xplt_fds[ibar]&&
+      yplt_fds[0]<=xyz[1]&&xyz[1]<yplt_fds[jbar]&&
+      zplt_fds[0]<=xyz[2]&&xyz[2]<zplt_fds[kbar]){
         return meshi;
     }
   }
@@ -530,7 +530,7 @@ int OnMeshBoundary(float *xyz){
   for(i = 0; i<global_scase.meshescoll.nmeshes; i++){
     meshdata *meshi;
     int ibar, jbar, kbar;
-    float *xplt, *yplt, *zplt;
+    float *xplt_fds, *yplt_fds, *zplt_fds;
 
     meshi = global_scase.meshescoll.meshinfo+i;
 
@@ -538,49 +538,49 @@ int OnMeshBoundary(float *xyz){
     jbar = meshi->jbar;
     kbar = meshi->kbar;
 
-    xplt = meshi->xplt_fds;
-    yplt = meshi->yplt_fds;
-    zplt = meshi->zplt_fds;
+    xplt_fds = meshi->xplt_fds;
+    yplt_fds = meshi->yplt_fds;
+    zplt_fds = meshi->zplt_fds;
 
-    if(xyz[0]<xplt[0]-MESHEPS||xyz[0]>xplt[ibar]+MESHEPS)continue;
-    if(xyz[1]<yplt[0]-MESHEPS||xyz[1]>yplt[jbar]+MESHEPS)continue;
-    if(xyz[2]<zplt[0]-MESHEPS||xyz[2]>zplt[kbar]+MESHEPS)continue;
+    if(xyz[0]<xplt_fds[0]-MESHEPS||xyz[0]>xplt_fds[ibar]+MESHEPS)continue;
+    if(xyz[1]<yplt_fds[0]-MESHEPS||xyz[1]>yplt_fds[jbar]+MESHEPS)continue;
+    if(xyz[2]<zplt_fds[0]-MESHEPS||xyz[2]>zplt_fds[kbar]+MESHEPS)continue;
 
     // pt on xmin face
 
-    if(ABS(xplt[0]-xyz[0])<=MESHEPS&&
-      yplt[0]-MESHEPS<=xyz[1]&&xyz[1]<=yplt[jbar]+MESHEPS&&
-      zplt[0]-MESHEPS<=xyz[2]&&xyz[2]<=zplt[kbar]+MESHEPS)return 1;
+    if(ABS(xplt_fds[0]-xyz[0])<=MESHEPS&&
+      yplt_fds[0]-MESHEPS<=xyz[1]&&xyz[1]<=yplt_fds[jbar]+MESHEPS&&
+      zplt_fds[0]-MESHEPS<=xyz[2]&&xyz[2]<=zplt_fds[kbar]+MESHEPS)return 1;
 
     // pt on xmax face
 
-    if(ABS(xplt[ibar]-xyz[0])<=MESHEPS&&
-      yplt[0]-MESHEPS<=xyz[1]&&xyz[1]<=yplt[jbar]+MESHEPS&&
-      zplt[0]-MESHEPS<=xyz[2]&&xyz[2]<=zplt[kbar]+MESHEPS)return 1;
+    if(ABS(xplt_fds[ibar]-xyz[0])<=MESHEPS&&
+      yplt_fds[0]-MESHEPS<=xyz[1]&&xyz[1]<=yplt_fds[jbar]+MESHEPS&&
+      zplt_fds[0]-MESHEPS<=xyz[2]&&xyz[2]<=zplt_fds[kbar]+MESHEPS)return 1;
 
     // pt on ymin face
 
-    if(ABS(yplt[0]-xyz[1])<=MESHEPS&&
-      xplt[0]-MESHEPS<=xyz[0]&&xyz[0]<=xplt[ibar]+MESHEPS&&
-      zplt[0]-MESHEPS<=xyz[2]&&xyz[2]<=zplt[kbar]+MESHEPS)return 1;
+    if(ABS(yplt_fds[0]-xyz[1])<=MESHEPS&&
+      xplt_fds[0]-MESHEPS<=xyz[0]&&xyz[0]<=xplt_fds[ibar]+MESHEPS&&
+      zplt_fds[0]-MESHEPS<=xyz[2]&&xyz[2]<=zplt_fds[kbar]+MESHEPS)return 1;
 
     // pt on ymax face
 
-    if(ABS(yplt[jbar]-xyz[1])<=MESHEPS&&
-      xplt[0]-MESHEPS<=xyz[0]&&xyz[0]<=xplt[ibar]+MESHEPS&&
-      zplt[0]-MESHEPS<=xyz[2]&&xyz[2]<=zplt[kbar]+MESHEPS)return 1;
+    if(ABS(yplt_fds[jbar]-xyz[1])<=MESHEPS&&
+      xplt_fds[0]-MESHEPS<=xyz[0]&&xyz[0]<=xplt_fds[ibar]+MESHEPS&&
+      zplt_fds[0]-MESHEPS<=xyz[2]&&xyz[2]<=zplt_fds[kbar]+MESHEPS)return 1;
 
     // pt on zmin face
 
-    if(ABS(zplt[0]-xyz[2])<=MESHEPS&&
-      xplt[0]-MESHEPS<=xyz[0]&&xyz[0]<=xplt[ibar]+MESHEPS&&
-      yplt[0]-MESHEPS<=xyz[1]&&xyz[1]<=yplt[jbar]+MESHEPS)return 1;
+    if(ABS(zplt_fds[0]-xyz[2])<=MESHEPS&&
+      xplt_fds[0]-MESHEPS<=xyz[0]&&xyz[0]<=xplt_fds[ibar]+MESHEPS&&
+      yplt_fds[0]-MESHEPS<=xyz[1]&&xyz[1]<=yplt_fds[jbar]+MESHEPS)return 1;
 
     // pt on zmax face
 
-    if(ABS(zplt[kbar]-xyz[2])<=MESHEPS&&
-      xplt[0]-MESHEPS<=xyz[0]&&xyz[0]<=xplt[ibar]+MESHEPS&&
-      yplt[0]-MESHEPS<=xyz[1]&&xyz[1]<=yplt[jbar]+MESHEPS)return 1;
+    if(ABS(zplt_fds[kbar]-xyz[2])<=MESHEPS&&
+      xplt_fds[0]-MESHEPS<=xyz[0]&&xyz[0]<=xplt_fds[ibar]+MESHEPS&&
+      yplt_fds[0]-MESHEPS<=xyz[1]&&xyz[1]<=yplt_fds[jbar]+MESHEPS)return 1;
   }
   return 0;
 }
@@ -593,7 +593,7 @@ meshdata *GetMeshNoFail(float *xyz){
   for(i=0; i<global_scase.meshescoll.nmeshes; i++){
     meshdata *meshi;
     int ibar, jbar, kbar;
-    float *xplt, *yplt, *zplt;
+    float *xplt_fds, *yplt_fds, *zplt_fds;
 
     meshi = global_scase.meshescoll.meshinfo+i;
 
@@ -601,21 +601,21 @@ meshdata *GetMeshNoFail(float *xyz){
     jbar = meshi->jbar;
     kbar = meshi->kbar;
 
-    xplt = meshi->xplt_fds;
-    yplt = meshi->yplt_fds;
-    zplt = meshi->zplt_fds;
+    xplt_fds = meshi->xplt_fds;
+    yplt_fds = meshi->yplt_fds;
+    zplt_fds = meshi->zplt_fds;
 
     if(
-      xplt[0]<=xyz[0]&&xyz[0]<xplt[ibar]&&
-      yplt[0]<=xyz[1]&&xyz[1]<yplt[jbar]&&
-      zplt[0]<=xyz[2]&&xyz[2]<zplt[kbar]){
+      xplt_fds[0]<=xyz[0]&&xyz[0]<xplt_fds[ibar]&&
+      yplt_fds[0]<=xyz[1]&&xyz[1]<yplt_fds[jbar]&&
+      zplt_fds[0]<=xyz[2]&&xyz[2]<zplt_fds[kbar]){
       return meshi;
     }
   }
   for(i=0; i<global_scase.meshescoll.nmeshes; i++){
     meshdata *meshi;
     int ibar, jbar, kbar;
-    float *xplt, *yplt, *zplt;
+    float *xplt_fds, *yplt_fds, *zplt_fds;
 
     meshi = global_scase.meshescoll.meshinfo+i;
 
@@ -623,14 +623,14 @@ meshdata *GetMeshNoFail(float *xyz){
     jbar = meshi->jbar;
     kbar = meshi->kbar;
 
-    xplt = meshi->xplt_fds;
-    yplt = meshi->yplt_fds;
-    zplt = meshi->zplt_fds;
+    xplt_fds = meshi->xplt_fds;
+    yplt_fds = meshi->yplt_fds;
+    zplt_fds = meshi->zplt_fds;
 
     if(
-      xplt[0]<=xyz[0]+MESHEPS&&xyz[0]-MESHEPS<=xplt[ibar]&&
-      yplt[0]<=xyz[1]+MESHEPS&&xyz[1]-MESHEPS<=yplt[jbar]&&
-      zplt[0]<=xyz[2]+MESHEPS&&xyz[2]-MESHEPS<=zplt[kbar]){
+      xplt_fds[0]<=xyz[0]+MESHEPS&&xyz[0]-MESHEPS<=xplt_fds[ibar]&&
+      yplt_fds[0]<=xyz[1]+MESHEPS&&xyz[1]-MESHEPS<=yplt_fds[jbar]&&
+      zplt_fds[0]<=xyz[2]+MESHEPS&&xyz[2]-MESHEPS<=zplt_fds[kbar]){
       return meshi;
     }
   }
@@ -1080,7 +1080,7 @@ int MakeIBlankCarve(void){
       meshdata *meshj;
       int i1=0, i2=0, jj1=0, j2=0, k1=0, k2=0;
       int ii, jj, kk;
-      float *xplt, *yplt, *zplt;
+      float *xplt_fds, *yplt_fds, *zplt_fds;
 
       if(i==j)continue;
       meshj = global_scase.meshescoll.meshinfo + j;
@@ -1091,43 +1091,43 @@ int MakeIBlankCarve(void){
         meshi->boxmin_fds[2]>meshj->boxmin_fds[2]||meshj->boxmax_fds[2]>meshi->boxmax_fds[2]
       )continue;
 
-      xplt = meshi->xplt_fds;
-      yplt = meshi->yplt_fds;
-      zplt = meshi->zplt_fds;
+      xplt_fds = meshi->xplt_fds;
+      yplt_fds = meshi->yplt_fds;
+      zplt_fds = meshi->zplt_fds;
       k2 = 0;
       for(ii=0; ii<nx; ii++){
-        if(xplt[ii]<=meshj->boxmin_fds[0]&&meshj->boxmin_fds[0]<xplt[ii+1]){
+        if(xplt_fds[ii]<=meshj->boxmin_fds[0]&&meshj->boxmin_fds[0]<xplt_fds[ii+1]){
           i1=ii;
           break;
         }
       }
       for(ii=0; ii<nx; ii++){
-        if(xplt[ii]<meshj->boxmax_fds[0]&&meshj->boxmax_fds[0]<=xplt[ii+1]){
+        if(xplt_fds[ii]<meshj->boxmax_fds[0]&&meshj->boxmax_fds[0]<=xplt_fds[ii+1]){
           i2=ii;
           break;
         }
       }
       for(jj=0; jj<ny; jj++){
-        if(yplt[jj]<=meshj->boxmin_fds[1]&&meshj->boxmin_fds[1]<yplt[jj+1]){
+        if(yplt_fds[jj]<=meshj->boxmin_fds[1]&&meshj->boxmin_fds[1]<yplt_fds[jj+1]){
           jj1=jj;
           break;
         }
       }
       for(jj=0; jj<ny; jj++){
-        if(yplt[jj]<meshj->boxmax_fds[1]&&meshj->boxmax_fds[1]<=yplt[jj+1]){
+        if(yplt_fds[jj]<meshj->boxmax_fds[1]&&meshj->boxmax_fds[1]<=yplt_fds[jj+1]){
           j2=jj;
           break;
         }
       }
       k1 = 0;
       for(kk=0; kk<nz; kk++){
-        if(zplt[kk]<=meshj->boxmin_fds[2]&&meshj->boxmin_fds[2]<zplt[kk+1]){
+        if(zplt_fds[kk]<=meshj->boxmin_fds[2]&&meshj->boxmin_fds[2]<zplt_fds[kk+1]){
           k1=kk;
           break;
         }
       }
       for(kk=0; kk<nz; kk++){
-        if(zplt[kk]<meshj->boxmax_fds[2]&&meshj->boxmax_fds[2]<=zplt[kk+1]){
+        if(zplt_fds[kk]<meshj->boxmax_fds[2]&&meshj->boxmax_fds[2]<=zplt_fds[kk+1]){
           k2=kk;
           break;
         }

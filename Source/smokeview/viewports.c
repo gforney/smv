@@ -1990,6 +1990,7 @@ void ViewportScene(int quad, int view_mode, GLint screen_left, GLint screen_down
   eyeyINI = camera_current->eye[1];
   eyezINI = camera_current->eye[2];
 
+  
   if(projection_type==PROJECTION_ORTHOGRAPHIC){
     fnear = -eyeyINI - 1.0;
     if(fnear < nearclip)fnear = nearclip;

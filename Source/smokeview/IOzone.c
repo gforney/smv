@@ -1451,7 +1451,7 @@ void DrawZoneRoomGeom(void){
         float delta;
         float XB[6];
 
-        delta = ventoffset_factor*0.05/xyzmaxdiff;
+        delta = ventoffset_smv;
         XB[0] = x1;
         XB[1] = x2;
         XB[2] = y1;

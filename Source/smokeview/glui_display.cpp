@@ -16,8 +16,6 @@ GLUI *glui_labels=NULL;
 
 GLUI_EditText *EDIT_LB_label_string=NULL;
 
-GLUI_Spinner *SPINNER_cullgeom_portsize=NULL;
-
 GLUI_Listbox *LIST_LB_labels=NULL;
 GLUI_Listbox *LIST_surfs=NULL;
 
@@ -69,7 +67,7 @@ GLUI_Spinner *SPINNER_northangle_position_x = NULL;
 GLUI_Spinner *SPINNER_northangle_position_y = NULL;
 GLUI_Spinner *SPINNER_northangle_position_z = NULL;
 GLUI_Spinner *SPINNER_sliceoffset_factor=NULL;
-GLUI_Spinner *SPINNER_ventoffset_factor=NULL;
+GLUI_Spinner *SPINNER_ventoffset_smv=NULL;
 GLUI_Spinner *SPINNER_amb_red=NULL;
 GLUI_Spinner *SPINNER_amb_green=NULL;
 GLUI_Spinner *SPINNER_amb_blue=NULL;
@@ -94,7 +92,6 @@ GLUI_Spinner *SPINNER_sphere_xyz0[3];
 GLUI_Spinner *SPINNER_sphere_dxyz[3];
 GLUI_Spinner *SPINNER_sphere_nxyz[3];
 GLUI_Spinner *SPINNER_sphere_rgb[3];
-GLUI_Spinner *SPINNER_sphere_blue=NULL;
 GLUI_Spinner *SPINNER_sphere_diameter=NULL;
 
 GLUI_Checkbox *CHECKBOX_sphere_show=NULL;
@@ -104,7 +101,6 @@ GLUI_Checkbox *CHECKBOX_labels_meshlabel = NULL;
 GLUI_Checkbox *CHECKBOX_labels_version=NULL;
 GLUI_Checkbox *CHECKBOX_visUSERticks=NULL;
 GLUI_Checkbox *CHECKBOX_visUSERticks2=NULL;
-GLUI_Checkbox *CHECKBOX_cullgeom=NULL;
 GLUI_Checkbox *CHECKBOX_LB_visLabels=NULL;
 GLUI_Checkbox *CHECKBOX_LB_label_use_foreground=NULL;
 GLUI_Checkbox *CHECKBOX_LB_label_show_always=NULL;
@@ -165,13 +161,11 @@ GLUI_Panel *PANEL_sphere3 = NULL;
 GLUI_Panel *PANEL_sphere4 = NULL;
 GLUI_Panel *PANEL_blockage_drawing = NULL;
 GLUI_Panel *PANEL_titles=NULL;
-GLUI_Panel *PANEL_screen = NULL;
 GLUI_Panel *PANEL_light=NULL;
 GLUI_Panel *PANEL_position0=NULL;
 GLUI_Panel *PANEL_position1 = NULL;
 GLUI_Panel *PANEL_ambient=NULL;
 GLUI_Panel *PANEL_diffuse=NULL;
-GLUI_Panel *PANEL_specular = NULL;
 GLUI_Panel *PANEL_positional = NULL;
 GLUI_Panel *PANEL_positional2 = NULL;
 GLUI_Panel *PANEL_timebar_overlap = NULL;
@@ -195,7 +189,6 @@ GLUI_Panel *PANEL_linewidth = NULL;
 GLUI_Panel *PANEL_offset = NULL;
 GLUI_Panel *PANEL_surfs = NULL;
 GLUI_Panel *PANEL_texture_display = NULL;
-GLUI_Panel *PANEL_sky = NULL;
 GLUI_Panel *PANEL_sphere = NULL;
 GLUI_Panel *PANEL_skycolor = NULL;
 GLUI_Panel *PANEL_horizon_color = NULL;
@@ -215,11 +208,11 @@ GLUI_Button *BUTTON_LB_label_next=NULL;
 GLUI_Button *BUTTON_LB_label_update=NULL;
 GLUI_Button *BUTTON_LB_label_add=NULL;
 GLUI_Button *BUTTON_LB_label_delete=NULL;
-GLUI_Button *BUTTON_LB_label_set=NULL;
 GLUI_Button *BUTTON_label_1=NULL;
 GLUI_Button *BUTTON_label_2=NULL;
 GLUI_Button *BUTTON_label_3=NULL;
 GLUI_Button *BUTTON_label_4=NULL;
+GLUI_Button *BUTTON_reset_sliceoffset=NULL;
 
 #define USERTICKS_ORIGIN    0
 #define USERTICKS_MIN       1
@@ -232,6 +225,7 @@ GLUI_Button *BUTTON_label_4=NULL;
 
 #define FLIP                 19
 #define APPLY_VENTOFFSET     20
+#define RESET_VENTOFFSET     42
 
 #define SURFACE_COLOR        101
 #define SURFACE_SELECT       102
@@ -768,6 +762,7 @@ extern "C" void GLUISkyCB(int var){
   else{
     farclip = farclip_save;
   }
+  UpdateVentOffset(nearclip, farclip, 1);
   if(farclip != farclip_before){
     GLUISceneMotionCB(NEARFARCLIP);
     GLUIUpdateFarclip();
@@ -862,6 +857,28 @@ extern "C" void GLUIUserTicksCB(int var){
   }
 }
 
+/* ------------------ UpdateVentOffset ------------------------ */
+
+extern "C" void UpdateVentOffset(float nnear_local, float ffar_local, int flag){
+  if(ventoffset_smv_ini >= 0.0 && flag == 1){
+    ventoffset_smv = ventoffset_smv_ini;
+  }
+  else{
+    float ndepth = pow(2.0,16.0) - 1.0;
+
+    if(use_graphics==1 && opengl_setup == 1){
+      GLint ndepthbits;
+
+      glGetIntegerv(GL_DEPTH_BITS,&ndepthbits);
+      ndepth = pow(2.0,ndepthbits)-1.0;
+    }
+    ventoffset_smv = 2.0 * ffar_local * (ffar_local - nnear_local) / (nnear_local * ndepth + (ffar_local - nnear_local));
+  }
+  if(SPINNER_ventoffset_smv != NULL){
+    SPINNER_ventoffset_smv->set_float_val(ventoffset_smv);
+  }
+}
+
 /* ------------------ GLUIDisplaySetup ------------------------ */
 
 extern "C" void GLUIDisplaySetup(int main_window){
@@ -943,10 +960,10 @@ extern "C" void GLUIDisplaySetup(int main_window){
   SPINNER_ticklinewidth->set_float_limits(1.0, 10.0, GLUI_LIMIT_CLAMP);
 
   PANEL_offset=glui_labels->add_panel_to_panel(ROLLOUT_general2,"offset");
-  SPINNER_ventoffset_factor=glui_labels->add_spinner_to_panel(PANEL_offset,"vent",GLUI_SPINNER_FLOAT,&ventoffset_factor,APPLY_VENTOFFSET,GLUILabelsCB);
-//  SPINNER_ventoffset_factor->set_float_limits(-1.0,1.0,GLUI_LIMIT_CLAMP);
+  SPINNER_ventoffset_smv=glui_labels->add_spinner_to_panel(PANEL_offset,"vent",GLUI_SPINNER_FLOAT,&ventoffset_smv,APPLY_VENTOFFSET,GLUILabelsCB);
+  BUTTON_reset_sliceoffset=glui_labels->add_button_to_panel(PANEL_offset,"Reset vent offset",RESET_VENTOFFSET,GLUILabelsCB);
+
   SPINNER_sliceoffset_factor=glui_labels->add_spinner_to_panel(PANEL_offset,"slice",GLUI_SPINNER_FLOAT,&sliceoffset_factor);
-//  SPINNER_sliceoffset_factor->set_float_limits(-1.0,1.0,GLUI_LIMIT_CLAMP);
   glui_labels->add_spinner_to_panel(PANEL_offset, "boundary", GLUI_SPINNER_FLOAT, &boundaryoffset);
 
   int i, surfcount = 0, first_surf=-1;
@@ -1466,8 +1483,11 @@ extern "C" void GLUILabelsCB(int var){
     user_tick_direction=1.0;
     if(glui_tick_inside==1)user_tick_direction=-1.0;
     break;
+  case RESET_VENTOFFSET:
+    UpdateVentOffset(nearclip, farclip, 0);
+    GLUILabelsCB(APPLY_VENTOFFSET);
+    break;
   case APPLY_VENTOFFSET:
-    UpdateVentOffset();
     global_scase.updatefaces=1;
     break;
   case FLIP:
