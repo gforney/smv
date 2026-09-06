@@ -150,12 +150,6 @@ GLUI_Rollout *ROLLOUT_slices = NULL;
 GLUI_Rollout *ROLLOUT_smoke_test = NULL;
 GLUI_Rollout *ROLLOUT_smokedebug = NULL;
 
-GLUI_StaticText *STATIC_smokeframelimit_min = NULL;
-GLUI_StaticText *STATIC_smokeframelimit_max = NULL;
-GLUI_StaticText *STATIC_globalframelimit_min = NULL;
-GLUI_StaticText *STATIC_globalframelimit_max = NULL;
-GLUI_StaticText *STATIC_timelimit_min = NULL;
-GLUI_StaticText *STATIC_timelimit_max = NULL;
 GLUI_StaticText *STATIC_pixels_per_triangle=NULL;
 
 #define SLICERENDER_ROLLOUT 1
