@@ -859,7 +859,7 @@ extern "C" void GLUIUserTicksCB(int var){
 
 /* ------------------ UpdateVentOffset ------------------------ */
 
-extern "C" void UpdateVentOffset(float nnear, float ffar, int flag){
+extern "C" void UpdateVentOffset(float nnear_local, float ffar_local, int flag){
   if(ventoffset_smv_ini >= 0.0 && flag == 1){
     ventoffset_smv = ventoffset_smv_ini;
   }
@@ -872,7 +872,7 @@ extern "C" void UpdateVentOffset(float nnear, float ffar, int flag){
       glGetIntegerv(GL_DEPTH_BITS,&ndepthbits);
       ndepth = pow(2.0,ndepthbits)-1.0;
     }
-    ventoffset_smv = 2.0 * ffar * (ffar - nnear) / (nnear * ndepth + (ffar - nnear));
+    ventoffset_smv = 2.0 * ffar_local * (ffar_local - nnear_local) / (nnear_local * ndepth + (ffar_local - nnear_local));
   }
   if(SPINNER_ventoffset_smv != NULL){
     SPINNER_ventoffset_smv->set_float_val(ventoffset_smv);
