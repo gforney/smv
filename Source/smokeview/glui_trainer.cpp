@@ -32,10 +32,9 @@ GLUI_Listbox *LIST_trainerpath=NULL,*LIST_viewpoint=NULL;
 
 GLUI_Panel *PANEL_smokeview=NULL;
 GLUI_Panel *PANEL_explore=NULL;
-GLUI_Panel *PANEL_manual=NULL;//, *PANEL_automatic=NULL;
-GLUI_Panel *PANEL_move=NULL,*PANEL_rotate2=NULL;
+GLUI_Panel *PANEL_move=NULL;
 
-GLUI_Button *BUTTON_smoke3d=NULL, *BUTTON_temp=NULL, *BUTTON_oxy=NULL, *BUTTON_unload=NULL;
+GLUI_Button *BUTTON_smoke3d=NULL, *BUTTON_temp=NULL, *BUTTON_oxy=NULL;
 
 GLUI_Translation *TRANSLATE_updown=NULL,*TRANSLATE_leftright_inout=NULL;
 GLUI_Translation *TRANSLATE_az_elev=NULL;

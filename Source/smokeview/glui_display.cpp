@@ -16,8 +16,6 @@ GLUI *glui_labels=NULL;
 
 GLUI_EditText *EDIT_LB_label_string=NULL;
 
-GLUI_Spinner *SPINNER_cullgeom_portsize=NULL;
-
 GLUI_Listbox *LIST_LB_labels=NULL;
 GLUI_Listbox *LIST_surfs=NULL;
 
@@ -94,7 +92,6 @@ GLUI_Spinner *SPINNER_sphere_xyz0[3];
 GLUI_Spinner *SPINNER_sphere_dxyz[3];
 GLUI_Spinner *SPINNER_sphere_nxyz[3];
 GLUI_Spinner *SPINNER_sphere_rgb[3];
-GLUI_Spinner *SPINNER_sphere_blue=NULL;
 GLUI_Spinner *SPINNER_sphere_diameter=NULL;
 
 GLUI_Checkbox *CHECKBOX_sphere_show=NULL;
@@ -104,7 +101,6 @@ GLUI_Checkbox *CHECKBOX_labels_meshlabel = NULL;
 GLUI_Checkbox *CHECKBOX_labels_version=NULL;
 GLUI_Checkbox *CHECKBOX_visUSERticks=NULL;
 GLUI_Checkbox *CHECKBOX_visUSERticks2=NULL;
-GLUI_Checkbox *CHECKBOX_cullgeom=NULL;
 GLUI_Checkbox *CHECKBOX_LB_visLabels=NULL;
 GLUI_Checkbox *CHECKBOX_LB_label_use_foreground=NULL;
 GLUI_Checkbox *CHECKBOX_LB_label_show_always=NULL;
@@ -165,13 +161,11 @@ GLUI_Panel *PANEL_sphere3 = NULL;
 GLUI_Panel *PANEL_sphere4 = NULL;
 GLUI_Panel *PANEL_blockage_drawing = NULL;
 GLUI_Panel *PANEL_titles=NULL;
-GLUI_Panel *PANEL_screen = NULL;
 GLUI_Panel *PANEL_light=NULL;
 GLUI_Panel *PANEL_position0=NULL;
 GLUI_Panel *PANEL_position1 = NULL;
 GLUI_Panel *PANEL_ambient=NULL;
 GLUI_Panel *PANEL_diffuse=NULL;
-GLUI_Panel *PANEL_specular = NULL;
 GLUI_Panel *PANEL_positional = NULL;
 GLUI_Panel *PANEL_positional2 = NULL;
 GLUI_Panel *PANEL_timebar_overlap = NULL;
@@ -195,7 +189,6 @@ GLUI_Panel *PANEL_linewidth = NULL;
 GLUI_Panel *PANEL_offset = NULL;
 GLUI_Panel *PANEL_surfs = NULL;
 GLUI_Panel *PANEL_texture_display = NULL;
-GLUI_Panel *PANEL_sky = NULL;
 GLUI_Panel *PANEL_sphere = NULL;
 GLUI_Panel *PANEL_skycolor = NULL;
 GLUI_Panel *PANEL_horizon_color = NULL;
@@ -215,7 +208,6 @@ GLUI_Button *BUTTON_LB_label_next=NULL;
 GLUI_Button *BUTTON_LB_label_update=NULL;
 GLUI_Button *BUTTON_LB_label_add=NULL;
 GLUI_Button *BUTTON_LB_label_delete=NULL;
-GLUI_Button *BUTTON_LB_label_set=NULL;
 GLUI_Button *BUTTON_label_1=NULL;
 GLUI_Button *BUTTON_label_2=NULL;
 GLUI_Button *BUTTON_label_3=NULL;

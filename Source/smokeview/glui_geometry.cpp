@@ -88,7 +88,6 @@ GLUI_Checkbox *CHECKBOX_show_cface_normals = NULL;
 GLUI_Checkbox *CHECKBOX_show_zlevel = NULL;
 GLUI_Checkbox *CHECKBOX_surface_solid=NULL, *CHECKBOX_surface_outline=NULL, *CHECKBOX_surface_points = NULL;
 GLUI_Checkbox *CHECKBOX_geom_force_transparent = NULL;
-GLUI_Checkbox *CHECKBOX_geomtest=NULL, *CHECKBOX_triangletest=NULL;
 GLUI_Checkbox *CHECKBOX_show_geom_normal = NULL;
 GLUI_Checkbox *CHECKBOX_smooth_geom_normal = NULL;
 GLUI_Checkbox *CHECKBOX_show_texture_1dimage = NULL;
@@ -109,9 +108,6 @@ GLUI_StaticText *STATIC_vertz2 = NULL;
 GLUI_StaticText *STATIC_dist=NULL;
 GLUI_StaticText *STATIC_tri_area = NULL;
 
-GLUI_Checkbox *CHECKBOX_use_surf_color=NULL;
-
-GLUI_Rollout *ROLLOUT_geomtest=NULL;
 GLUI_Rollout *ROLLOUT_geom_rgbs = NULL;
 GLUI_Rollout *ROLLOUT_geom_properties=NULL;
 
@@ -167,7 +163,6 @@ GLUI *glui_geometry=NULL;
 
 GLUI_Button *BUTTON_blockage_1=NULL;
 GLUI_Button *BUTTON_reset_zbounds = NULL;
-GLUI_Button *BUTTON_reset_offset = NULL;
 
 GLUI_Checkbox *CHECKBOX_blockage=NULL;
 
@@ -182,7 +177,7 @@ GLUI_Listbox *LIST_hvacductvar_index = NULL;
 
 GLUI_Panel *PANEL_geomtest2 = NULL;
 GLUI_Panel *PANEL_cfaces = NULL;
-GLUI_Panel *PANEL_obj_select=NULL,*PANEL_faces=NULL,*PANEL_triangles=NULL,*PANEL_volumes=NULL,*PANEL_geom_showhide;
+GLUI_Panel *PANEL_obj_select=NULL,*PANEL_faces=NULL,*PANEL_triangles=NULL,*PANEL_geom_showhide;
 GLUI_Panel *PANEL_vertex1_rgb = NULL;
 GLUI_Panel *PANEL_vertex2_rgb = NULL;
 GLUI_Panel *PANEL_triangle_rgb = NULL;
@@ -191,9 +186,7 @@ GLUI_Panel *PANEL_properties_triangle = NULL;
 GLUI_Panel *PANEL_properties_vertex = NULL;
 GLUI_Panel *PANEL_properties2 = NULL;
 GLUI_Panel *PANEL_obj_stretch2=NULL,*PANEL_obj_stretch3=NULL, *PANEL_obj_stretch4=NULL;
-GLUI_Panel *PANEL_geomedgecheck=NULL;
 GLUI_Panel *PANEL_group1=NULL;
-GLUI_Panel *PANEL_geom_offset=NULL;
 GLUI_Panel *PANEL_terrain_images = NULL;
 GLUI_Panel *PANEL_geom_show = NULL;
 
@@ -202,15 +195,10 @@ GLUI_Rollout *ROLLOUT_structured=NULL;
 GLUI_Rollout *ROLLOUT_unstructured=NULL;
 GLUI_Rollout *ROLLOUT_terrain = NULL;
 
-GLUI_Spinner *SPINNER_face_factor=NULL;
-
 GLUI_StaticText *STATIC_blockage_index=NULL;
 GLUI_StaticText *STATIC_mesh_index=NULL;
 GLUI_StaticText *STATIC_label=NULL;
 GLUI_StaticText *STATIC_id_label = NULL;
-
-char a_updatelabel[1000];
-char *updatelabel=NULL;
 
 /* ------------------ GLUIUpdateHVACViews ------------------------ */
 
