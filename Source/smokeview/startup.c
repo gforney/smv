@@ -528,6 +528,7 @@ void SetupGlut(int argc, char **argv){
       max_screenHeight = screenHeight;
     }
     InitOpenGL(PRINT);
+    opengl_setup = 1;
   }
 
   NewMemory((void **)&rgbptr,MAXRGB*sizeof(float *));

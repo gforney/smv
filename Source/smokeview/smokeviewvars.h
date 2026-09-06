@@ -1407,7 +1407,7 @@ SVEXTERN int SVDECL(windowresized,0);
 
 SVEXTERN int SVDECL(updatemenu,0), SVDECL(first_display,2);
 SVEXTERN int SVDECL(updatezoommenu,0),SVDECL(updatezoomini,0);
-SVEXTERN int SVDECL(use_graphics,1);
+SVEXTERN int SVDECL(use_graphics,1), SVDECL(opengl_setup, 0);
 
 SVEXTERN int SVDECL(updatefacelists,0);
 

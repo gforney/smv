@@ -868,12 +868,19 @@ extern "C" void GLUIUserTicksCB(int var){
 /* ------------------ UpdateVentOffset ------------------------ */
 
 extern "C" void UpdateVentOffset(float nnear, float ffar, int flag){
-#define NDEPTH 16777215.0
   if(ventoffset_smv_ini >= 0.0 && flag == 1){
     ventoffset_smv = ventoffset_smv_ini;
   }
   else{
-    ventoffset_smv = 2.0 * ffar * (ffar - nnear) / (nnear * NDEPTH + (ffar - nnear));
+    float ndepth = pow(2.0,16.0) - 1.0;
+
+    if(use_graphics==1 && opengl_setup == 1){
+      GLint ndepthbits;
+
+      glGetIntegerv(GL_DEPTH_BITS,&ndepthbits);
+      ndepth = pow(2.0,ndepthbits)-1.0;
+    }
+    ventoffset_smv = 2.0 * ffar * (ffar - nnear) / (nnear * ndepth + (ffar - nnear));
   }
   if(SPINNER_ventoffset_smv != NULL){
     SPINNER_ventoffset_smv->set_float_val(ventoffset_smv);
