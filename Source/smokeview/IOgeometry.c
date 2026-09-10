@@ -2548,6 +2548,27 @@ FILE_SIZE ReadGeomData(patchdata *patchi, slicedata *slicei, int load_flag, int 
         return 0;
       }
     }
+    if(boundary_average_flag==1){
+      int data_per_timestep, nvals2, ntimes;
+      float *times, **qvalptrs=NULL;
+      char boundary_label[256];
+
+      show_boundary_average = 1;
+      nvals2 = patchi->geom_nvals;
+      times = patchi->geom_times;
+      ntimes = patchi->ngeom_times;
+      data_per_timestep = nvals2/ntimes;
+      NewMemory((void **)&qvalptrs, ntimes*sizeof(float *));
+      for(i = 0; i < ntimes; i++){
+        qvalptrs[i] = patchi->geom_vals + i*data_per_timestep;
+      }
+      sprintf(boundary_label, "averaging data - mesh %i", patchi->blocknumber+1);
+      if(TimeAverageData(boundary_label, qvalptrs, qvalptrs, nvals2, data_per_timestep, times, ntimes, boundary_average_interval)==1){
+        show_boundary_average = 0;
+      }
+      FREEMEMORY(qvalptrs);
+    }
+
     int set_valmin, set_valmax;
     float valmin, valmax;
     char *label;
@@ -2588,7 +2609,7 @@ FILE_SIZE ReadGeomData(patchdata *patchi, slicedata *slicei, int load_flag, int 
     slicei->valmax_slice    = qmax;
     if(slice_average_flag==1){
       int data_per_timestep, nvals2, ntimes;
-      float *times, **qvalptrs;
+      float *times, **qvalptrs=NULL;
       char slice_label[256];
 
       show_slice_average = 1;
@@ -2604,6 +2625,7 @@ FILE_SIZE ReadGeomData(patchdata *patchi, slicedata *slicei, int load_flag, int 
       if(TimeAverageData(slice_label, qvalptrs, qvalptrs, nvals2, data_per_timestep, times, ntimes, slice_average_interval)==1){
         show_slice_average = 0;
       }
+      FREEMEMORY(qvalptrs);
     }
     slicei->valmin_slice    = qmin;
     slicei->valmax_slice    = qmax;
