@@ -2071,7 +2071,7 @@ FILE_SIZE ReadSmoke3D(int time_frame,int ifile_arg,int load_flag, int first_time
   int iii;
   int nframes_found_local=0;
   int frame_start_local, frame_end_local;
-  int nchars_local[2];
+  int nchars_local[3];
   int i;
   float time_local;
   char compstring_local[128];
@@ -2149,7 +2149,15 @@ FILE_SIZE ReadSmoke3D(int time_frame,int ifile_arg,int load_flag, int first_time
       break;
     }
     if(use_tload_begin==1&&time_local<global_scase.tload_begin)smoke3di->use_smokeframe[i]=0;
-    SKIP_SMOKE(SMOKE3DFILE);FREAD_SMOKE(nchars_local,4,2,SMOKE3DFILE); SKIP_SMOKE(SMOKE3DFILE);
+
+    SKIP_SMOKE(SMOKE3DFILE);
+    if(smoke3di->version == 2){
+      FREAD_SMOKE(nchars_local, 4, 3, SMOKE3DFILE);
+    }
+    else{
+      FREAD_SMOKE(nchars_local, 4, 2, SMOKE3DFILE);
+    }
+    SKIP_SMOKE(SMOKE3DFILE);
     file_size_local += 4+2*4+4;
     if(FEOF_SMOKE(SMOKE3DFILE)!=0){
       smoke3di->ntimes_full=i;

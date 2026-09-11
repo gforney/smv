@@ -1365,6 +1365,7 @@ typedef struct {
 /* --------------------------  smoke3ddata ---------------------------------- */
 
 typedef struct _smoke3ddata {
+  int version;
   int seq_id, autoload;
   char *file;
   char *comp_file, *reg_file;
