@@ -3627,7 +3627,7 @@ int ParseSMOKE3DProcess(smv_case *scase, bufferstreamdata *stream, char *buffer,
   char *bufferptr;
   float extinct = -1.0;
   float alpha_factor = 1.0;
-
+  int version = 1;
   int nn_smoke3d, ioffset, ismoke3dcount, ismoke3d;
 
   if(parse_opts.setup_only==1)return RETURN_CONTINUE;
@@ -3639,6 +3639,10 @@ int ParseSMOKE3DProcess(smv_case *scase, bufferstreamdata *stream, char *buffer,
 
   if(Match(buffer, "SMOKF3D")==1){
     filetype = FORTRAN_GENERATED;
+  }
+  if(Match(buffer, "SMOKH3D")==1){
+    filetype = FORTRAN_GENERATED;
+    version = 2;
   }
 
   nn_smoke3d++;
@@ -3686,6 +3690,7 @@ int ParseSMOKE3DProcess(smv_case *scase, bufferstreamdata *stream, char *buffer,
       smoke3di->alphas_smokedir[i] = smoke3di->alphas_smokebuffer + 256*i;
       smoke3di->alphas_firedir[i]  = smoke3di->alphas_firebuffer  + 256*i;
     }
+    smoke3di->version = version;
     smoke3di->ntimes = 0;
     smoke3di->ntimes_old = 0;
     smoke3di->filetype = filetype;
@@ -4850,9 +4855,10 @@ int HaveSmoke3D(bufferstreamdata *stream){
     TrimBack(buffer);
     if(strncmp(buffer, " ", 1) == 0 || buffer[0] == 0)continue;
     if(
-      MatchSMV(buffer,"SMOKE3D") == 1 || 
-      MatchSMV(buffer,"SMOKF3D") == 1 || 
-      MatchSMV(buffer, "SMOKG3D") == 1
+      MatchSMV(buffer, "SMOKE3D") == 1 || 
+      MatchSMV(buffer, "SMOKF3D") == 1 || 
+      MatchSMV(buffer, "SMOKG3D") == 1 ||
+      MatchSMV(buffer, "SMOKH3D") == 1
       ){
       rewind_buffer(stream->fileinfo);
       return 1;
@@ -5355,7 +5361,8 @@ int ReadSMV_Parse(smv_case *scase, bufferstreamdata *stream){
     if(
       MatchSMV(buffer, "SMOKE3D") == 1  ||
       MatchSMV(buffer, "SMOKF3D") == 1  ||
-      MatchSMV(buffer, "SMOKG3D") == 1){
+      MatchSMV(buffer, "SMOKG3D") == 1  ||
+      MatchSMV(buffer, "SMOKH3D") == 1){
       ParseSMOKE3DCount(scase);
       continue;
     }
@@ -8573,7 +8580,8 @@ typedef struct {
     if(
       MatchSMV(buffer,"SMOKE3D") == 1 ||
       MatchSMV(buffer,"SMOKF3D") == 1 ||
-      MatchSMV(buffer, "SMOKG3D") == 1){
+      MatchSMV(buffer,"SMOKG3D") == 1 ||
+      MatchSMV(buffer,"SMOKH3D") == 1){
       int return_val;
 
       START_TIMER(SMOKE3D_timer);
