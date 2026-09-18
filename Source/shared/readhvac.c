@@ -22,14 +22,14 @@
 /* ------------------ hvacval ------------------------ */
 
 static inline int hvacval(hvacdatacollection *hvaccoll, int itime, int iduct,
-                          int icell) {
+                          int icell){
   return (itime)*hvaccoll->hvac_maxcells * hvaccoll->hvac_n_ducts +
          (iduct)*hvaccoll->hvac_maxcells + (icell);
 }
 
 /* ------------------ GetHVACDuctID ------------------------ */
 
-hvacductdata *GetHVACDuctID(hvacdatacollection *hvaccoll, char *duct_name) {
+hvacductdata *GetHVACDuctID(hvacdatacollection *hvaccoll, char *duct_name){
   int i;
 
   for(i = 0; i < hvaccoll->nhvacductinfo; i++){
@@ -43,7 +43,7 @@ hvacductdata *GetHVACDuctID(hvacdatacollection *hvaccoll, char *duct_name) {
 
 /* ------------------ GetHVACDuctValIndex ------------------------ */
 
-int GetHVACDuctValIndex(hvacdatacollection *hvaccoll, char *shortlabel) {
+int GetHVACDuctValIndex(hvacdatacollection *hvaccoll, char *shortlabel){
   int i;
 
   for(i = 0; i < hvaccoll->hvacductvalsinfo->n_duct_vars; i++){
@@ -57,7 +57,7 @@ int GetHVACDuctValIndex(hvacdatacollection *hvaccoll, char *shortlabel) {
 
 /* ------------------ GetHVACNodeValIndex ------------------------ */
 
-int GetHVACNodeValIndex(hvacdatacollection *hvaccoll, char *shortlabel) {
+int GetHVACNodeValIndex(hvacdatacollection *hvaccoll, char *shortlabel){
   int i;
 
   for(i = 0; i < hvaccoll->hvacnodevalsinfo->n_node_vars; i++){
@@ -71,7 +71,7 @@ int GetHVACNodeValIndex(hvacdatacollection *hvaccoll, char *shortlabel) {
 
 /* ------------------ GetHVACNodeID ------------------------ */
 
-hvacnodedata *GetHVACNodeID(hvacdatacollection *hvaccoll, char *node_name) {
+hvacnodedata *GetHVACNodeID(hvacdatacollection *hvaccoll, char *node_name){
   int i;
 
   for(i = 0; i < hvaccoll->nhvacnodeinfo; i++){
@@ -85,7 +85,7 @@ hvacnodedata *GetHVACNodeID(hvacdatacollection *hvaccoll, char *node_name) {
 
 /* ------------------ InitHvacData ------------------------ */
 
-void InitHvacData(hvacvaldata *hi) {
+void InitHvacData(hvacvaldata *hi){
   hi->vals = NULL;
   hi->nvals = 0;
   hi->vis = 0;
@@ -95,7 +95,7 @@ void InitHvacData(hvacvaldata *hi) {
 
 /* ------------------ CompareHvacConnect ------------------------ */
 
-int CompareHvacConnect(const void *arg1, const void *arg2) {
+int CompareHvacConnect(const void *arg1, const void *arg2){
   hvacconnectdata *hi, *hj;
   int indexi, indexj;
 
@@ -110,7 +110,7 @@ int CompareHvacConnect(const void *arg1, const void *arg2) {
 
 /* ------------------ IsHVACVisible ------------------------ */
 
-int IsHVACVisible(hvacdatacollection *hvaccoll) {
+int IsHVACVisible(hvacdatacollection *hvaccoll){
   for(int i = 0; i < hvaccoll->nhvacinfo; i++){
     hvacdata *hvaci = hvaccoll->hvacinfo + i;
     if(hvaci->display == 1) return 1;
@@ -120,7 +120,7 @@ int IsHVACVisible(hvacdatacollection *hvaccoll) {
 
 /* ------------------ HaveHVACConnect ------------------------ */
 
-int HaveHVACConnect(int val, hvacconnectdata *vals, int nvals) {
+int HaveHVACConnect(int val, hvacconnectdata *vals, int nvals){
   int i;
 
   if(val == -1) return 1;
@@ -132,7 +132,7 @@ int HaveHVACConnect(int val, hvacconnectdata *vals, int nvals) {
 
 /* ------------------ GetHVACPathXYZ ------------------------ */
 
-void GetHVACPathXYZ(float fraction, float *xyzs, int n, float *xyz) {
+void GetHVACPathXYZ(float fraction, float *xyzs, int n, float *xyz){
   int i;
   float length = 0.0, lengthf;
   float length1, length2;
@@ -186,7 +186,7 @@ void GetHVACPathXYZ(float fraction, float *xyzs, int n, float *xyz) {
 /* ------------------ GetCellXYZs ------------------------ */
 
 void GetCellXYZs(float *xyz, int nxyz, int ncells, float **xyz_cellptr,
-                 int *nxyz_cell, int **cell_indptr) {
+                 int *nxyz_cell, int **cell_indptr){
   float length, *xyzi;
   float *fractions, *fractions_cell, *fractions_both;
   float *xyz_cell;
@@ -269,7 +269,7 @@ void GetCellXYZs(float *xyz, int nxyz, int ncells, float **xyz_cellptr,
 
 /* ------------------ SetDuctLabelSymbolXYZ ------------------------ */
 
-void SetDuctLabelSymbolXYZ(hvacductdata *ducti) {
+void SetDuctLabelSymbolXYZ(hvacductdata *ducti){
   int j;
   float *xyz1, *xyz2;
 
@@ -297,7 +297,7 @@ void SetDuctLabelSymbolXYZ(hvacductdata *ducti) {
 
 /* ------------------ SetHVACInfo ------------------------ */
 
-void SetHVACInfo(hvacdatacollection *hvaccoll) {
+void SetHVACInfo(hvacdatacollection *hvaccoll){
   int i;
 
   if(hvaccoll->hvacconnectinfo == NULL){
@@ -450,7 +450,7 @@ void SetHVACInfo(hvacdatacollection *hvaccoll) {
     memcpy(ducti->xyz_met, xyz0, 3 * sizeof(float));
     memcpy(ducti->xyz_met + 9, xyz1, 3 * sizeof(float));
     ducti->nxyz_met = 3;
-    switch(ducti->metro_path) {
+    switch(ducti->metro_path){
     case DUCT_XYZ:
       COPYVALS3(ducti->xyz_met + 3, xyz1[0], xyz0[1], xyz0[2]);
       COPYVALS3(ducti->xyz_met + 6, xyz1[0], xyz1[1], xyz0[2]);
@@ -564,7 +564,7 @@ void SetHVACInfo(hvacdatacollection *hvaccoll) {
 /* ------------------ ReadHVACData0 ------------------------ */
 
 int ReadHVACData0(hvacdatacollection *hvaccoll, int flag,
-                  FILE_SIZE *file_size) {
+                  FILE_SIZE *file_size){
   FILE *stream = NULL;
   float *node_buffer = NULL, *duct_buffer = NULL, *ducttimes, *nodetimes;
   int max_node_buffer = 0, max_duct_buffer = 0;
@@ -761,7 +761,7 @@ int ReadHVACData0(hvacdatacollection *hvaccoll, int flag,
 
 /* ------------------ CompareLabel ------------------------ */
 
-int CompareLabel(const void *arg1, const void *arg2) {
+int CompareLabel(const void *arg1, const void *arg2){
   char *x, *y;
 
   x = *(char **)arg1;
@@ -773,7 +773,7 @@ int CompareLabel(const void *arg1, const void *arg2) {
 /* ------------------ ParseHVACEntry ------------------------ */
 
 int ParseHVACEntry(hvacdatacollection *hvaccoll, bufferstreamdata *stream,
-                   int hvac_node_color[3], int hvac_duct_color[3]) {
+                   int hvac_node_color[3], int hvac_duct_color[3]){
   char buffer[256];
   // HVAC
   //  NODES
@@ -938,7 +938,7 @@ int ParseHVACEntry(hvacdatacollection *hvaccoll, bufferstreamdata *stream,
 
     waypoints += 3;
     for(int j = 0; j < n_waypoints;
-        j++) { // points between first and last point
+        j++){ // points between first and last point
       if(FGETS(buffer, 255, stream) == NULL) break;
       sscanf(buffer, "%f %f %f", waypoints, waypoints + 1, waypoints + 2);
       waypoints += 3;
@@ -994,7 +994,7 @@ int ParseHVACEntry(hvacdatacollection *hvaccoll, bufferstreamdata *stream,
 
 /* ------------------ ParseHVACValsEntry ------------------------ */
 
-int ParseHVACValsEntry(hvacdatacollection *hvaccoll, bufferstreamdata *stream) {
+int ParseHVACValsEntry(hvacdatacollection *hvaccoll, bufferstreamdata *stream){
   char buffer[256];
   FREEMEMORY(hvaccoll->hvacductvalsinfo);
   NewMemory((void **)&(hvaccoll->hvacductvalsinfo), sizeof(hvacvalsdata));

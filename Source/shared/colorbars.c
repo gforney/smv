@@ -638,7 +638,7 @@ colorbardata *NewColorbar(colorbar_collection *colorbars){
  * @return Path to directory (allocated via NEWMEMORY) or NULL if subdir is NULL
  * or if GetSmvRootDir returns NULL.
  */
-char *GetColorbarsSubDir(const char *subdir) {
+char *GetColorbarsSubDir(const char *subdir){
   char *return_path = NULL;
   char *smv_bindir = GetSmvRootDir();
   if(smv_bindir == NULL || subdir == NULL) return return_path;

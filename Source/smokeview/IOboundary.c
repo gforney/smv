@@ -887,26 +887,6 @@ void ComputeLoadedPatchHist(char *label, histogramdata **histptr, float *global_
   }
 }
 
-/* ------------------ GetPatchNTimes ------------------------ */
-
-int GetPatchNTimes(char *file){
-  FILE *stream;
-
-  if(file == NULL) return 0;
-  stream = FOPEN(file, "r");
-  if(stream == NULL) return 0;
-
-  int count = 0;
-  char buffer[255];
-  for(;;){
-
-    if(fgets(buffer, 255, stream) == NULL) break;
-    count++;
-  }
-  fclose(stream);
-  return count;
-}
-
 // !  ------------------ GetPatchSizes1 ------------------------
 
 void GetPatchSizes1(FILE_m **stream, const char *patchfilename, unsigned char *buffer, int nbuffer, int *npatch, int *headersize, int *error){

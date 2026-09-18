@@ -21,7 +21,7 @@
 
 /* ------------------ CalcQuadNormal ------------------------ */
 
-void CalcQuadNormal(float *xyz, float *out) {
+void CalcQuadNormal(float *xyz, float *out){
   float u[3], v[3];
   static const int x = 0;
   static const int y = 1;
@@ -67,7 +67,7 @@ void CalcQuadNormal(float *xyz, float *out) {
 /* ------------------ CompareQuad ------------------------ */
 
 static cadgeomdata *current_cadgeom;
-int CompareQuad(const void *arg1, const void *arg2) {
+int CompareQuad(const void *arg1, const void *arg2){
   int i1, i2;
   cadgeomdata *cd;
   cadquad *quadi, *quadj;
@@ -92,7 +92,7 @@ static char *texturedir = NULL;
 
 /* ------------------ CreateNewCADGeom ------------------------ */
 
-cadgeomdata *CreateNewCADGeom(void) {
+cadgeomdata *CreateNewCADGeom(void){
   cadgeomdata *cd;
   NewMemory((void **)&cd, sizeof(cadgeomdata));
   memset(cd, 0, sizeof(cadgeomdata));
@@ -101,7 +101,7 @@ cadgeomdata *CreateNewCADGeom(void) {
 
 /* ------------------ ReadCAD2Geom ------------------------ */
 
-void ReadCAD2Geom(cadgeomdata *cd, GLfloat block_shininess) {
+void ReadCAD2Geom(cadgeomdata *cd, GLfloat block_shininess){
   char buffer[255];
   FILE *stream;
   int nquads = 0;
@@ -249,7 +249,7 @@ void ReadCAD2Geom(cadgeomdata *cd, GLfloat block_shininess) {
   // TODO: what does this do. Seems like if there is nothing read, delete all of
   // the cad info
   if(NewMemory((void **)&cd->quad, nquads * sizeof(cadquad)) == 0 ||
-     NewMemory((void **)&cd->order, nquads * sizeof(int)) == 0) {
+     NewMemory((void **)&cd->order, nquads * sizeof(int)) == 0){
     // If memory allocation fails, set quad data to NULL and return.
     cd->quad = NULL;
     return;
@@ -313,7 +313,7 @@ void ReadCAD2Geom(cadgeomdata *cd, GLfloat block_shininess) {
  * @param block_shininess The block shininess to apply.
  */
 
-int ReadCADGeom(cadgeomdata *cd, const char *file, GLfloat block_shininess) {
+int ReadCADGeom(cadgeomdata *cd, const char *file, GLfloat block_shininess){
   char buffer[255];
   float lastcolor[3];
   FILE *stream;
@@ -387,7 +387,7 @@ int ReadCADGeom(cadgeomdata *cd, const char *file, GLfloat block_shininess) {
       sscanf(colors + 1, "%f %f %f", rgbtemp, rgbtemp + 1, rgbtemp + 2);
     }
     if(lastcolor[0] != rgbtemp[0] || lastcolor[1] != rgbtemp[1] ||
-       lastcolor[2] != rgbtemp[2]) {
+       lastcolor[2] != rgbtemp[2]){
       quadi->colorindex = colorindex;
       colorindex++;
       lastcolor[0] = rgbtemp[0];
@@ -413,7 +413,7 @@ int ReadCADGeom(cadgeomdata *cd, const char *file, GLfloat block_shininess) {
 /* ------------------ ReadCADGeomToCollection ------------------------ */
 
 int ReadCADGeomToCollection(cadgeom_collection *coll, const char *file,
-                            GLfloat block_shininess) {
+                            GLfloat block_shininess){
   if(coll->ncadgeom >= coll->capacity){
     fprintf(stderr, "CADGeomCollection has exceeded capacity");
     return -1;
@@ -425,7 +425,7 @@ int ReadCADGeomToCollection(cadgeom_collection *coll, const char *file,
 
 /* ------------------ InitCADGeomCollection ------------------------ */
 
-int InitCADGeomCollection(cadgeom_collection *coll, int capacity) {
+int InitCADGeomCollection(cadgeom_collection *coll, int capacity){
   // Set everything to NULL
   memset(coll, 0, sizeof(cadgeom_collection));
   // Allocate capacity
@@ -437,7 +437,7 @@ int InitCADGeomCollection(cadgeom_collection *coll, int capacity) {
 
 /* ------------------ CreateCADGeomCollection ------------------------ */
 
-cadgeom_collection *CreateCADGeomCollection(int capacity) {
+cadgeom_collection *CreateCADGeomCollection(int capacity){
   cadgeom_collection *coll;
   if(NewMemory((void **)&coll, capacity * sizeof(cadgeom_collection)) == 0)
     return NULL;
@@ -453,21 +453,21 @@ cadgeom_collection *CreateCADGeomCollection(int capacity) {
 
 /* ------------------ FreeCADGeom ------------------------ */
 
-void FreeCADGeom(cadgeomdata *cd) {
+void FreeCADGeom(cadgeomdata *cd){
   FreeMemory(cd->quad);
   FreeMemory(cd->order);
 }
 
 /* ------------------ FreeCADGeomCollection ------------------------ */
 
-void FreeCADGeomCollection(cadgeom_collection *coll) {
+void FreeCADGeomCollection(cadgeom_collection *coll){
   ClearCADGeomCollection(coll);
   FREEMEMORY(coll);
 }
 
 /* ------------------ ClearCADGeomCollection ------------------------ */
 
-void ClearCADGeomCollection(cadgeom_collection *coll) {
+void ClearCADGeomCollection(cadgeom_collection *coll){
   for(int i = 0; i < coll->ncadgeom; i++){
     FreeCADGeom(&(coll->cadgeominfo[i]));
   }
@@ -476,7 +476,7 @@ void ClearCADGeomCollection(cadgeom_collection *coll) {
 
 /* ------------------ NCADGeom ------------------------ */
 
-int NCADGeom(cadgeom_collection *coll) {
+int NCADGeom(cadgeom_collection *coll){
   if(coll == NULL){
     return 0;
   }

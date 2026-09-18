@@ -2287,7 +2287,7 @@ int GetInpf(smv_case *scase, bufferstreamdata *stream_in){
 /// @param[inout] texti A pointer to the texture data
 /// @return 1 if there is a duplicate, 0 if there is no duplicate.
 
-int IsDupTexture(smv_case *scase, texturedata *texti) {
+int IsDupTexture(smv_case *scase, texturedata *texti){
   int dup_texture;
   int i, j;
 
@@ -2338,7 +2338,7 @@ int IsTerrainTexture(smv_case *scase, texturedata *texti){
 /// @return An offset into scase->smoke3dcoll.nsmoke3dtypes of the first
 /// matching smoke3dtype. Returns -1 if there are no matching props.
 
-int GetSmoke3DType(smv_case *scase, const char *label) {
+int GetSmoke3DType(smv_case *scase, const char *label){
   int i;
 
   if(scase->smoke3dcoll.smoke3dtypes != NULL){
@@ -2654,9 +2654,9 @@ void SetSurfaceIndex(smv_case *scase, blockagedata *bc){
 /* ------------------ SurfIdCompare ------------------------ */
 
 #ifdef __linux__
-int SurfIdCompare(const void *arg1, const void *arg2, void *surfinfo) {
+int SurfIdCompare(const void *arg1, const void *arg2, void *surfinfo){
 #else // assumed to be osx or windows
-int SurfIdCompare(void *surfinfo, const void *arg1, const void *arg2) {
+int SurfIdCompare(void *surfinfo, const void *arg1, const void *arg2){
 #endif
   int i = *(int *)arg1;
   int j = *(int *)arg2;
@@ -8885,7 +8885,7 @@ typedef struct {
 /// allocated. This should be avoided and CreateScase/DestroyScase should be
 /// used instead.
 /// @param scase An uninitialized scase
-void InitScase(smv_case *scase) {
+void InitScase(smv_case *scase){
   // set all of the defaults that are non-zero
 
   assert(scase->smoke3dcoll.nsmoke3dinfo == 0);
@@ -8986,7 +8986,7 @@ void InitScase(smv_case *scase) {
 
 /// @brief Create and initalize and a smokeview case (smv_case).
 /// @return An initialized smv_case.
-smv_case *CreateScase() {
+smv_case *CreateScase(){
   smv_case *scase;
   NewMemory((void **)&scase, sizeof(smv_case));
   memset(scase, 0, sizeof(smv_case));
@@ -8998,7 +8998,7 @@ smv_case *CreateScase() {
 
 /// @brief Cleanup and free the memory of an smv_case.
 /// @param scase An smv_case created with CreateScase.
-void DestroyScase(smv_case *scase) {
+void DestroyScase(smv_case *scase){
   FreeObjectCollection(&scase->objectscoll);
   FreeCADGeomCollection(&scase->cadgeomcoll);
   FreeLabelsCollection(&scase->labelscoll);

@@ -1439,7 +1439,7 @@ void InitStdObjectDefs(object_collection *objectscoll, int isZoneFireModel){
 
 /* ------------------ InitObjectCollection ------------------------ */
 
-int InitObjectCollection(object_collection *coll) {
+int InitObjectCollection(object_collection *coll){
   // Set everything to NULL
   memset(coll, 0, sizeof(object_collection));
   strcpy(coll->object_def_first.label, "first");
@@ -1455,7 +1455,7 @@ int InitObjectCollection(object_collection *coll) {
 
 /* ------------------ CreateObjectCollection ------------------------ */
 
-object_collection *CreateObjectCollection(void) {
+object_collection *CreateObjectCollection(void){
   object_collection *coll;
   if(NEWMEMORY(coll, sizeof(object_collection)) == 0) return NULL;
   int ret = InitObjectCollection(coll);

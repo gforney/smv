@@ -49,7 +49,7 @@ FILE *alt_stdout=NULL;
 
 /* ------------------ FOPEN  ------------------------ */
 
-FILE *FOPEN(const char *file, const char *mode) {
+FILE *FOPEN(const char *file, const char *mode){
 #if defined(_WIN32) && defined(pp_UNICODE_PATHS)
   wchar_t *path = convert_utf8_to_utf16(file);
   wchar_t *wmode = convert_utf8_to_utf16(mode);
@@ -66,7 +66,7 @@ FILE *FOPEN(const char *file, const char *mode) {
 
 /* ------------------ MKDIR  ------------------------ */
 
-int MKDIR(const char *file) {
+int MKDIR(const char *file){
 #if defined(_WIN32) && defined(pp_UNICODE_PATHS)
   wchar_t *path = convert_utf8_to_utf16(file);
   int r = CreateDirectoryW(path, NULL);
@@ -81,7 +81,7 @@ int MKDIR(const char *file) {
 
 /* ------------------ ACCESS  ------------------------ */
 
-int ACCESS(const char *file, int mode) {
+int ACCESS(const char *file, int mode){
 #if defined(_WIN32) && defined(pp_UNICODE_PATHS)
   wchar_t *path = convert_utf8_to_utf16(file);
   int r = _waccess(path, mode);
@@ -96,7 +96,7 @@ int ACCESS(const char *file, int mode) {
 
 /* ------------------ STAT  ------------------------ */
 
-int STAT(const char *file, STRUCTSTAT *buffer) {
+int STAT(const char *file, STRUCTSTAT *buffer){
 #if defined(_WIN32) && defined(pp_UNICODE_PATHS)
   wchar_t *path = convert_utf8_to_utf16(file);
   int r = _wstat64(path, buffer);
@@ -111,7 +111,7 @@ int STAT(const char *file, STRUCTSTAT *buffer) {
 
 /* ------------------ CHDIR  ------------------------ */
 
-int CHDIR(const char *file) {
+int CHDIR(const char *file){
 #if defined(_WIN32) && defined(pp_UNICODE_PATHS)
   wchar_t *path = convert_utf8_to_utf16(file);
   int r = SetCurrentDirectoryW(path);
@@ -126,7 +126,7 @@ int CHDIR(const char *file) {
 
 /* ------------------ UNLINK  ----------------------- */
 
-int UNLINK(const char *file) {
+int UNLINK(const char *file){
 #if defined(_WIN32) && defined(pp_UNICODE_PATHS)
   wchar_t *path = convert_utf8_to_utf16(file);
   int r = _wunlink(path);
@@ -940,7 +940,7 @@ char *GetScratchFilename(char *file){
 
 /* ------------------ fopen_2dir_scratch ------------------------ */
 
-FILE *fopen_2dir_scratch(char *file, char *mode) {
+FILE *fopen_2dir_scratch(char *file, char *mode){
   char *smokeview_scratchdir = GetUserConfigDir();
   FILE *f = fopen_2dir(file, mode, smokeview_scratchdir);
   FREEMEMORY(smokeview_scratchdir);
@@ -1042,7 +1042,7 @@ filelistdata *FileInList(char *file, filelistdata *filelist, int nfiles, filelis
 /// @param lpszFunction
 /* ------------------ DisplayErrorBox ------------------------ */
 
-void DisplayErrorBox(LPTSTR lpszFunction) {
+void DisplayErrorBox(LPTSTR lpszFunction){
   WCHAR *lpMsgBuf = NULL;
   WCHAR *lpDisplayBuf = NULL;
   DWORD dw = GetLastError();
@@ -1066,7 +1066,7 @@ void DisplayErrorBox(LPTSTR lpszFunction) {
 /* ------------------ MakeFileList ------------------------ */
 
 int MakeFileList(const char *path, char *filter, int maxfiles, int sort_files,
-                  filelistdata **filelist, int mode) {
+                  filelistdata **filelist, int mode){
   int nfiles = 0;
   filelistdata *flist;
 
@@ -1168,7 +1168,7 @@ int MakeFileList(const char *path, char *filter, int maxfiles, int sort_files,
 
 /* ------------------ GetFileListSize ------------------------ */
 
-int GetFileListSize(const char *dir, char *filter, int mode) {
+int GetFileListSize(const char *dir, char *filter, int mode){
   return MakeFileList(dir, filter, -1, 0, NULL, mode);
 }
 #else
@@ -1321,7 +1321,7 @@ char *GetFloatFileSizeLabel(float size, char *sizelabel){
 
 /* ------------------ CombinePaths ------------------------ */
 
-char *CombinePaths(const char *path_a, const char *path_b) {
+char *CombinePaths(const char *path_a, const char *path_b){
   char *path_out;
   size_t path_a_len = strlen(path_a);
   size_t path_b_len = strlen(path_b);
@@ -1548,7 +1548,7 @@ char *GetSmvRootDir(){
 
 /* ------------------ GetSmvRootSubPath ------------------------ */
 
-char *GetSmvRootSubPath(const char *subdir) {
+char *GetSmvRootSubPath(const char *subdir){
   char *root_dir = GetSmvRootDir();
   if(root_dir == NULL || subdir == NULL) return NULL;
   return CombinePaths(root_dir,subdir);
@@ -1556,7 +1556,7 @@ char *GetSmvRootSubPath(const char *subdir) {
 
 /* ------------------ GetHomeDir ------------------------ */
 
-char *GetHomeDir() {
+char *GetHomeDir(){
 #ifdef _WIN32
   char *homedir_env = getenv("userprofile");
 #else
@@ -1572,7 +1572,7 @@ char *GetHomeDir() {
 
 /* ------------------ GetUserConfigDir ------------------------ */
 
-char *GetUserConfigDir() {
+char *GetUserConfigDir(){
   char *homedir = GetHomeDir();
   if(homedir == NULL) return NULL;
   char *config_path = CombinePaths(homedir, ".smokeview");
@@ -1582,7 +1582,7 @@ char *GetUserConfigDir() {
 
 /* ------------------ GetUserConfigSubPath ------------------------ */
 
-char *GetUserConfigSubPath(const char *subdir) {
+char *GetUserConfigSubPath(const char *subdir){
   char *config_dir = GetUserConfigDir();
   if(config_dir == NULL || subdir == NULL) return NULL;
   return CombinePaths(config_dir,subdir);
@@ -1590,45 +1590,45 @@ char *GetUserConfigSubPath(const char *subdir) {
 
 /* ------------------ GetSystemIniPath ------------------------ */
 
-char *GetSystemIniPath() {
+char *GetSystemIniPath(){
   return GetSmvRootSubPath("smokeview.ini");
 }
 
 /* ------------------ GetUserIniPath ------------------------ */
 
-char *GetUserIniPath() {
+char *GetUserIniPath(){
   return GetUserConfigSubPath("smokeview.ini");
 }
 
 /* ------------------ GetUserColorbarDirPath ------------------------ */
 
-char *GetUserColorbarDirPath() {
+char *GetUserColorbarDirPath(){
   return GetUserConfigSubPath("colorbars");
 }
 
 /* ------------------ GetSmokeviewHtmlPath ------------------------ */
 
-char *GetSmokeviewHtmlPath() {
+char *GetSmokeviewHtmlPath(){
   return GetSmvRootSubPath("smokeview.html");
 }
 
 /* ------------------ GetSmokeviewHtmlVrPath ------------------------ */
 
 // TODO: This is currently unused
-char *GetSmokeviewHtmlVrPath() {
+char *GetSmokeviewHtmlVrPath(){
   return GetSmvRootSubPath("smokeview_vr.html");
 }
 
 /* ------------------ GetSmvScreenIni ------------------------ */
 
 // TODO: This is currently unused
-char *GetSmvScreenIni() {
+char *GetSmvScreenIni(){
   return GetSmvRootSubPath("smv_screen.ini");
 }
 
 /* ------------------ GetSmvRootFile ----------------------- */
 
-char *GetSmvRootFile(const char *path) {
+char *GetSmvRootFile(const char *path){
   char *root_path = GetSmvRootDir();
   char *result = CombinePaths(root_path, path);
   FREEMEMORY(root_path);
@@ -1637,7 +1637,7 @@ char *GetSmvRootFile(const char *path) {
 
 /* ------------------ GetSmvUserDir ------------------------ */
 
-char *GetSmvUserDir() {
+char *GetSmvUserDir(){
   char *home_path = GetHomeDir();
   char *result = CombinePaths(home_path, ".smokeview");
   FREEMEMORY(home_path);
@@ -1646,7 +1646,7 @@ char *GetSmvUserDir() {
 
 /* ------------------ GetSmvUserFile ----------------------- */
 
-char *GetSmvUserFile(const char *path) {
+char *GetSmvUserFile(const char *path){
   char *user_path = GetSmvUserDir();
   char *result = CombinePaths(user_path, path);
   FREEMEMORY(user_path);

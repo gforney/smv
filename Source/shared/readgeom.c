@@ -13,7 +13,7 @@
 
 /* ------------------ GetInterval ------------------------ */
 
-int GetInterval(float val, float *array, int n) {
+int GetInterval(float val, float *array, int n){
   int low, mid, high;
 
   if(val < array[0]) return -1;

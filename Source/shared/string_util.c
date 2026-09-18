@@ -42,7 +42,7 @@ unsigned int *random_ints, nrandom_ints;
 /// @return a UTF-16 string or NULL on error
 /* ------------------ convert_utf8_to_utf16 ------------------------ */
 
-wchar_t *convert_utf8_to_utf16(const char *input_string) {
+wchar_t *convert_utf8_to_utf16(const char *input_string){
   int r;
   r = MultiByteToWideChar(CP_UTF8, 0, input_string, -1, NULL, 0);
   if(r == 0) goto err;
@@ -55,7 +55,7 @@ err:
   // There was an error converting this string to utf-16. Produce a suitable
   // error message and return NULL.
   DWORD dw = GetLastError();
-  switch(dw) {
+  switch(dw){
   case ERROR_INSUFFICIENT_BUFFER:
     fprintf(stderr, "A supplied buffer size was not large enough, or it was "
                     "incorrectly set to NULL.\n");
@@ -80,7 +80,7 @@ err:
 /// @return a UTF-8 string or NULL on error
 /* ------------------ convert_utf16_to_utf8 ------------------------ */
 
-char *convert_utf16_to_utf8(const wchar_t *input_string) {
+char *convert_utf16_to_utf8(const wchar_t *input_string){
   int r;
   r = WideCharToMultiByte(CP_UTF8, 0, input_string, -1, NULL, 0, NULL, NULL);
   if(r == 0) goto err;
@@ -93,7 +93,7 @@ err:
   // There was an error converting this string to utf-8. Produce a suitable
   // error message and return NULL.
   DWORD dw = GetLastError();
-  switch(dw) {
+  switch(dw){
   case ERROR_INSUFFICIENT_BUFFER:
     fprintf(stderr, "A supplied buffer size was not large enough, or it was "
                     "incorrectly set to NULL.\n");
@@ -129,7 +129,7 @@ char *ConcatLabels(char *label1, char *label2, char *label3, char *label){
 
 /* ------------------ GetCharPtr ------------------------ */
 
-char *GetCharPtr(char *label) {
+char *GetCharPtr(char *label){
   char *labelptr, labelcopy[256], *labelcopyptr;
   int lenlabel;
 
