@@ -3162,85 +3162,12 @@ void DrawBoundaryCellCenter(const meshdata *meshi){
   if(patch_times[0]>GetTime()||patchi->display==0)return;
   if(cullfaces==1)glDisable(GL_CULL_FACE);
 
-  nn = 0;
-  glBegin(GL_TRIANGLES);
-  // note: for now bf_patch1 == 0 so this is dead code
-  if(bf_patch1 == 1)
-  for(n = 0; n < patchi->npatches; n++){
-    int drawit;
-    patchfacedata *pfi;
-
-    pfi = patchi->patchfaceinfo + n;
-    if(pfi->obst != NULL){
-      if(pfi->obst->showtimelist!=NULL&&pfi->obst->showtimelist[iglobal_times]==0){
-        nn += pfi->nrow*pfi->ncol;
-        continue;
-      }
-    }
-    else if(pfi->internal_mesh_face==1){
-      nn += pfi->nrow*pfi->ncol;
-      continue;
-    }
-    drawit = 0;
-    if(pfi->vis==1&&pfi->dir==0)drawit = 1;
-    if(pfi->type==INTERIORwall)drawit = 1;
-    if(pfi->obst == NULL && pfi->internal_mesh_face==1)drawit = 0;
-    if(drawit==1){
-      nrow = pfi->nrow;
-      ncol = pfi->ncol;
-      patchvals  = patchval_iframe+ pfi->start;
-      cpatchvals = NULL;
-      if(patchi->compression_type == COMPRESSED_ZLIB)cpatchvals = meshi->cpatchval_iframe_zlib + pfi->start;
-      for(irow = 0; irow<nrow-1; irow++){
-        float *xyzp1, *xyzp2;
-
-        xyzp1 = xyzpatch + 3* pfi->start +3*irow*ncol;
-        nn1 = nn+irow*ncol;
-        xyzp2 = xyzp1+3*ncol;
-
-        for(icol = 0; icol<ncol-1; icol++){
-          unsigned char cval;
-
-          cval = CLAMP(255*BOUNDCONVERT(IJKBF(irow, icol), ttmin, ttmax), 0, 255);
-          if(rgb_patch[4*cval+3]==0.0){
-            xyzp1 += 3;
-            xyzp2 += 3;
-            continue;
-          }
-          {
-            if(patchventcolors==NULL){
-              color11 = rgb_patch+4*cval;
-              if(vis_threshold==1&&vis_onlythreshold==0&&do_threshold==1){
-                if(meshi->thresholdtime[nn1+icol]>=0.0&&GetTime()>meshi->thresholdtime[nn1+icol])color11 = &char_color[0];
-              }
-            }
-            else{
-              color11 = patchventcolors[(irow*ncol+icol)];
-            }
-            glColor4fv(color11);
-            glVertex3fv(xyzp1);
-            glVertex3fv(xyzp1+3);
-            glVertex3fv(xyzp2+3);
-
-            glVertex3fv(xyzp1);
-            glVertex3fv(xyzp2+3);
-            glVertex3fv(xyzp2);
-          }
-          xyzp1 += 3;
-          xyzp2 += 3;
-        }
-      }
-    }
-    nn += pfi->nrow*pfi->ncol;
-  }
-  glEnd();
   if(cullfaces==1)glEnable(GL_CULL_FACE);
 
   /* if a contour boundary DOES match a blockage face then draw "one sides" of boundary */
 
   nn = 0;
   glBegin(GL_TRIANGLES);
-  if(bf_patch2 == 1)
   for(n = 0; n < patchi->npatches; n++){
     int drawit;
     patchfacedata *pfi;
@@ -3315,7 +3242,6 @@ void DrawBoundaryCellCenter(const meshdata *meshi){
 
   /* if a contour boundary DOES match a blockage face then draw "one sides" of boundary */
   nn = 0;
-  if(bf_patch3==1)
   for(n = 0; n<patchi->npatches; n++){
     int drawit;
     patchfacedata *pfi;

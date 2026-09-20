@@ -158,8 +158,6 @@ SVEXTERN int SVDECL(slice_plot_bound_option, 1);
 
 SVEXTERN int SVDECL(update_viewpoint_list, 0), SVDECL(update_camera_label, 0);
 
-SVEXTERN int SVDECL(bf_patch1, 0), SVDECL(bf_patch2, 1), SVDECL(bf_patch3, 1);
-
 #ifdef pp_GLUT_DEBUG
 #ifdef INMAIN
 #ifdef _WIN32
