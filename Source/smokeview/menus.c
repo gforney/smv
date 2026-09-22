@@ -6050,6 +6050,7 @@ void ShowBoundaryMenu(int value){
       show_all_interior_patch_data = 1;
       ShowBoundaryMenu(TOGGLE_INTERIOR_WALL_MENU); // work around - need to call twice
       show_boundaryfiles_interior = 1;
+      vis_boundary_type[INTERIORwall] = 1;
     }
     else if(value == HIDE_INTERIOR_WALL_MENU){
       show_faces_shaded  = 1 - show_faces_shaded_save;
@@ -6057,6 +6058,7 @@ void ShowBoundaryMenu(int value){
       show_all_interior_patch_data = 0;
       ShowBoundaryMenu(TOGGLE_INTERIOR_WALL_MENU);
       show_boundaryfiles_interior = 0;
+      vis_boundary_type[INTERIORwall] = 0;
     }
     if(value==INI_EXTERIORwallmenu){
       for(int i = 0; i < global_scase.npatchinfo; i++){
