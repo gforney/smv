@@ -3311,6 +3311,16 @@ void DrawBoundaryCellCenter(const meshdata *meshi){
   glEnd();
 }
 
+/* ------------------ AreBoundaryFilesLoaded ------------------------ */
+
+int AreBoundaryFilesLoaded(void){
+  for(int i = 0; i < global_scase.npatchinfo; i++){
+    patchdata *patchi = global_scase.patchinfo + i;
+    if(patchi->loaded == 1)return 1;
+  }
+  return 0;
+}
+
 /* ------------------ DrawBoundaryFrame ------------------------ */
 
 void DrawBoundaryFrame(int flag){

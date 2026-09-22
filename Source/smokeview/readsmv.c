@@ -3509,11 +3509,13 @@ int ReadIni2(const char *inifile, int localfile){
       fgets(buffer, 255, stream);
       sscanf(buffer, " %i %i %i %i %i %i %i %i %i", vbt,vbt+1,vbt+2,vbt+3,vbt+4,vbt+5,vbt+6, &show_mirror_boundary, &show_mirror_boundary);
       show_all_interior_patch_data = vbt[INTERIORwall];
-      if(show_all_interior_patch_data == 1){
-        ShowBoundaryMenu(SHOW_INTERIOR_WALL_MENU);
-      }
-      else{
-        ShowBoundaryMenu(HIDE_INTERIOR_WALL_MENU);
+      if(AreBoundaryFilesLoaded()==1){
+        if(show_all_interior_patch_data == 1){
+          ShowBoundaryMenu(SHOW_INTERIOR_WALL_MENU);
+        }
+        else{
+          ShowBoundaryMenu(HIDE_INTERIOR_WALL_MENU);
+        }
       }
       continue;
     }

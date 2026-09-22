@@ -350,7 +350,8 @@ EXTERNCPP void GetZoneColors(const float *t, int nt, unsigned char *it,
 
 //*** IOboundary.c headers
 
-EXTERNCPP void ComputeLoadedPatchHist(char *label, histogramdata **histptr, float *valmin, float *valmax);
+EXTERNCPP int AreBoundaryFilesLoaded(void);
+EXTERNCPP void ComputeLoadedPatchHist(char *label, histogramdata * *histptr, float *valmin, float *valmax);
 EXTERNCPP void DrawBoundaryFrame(int flag);
 EXTERNCPP int  GetBoundaryType(const patchdata *patchi);
 EXTERNCPP float *GetPatchXYZ(const meshdata *meshi);
