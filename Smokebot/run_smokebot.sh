@@ -144,7 +144,7 @@ if [ -e .smv_git ]; then
   repo=`pwd`
   cd $CURDIR
 else
-  echo "***error: smokebot not running in the bot/Smokebot  directory"
+  echo "***error: smokebot not running in the smv/Smokebot  directory"
   exit
 fi
 
@@ -420,7 +420,7 @@ if [ "$EMAIL" != "" ]; then
 fi
 
 if [[ "$RUNSMOKEBOT" == "1" ]]; then
-   CD_REPO $repo/bot/Smokebot $BRANCH || exit 1
+   CD_REPO $repo/smv/Smokebot $BRANCH || exit 1
     
    if [ "$BRANCH" == "master" ]; then 
      git fetch origin &> /dev/null
