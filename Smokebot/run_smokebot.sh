@@ -30,6 +30,7 @@ echo ""
 echo "Build apps, set repo revisions:"
 echo "-C - force clone"
 echo "-D use gnu compilers"
+echo "-G rootdir - specify github root directory"
 echo "-o - specify GH_OWNER when uploading manuals. [default: $GH_OWNER]"
 echo "-r - specify GH_REPO when uploading manuals. [default: $GH_REPO]"
 echo "-R release_type (master, release or test) - clone fds, exp, fig, out and smv repos"
@@ -181,6 +182,7 @@ GNU=
 CACHE_DIR=
 FDSEXEROOT=
 CPUS_PER_TASK=
+REPOROOT=
 
 WEB_ROOT=/opt/www/html
 if [ ! -d $WEB_ROOT ]; then
@@ -202,7 +204,7 @@ fi
 
 #*** parse command line options
 
-while getopts 'aAbB:cCDfF:hHJkm:Mo:q:Qr:R:s:SuT:Uvw:W:x:X:y:Y:' OPTION
+while getopts 'aAbB:cCDfF:G:hHJkm:Mo:q:Qr:R:s:SuT:Uvw:W:x:X:y:Y:' OPTION
 do
 case $OPTION  in
   a)
@@ -231,6 +233,9 @@ case $OPTION  in
    ;;
   F)
    FDSEXEROOT="$OPTARG"
+   ;;
+  G)
+   REPOROOT="$OPTARG"
    ;;
   h)
    usage
@@ -394,6 +399,14 @@ if [ "$KILL_SMOKEBOT" == "1" ]; then
   exit
 fi
 
+if [ "$REPOROOT" != "" ]; then
+  if [ ! -d $HOME/$REPOROOT ]; then
+    echo "***error repo root directory $HOME/$REPOROOT does not exist"
+    exit
+  fi
+  REPOROOT="-G $REPOROOT"
+fi
+
 #*** make sure smokebot is not already running
 
 if [[ "$RUNSMOKEBOT" == "1" ]]; then
@@ -432,7 +445,7 @@ BRANCH="-b $BRANCH"
 #*** run smokebot
 
 touch $smokebot_pid
-echo ./$botscript $SIZE $BRANCH $SANITIZE $FDSEXEROOT $FDS_REV $FDS_TAG $SMV_REV $SMV_TAG $CPUS_PER_TASK $CLONE_REPOS $CACHE_DIR $FORCECLONE $GNU $RUNAUTO $CLEANREPO $WEB_DIR $WEB_ROOT $UPDATEREPO $QUEUE $SQUEUE $UPLOAD $EMAIL $MOVIE "$@"
+echo ./$botscript $SIZE $BRANCH $SANITIZE $FDSEXEROOT $REPOROOT $FDS_REV $FDS_TAG $SMV_REV $SMV_TAG $CPUS_PER_TASK $CLONE_REPOS $CACHE_DIR $FORCECLONE $GNU $RUNAUTO $CLEANREPO $WEB_DIR $WEB_ROOT $UPDATEREPO $QUEUE $SQUEUE $UPLOAD $EMAIL $MOVIE "$@"
 $ECHO ./$botscript $SIZE $BRANCH $SANITIZE $FDSEXEROOT $FDS_REV $FDS_TAG $SMV_REV $SMV_TAG $CPuS_PER_TASK $CLONE_REPOS $CACHE_DIR $FORCECLONE $GNU $RUNAUTO $CLEANREPO $WEB_DIR $WEB_ROOT $UPDATEREPO $QUEUE $SQUEUE $UPLOAD $EMAIL $MOVIE "$@"
 if [ -e $smokebot_pid ]; then
   rm $smokebot_pid

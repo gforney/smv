@@ -322,23 +322,23 @@ clean_repo2()
    
    # Check to see if FDS repository exists
    updateclean=
-   if [ -e "$reporoot" ]
+   if [ -e "$REPOROOT" ]
    then
       if [ "$CLEANREPO" == "1" ]; then
-        CD_REPO $reporoot/$repodir $branch || return 1
+        CD_REPO $REPOROOT/$repodir $branch || return 1
         git update-index --refresh
         IS_DIRTY=`git describe --abbrev=7 --long --dirty | grep dirty | wc -l`
         if [ "$IS_DIRTY" == "1" ]; then
-          echo "The repo $reporoot/$repodir has uncommitted changes."
+          echo "The repo $REPOROOT/$repodir has uncommitted changes."
           echo "Commit or revert these changes or re-run"
           echo "smokebot without the -c (clean) option"
           return 1
         fi
-        clean_repo $reporoot/$repodir || return 1
+        clean_repo $REPOROOT/$repodir || return 1
         updateclean="1"
       fi
    else
-      echo "The repo directory $reporoot does not exist." >> $OUTPUT_DIR/stage1_clean_update_repos 2>&1
+      echo "The repo directory $REPOROOT does not exist." >> $OUTPUT_DIR/stage1_clean_update_repos 2>&1
       echo "Aborting smokebot"                            >> $OUTPUT_DIR/stage1_clean_update_repos 2>&1
       return 1
    fi
@@ -354,7 +354,7 @@ update_repo()
    local reponame=$1
    local branch=$2
    
-   CD_REPO $reporoot/$reponame $branch || return 1
+   CD_REPO $REPOROOT/$reponame $branch || return 1
    
    if [[ "$reponame" == "smv" ]]; then
       git update-index --refresh
@@ -366,11 +366,11 @@ update_repo()
       git update-index --refresh
    fi
 
-   cd $reporoot/$reponame
+   cd $REPOROOT/$reponame
    git update-index --refresh
    IS_DIRTY=`git describe --abbrev=7 --long --dirty | grep dirty | wc -l`
    if [ "$IS_DIRTY" == "1" ]; then
-     echo "The repo $reporoot/$reponame has uncommitted changes."
+     echo "The repo $REPOROOT/$reponame has uncommitted changes."
      echo "Commit or revert these changes or re-run"
      echo "smokebot without the -u (update) option"
      return 1
@@ -827,7 +827,7 @@ archive_timing_stats()
   TOTAL_SMV_TIMES=`tail -1 smv_timing_stats.csv`
   if [[ "$UPLOADRESULTS" == "1" ]] && [[ "$USER" == "smokebot" ]]; then
     cd $smvrepo/Smokebot
-    ./smvstatus_updatepub.sh $reporoot/webpages $WEBBRANCH
+    ./smvstatus_updatepub.sh $REPOROOT/webpages $WEBBRANCH
   fi
 }
 
@@ -1018,7 +1018,7 @@ email_build_status()
   echo "----------------------------------------------"      > $TIME_LOG
   echo "host: $hostname"                                    >> $TIME_LOG
   echo "OS: $platform2"                                     >> $TIME_LOG
-  echo "repo: $reporoot"                                    >> $TIME_LOG
+  echo "repo: $REPOROOT"                                    >> $TIME_LOG
   echo "queue: $QUEUE"                                      >> $TIME_LOG
   echo "cpus per task: $CPUS_PER_TASK_ARG"                  >> $TIME_LOG
   if [ "$ICC_VERSION" != "" ]; then
@@ -1274,6 +1274,7 @@ MPI_TYPE=impi
 INTEL2="-J"
 FDSEXEROOT=
 CPUS_PER_TASK_ARG=16
+REPOROOT=
 
 #*** save pid so -k option (kill smokebot) may be used lateer
 
@@ -1281,7 +1282,7 @@ echo $$ > $PID_FILE
 
 #*** parse command line options
 
-while getopts 'aAb:cCDF:m:Mq:QR:s:ST:uUw:W:x:X:y:Y:' OPTION
+while getopts 'aAb:cCDF:G:m:Mq:QR:s:ST:uUw:W:x:X:y:Y:' OPTION
 do
 case $OPTION in
   a)
@@ -1312,6 +1313,9 @@ case $OPTION in
    ;;
   F)
    FDSEXEROOT="$OPTARG"
+   ;;
+  G)
+   REPOROOT="$OPTARG"
    ;;
   m)
    mailTo="$OPTARG"
@@ -1429,9 +1433,9 @@ fi
 #*** make sure smokebot is running in the right directory
 
 if [ -x run_smokebot.sh ]; then
-  if [ "$reporoot" == "" ]; then
+  if [ "$REPOROOT" == "" ]; then
     cd ../..
-    reporoot=`pwd`
+    REPOROOT=`pwd`
     cd $smokebotdir
   fi
 else
@@ -1454,10 +1458,10 @@ MKDIR $APPS_DIR
 rm -rf $LATESTAPPS_DIR
 MKDIR $LATESTAPPS_DIR
 
-cfastrepo=$reporoot/cfast
-fdsrepo=$reporoot/fds
-smvrepo=$reporoot/smv
-figrepo=$reporoot/fig
+cfastrepo=$REPOROOT/cfast
+fdsrepo=$REPOROOT/fds
+smvrepo=$REPOROOT/smv
+figrepo=$REPOROOT/fig
 
 size=
 GNU_MPI=ompi_
