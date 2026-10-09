@@ -139,12 +139,11 @@ smokebot_pid=~/.fdssmvgit/firesmokebot_pid
 #*** make sure smokebot is started in the right location
 
 CURDIR=`pwd`
-if [ -e .smv_git ]; then
-  cd ../..
-  repo=`pwd`
+if [ -x run_smokebot.sh ]; then
+  SMOKEBOTDIR=`pwd`
   cd $CURDIR
 else
-  echo "***error: smokebot not running in the smv/Smokebot  directory"
+  echo "***error: smokebot not running in the directory containing smokebot scripts"
   exit
 fi
 
@@ -420,10 +419,10 @@ if [ "$EMAIL" != "" ]; then
 fi
 
 if [[ "$RUNSMOKEBOT" == "1" ]]; then
-   CD_REPO $repo/smv/Smokebot $BRANCH || exit 1
+   CD_REPO $SMOKEBOTDIR $BRANCH || exit 1
     
    if [ "$BRANCH" == "master" ]; then 
-     git fetch origin &> /dev/null
+     git fetch origin        &> /dev/null
      git merge origin/master &> /dev/null
    fi
 fi

@@ -249,7 +249,6 @@ clean_smokebot_history()
 {
    
    # Clean Smokebot metafiles
-   MKDIR $smokebotdir > /dev/null
    cd $smokebotdir
    MKDIR guides               > /dev/null
    MKDIR $HISTORY_DIR_ARCHIVE > /dev/null
@@ -323,24 +322,24 @@ clean_repo2()
    
    # Check to see if FDS repository exists
    updateclean=
-   if [ -e "$repo" ]
+   if [ -e "$reporoot" ]
    then
       if [ "$CLEANREPO" == "1" ]; then
-        CD_REPO $repo/$repodir $branch || return 1
+        CD_REPO $reporoot/$repodir $branch || return 1
         git update-index --refresh
         IS_DIRTY=`git describe --abbrev=7 --long --dirty | grep dirty | wc -l`
         if [ "$IS_DIRTY" == "1" ]; then
-          echo "The repo $repo/$repodir has uncommitted changes."
+          echo "The repo $reporoot/$repodir has uncommitted changes."
           echo "Commit or revert these changes or re-run"
           echo "smokebot without the -c (clean) option"
           return 1
         fi
-        clean_repo $repo/$repodir || return 1
+        clean_repo $reporoot/$repodir || return 1
         updateclean="1"
       fi
    else
-      echo "The repo directory $repo does not exist." >> $OUTPUT_DIR/stage1_clean_update_repos 2>&1
-      echo "Aborting smokebot"                        >> $OUTPUT_DIR/stage1_clean_update_repos 2>&1
+      echo "The repo directory $reporoot does not exist." >> $OUTPUT_DIR/stage1_clean_update_repos 2>&1
+      echo "Aborting smokebot"                            >> $OUTPUT_DIR/stage1_clean_update_repos 2>&1
       return 1
    fi
    return 0
@@ -355,7 +354,7 @@ update_repo()
    local reponame=$1
    local branch=$2
    
-   CD_REPO $repo/$reponame $branch || return 1
+   CD_REPO $reporoot/$reponame $branch || return 1
    
    if [[ "$reponame" == "smv" ]]; then
       git update-index --refresh
@@ -367,11 +366,11 @@ update_repo()
       git update-index --refresh
    fi
 
-   cd $repo/$reponame
+   cd $reporoot/$reponame
    git update-index --refresh
    IS_DIRTY=`git describe --abbrev=7 --long --dirty | grep dirty | wc -l`
    if [ "$IS_DIRTY" == "1" ]; then
-     echo "The repo $repo/$reponame has uncommitted changes."
+     echo "The repo $reporoot/$reponame has uncommitted changes."
      echo "Commit or revert these changes or re-run"
      echo "smokebot without the -u (update) option"
      return 1
@@ -828,7 +827,7 @@ archive_timing_stats()
   TOTAL_SMV_TIMES=`tail -1 smv_timing_stats.csv`
   if [[ "$UPLOADRESULTS" == "1" ]] && [[ "$USER" == "smokebot" ]]; then
     cd $smvrepo/Smokebot
-    ./smvstatus_updatepub.sh $repo/webpages $WEBBRANCH
+    ./smvstatus_updatepub.sh $reporoot/webpages $WEBBRANCH
   fi
 }
 
@@ -1019,7 +1018,7 @@ email_build_status()
   echo "----------------------------------------------"      > $TIME_LOG
   echo "host: $hostname"                                    >> $TIME_LOG
   echo "OS: $platform2"                                     >> $TIME_LOG
-  echo "repo: $repo"                                        >> $TIME_LOG
+  echo "repo: $reporoot"                                    >> $TIME_LOG
   echo "queue: $QUEUE"                                      >> $TIME_LOG
   echo "cpus per task: $CPUS_PER_TASK_ARG"                  >> $TIME_LOG
   if [ "$ICC_VERSION" != "" ]; then
@@ -1429,9 +1428,8 @@ fi
 
 #*** make sure smokebot is running in the right directory
 
-if [ -e .smv_git ]; then
-  cd ../..
-  repo=`pwd`
+if [ -x run_smokebot.sh ]; then
+  reporoot=`pwd`
   cd $smokebotdir
 else
   echo "***error: smokebot not running in the smv/Smokebot directory"
@@ -1453,10 +1451,10 @@ MKDIR $APPS_DIR
 rm -rf $LATESTAPPS_DIR
 MKDIR $LATESTAPPS_DIR
 
-cfastrepo=$repo/cfast
-fdsrepo=$repo/fds
-smvrepo=$repo/smv
-figrepo=$repo/fig
+cfastrepo=$reporoot/cfast
+fdsrepo=$reporoot/fds
+smvrepo=$reporoot/smv
+figrepo=$reporoot/fig
 
 size=
 GNU_MPI=ompi_
