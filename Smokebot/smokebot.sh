@@ -1315,7 +1315,7 @@ case $OPTION in
    FDSEXEROOT="$OPTARG"
    ;;
   G)
-   REPOROOT="$OPTARG"
+   REPOROOT=$HOME/"$OPTARG"
    ;;
   m)
    mailTo="$OPTARG"
