@@ -1026,7 +1026,6 @@ email_build_status()
     echo "C/C++: $ICC_VERSION "                             >> $TIME_LOG
   fi
   echo ""                                                   >> $TIME_LOG
-  echo "$BOT_REVISION/$BOTBRANCH"                           >> $TIME_LOG
   echo "$CFAST_REVISION/$CFASTBRANCH"                       >> $TIME_LOG
   echo "$FDS_REVISION/$FDSBRANCH"                           >> $TIME_LOG
   echo "$FIG_REVISION/$FIGBRANCH"                           >> $TIME_LOG
@@ -1247,7 +1246,6 @@ WEBBRANCH=nist-pages
 FDSBRANCH=master
 SMVBRANCH=master
 CFASTBRANCH=master
-BOTBRANCH=master
 FIGBRANCH=master
 
 QUEUE=smokebot
@@ -1298,7 +1296,6 @@ case $OPTION in
    if [ "$SMVBRANCH" == "current" ]; then
      FDSBRANCH="current"
      CFASTBRANCH="current"
-     BOTBRANCH="current"
      FIGBRANCH="current"
    fi
    ;;
