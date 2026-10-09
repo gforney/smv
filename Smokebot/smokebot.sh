@@ -1429,8 +1429,11 @@ fi
 #*** make sure smokebot is running in the right directory
 
 if [ -x run_smokebot.sh ]; then
-  reporoot=`pwd`
-  cd $smokebotdir
+  if [ "$reporoot" == "" ]; then
+    cd ../..
+    reporoot=`pwd`
+    cd $smokebotdir
+  fi
 else
   echo "***error: smokebot not running in the smv/Smokebot directory"
   echo "          Aborting smokebot"
