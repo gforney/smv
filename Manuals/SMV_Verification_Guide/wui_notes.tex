@@ -172,39 +172,6 @@ burned, partially burned (canopy burned away) and completely burned.
 \end{figure}
 \npage
 
-Figure \ref{figWUIparts} shows an example of a tree drawn as particles and an isosurface.
-Particle represent small units of fuel. Particle color represents
-temperature.  As particles use up fuel they disappear. When many
-trees are simulated, it is difficult to discern individual trees
-when drawn as particles.  The second column of images in Fig. \ref{figWUIparts} shows an equivalent
-view using an isosurface. The isosurface location is determined
-from the boundary (between particle and non-particle regions in
-the simulation) of the  particle cloud.
-Figure \ref{figWUItreepart} show a particle file drawn using canopy objects.
-The objects are colored according to the particle color as computed by FDS.
-
-
-\begin{figure}[bph]
-\begin{center}
-\begin{tabular}{rcc}
-\SI{0}{s}&\includegraphics[width=2.5in]{SCRIPT_FIGURES/pine_tree_part_000}&
-\includegraphics[width=2.5in]{SCRIPT_FIGURES/pine_tree_partiso_000}\\
-\SI{10}{s}&\includegraphics[width=2.5in]{SCRIPT_FIGURES/pine_tree_part_010}&
-\includegraphics[width=2.5in]{SCRIPT_FIGURES/pine_tree_partiso_010}\\
-\SI{20}{s}&\includegraphics[width=2.5in]{SCRIPT_FIGURES/pine_tree_part_020}&
-\includegraphics[width=2.5in]{SCRIPT_FIGURES/pine_tree_partiso_020}\\
-\SI{30}{s}&\includegraphics[width=2.5in]{SCRIPT_FIGURES/pine_tree_part_030}&
-\includegraphics[width=2.5in]{SCRIPT_FIGURES/pine_tree_partiso_030}\\
- \end{tabular}
-\end{center}
-\caption
-[A test showing trees drawn as particles and isosurfaces]
-{A test showing trees drawn as particles and isosurfaces at \SI{0}{s}, \SI{10}{s},
- \SI{20}{s} and \SI{30}{s}.  Particle represent small units of fuel.
- Particle color represents temperature.  As particles use up fuel they disappear.}
-\label{figWUIparts}%
-\end{figure}
-
 \begin{figure}[bph]
 \begin{center}
 \begin{tabular}{cc}
