@@ -199,8 +199,6 @@ export SMVVG=$GITROOT/smv/Manuals/SMV_Verification_Guide
 SUMMARY=$GITROOT/smv/Manuals/SMV_Summary
 
 is_file_installed $SMV
-is_file_installed $SMOKEZIP
-is_file_installed $SMOKEDIFF
 is_file_installed $BACKGROUND
 is_file_installed $WIND2FDS
 
@@ -229,49 +227,11 @@ pid_fedd=$1
 $FDS2FED fed_test           &
 pid_fede=$1
 
-# compute isosurface from particles
-
-cd $GITROOT/smv/Verification/Visualization
-echo Compressing sphere_propanec case
-$SMOKEZIP -f sphere_propanec &
-pid_casea=$!
-
-# compute isosurface from particles
-
-cd $GITROOT/smv/Verification/Visualization
-echo Converting particles to isosurfaces in case plumeiso
-$SMOKEZIP -f -part2iso plumeiso &
-pid_caseb=$!
-
-cd $GITROOT/smv/Verification/WUI
-if  [ -e pine_tree.smv ]; then
-  echo Converting particles to isosurfaces in case pine_tree
-  $SMOKEZIP -f -part2iso pine_tree &
-  pid_casec=$!
-fi
-
-# difference plume5c and thouse5
-
-cd $GITROOT/smv/Verification/Visualization
-
-echo Differencing cases plume5c and plume5cdelta
-$SMOKEDIFF -w -r plume5c plume5cdelta &
-pid_cased=$!
-echo Differencing cases thouse5 and thouse5delta
-$SMOKEDIFF -w -r thouse5 thouse5delta &
-pid_cased=$!
-
 wait $pid_feda
 wait $pid_fedb
 wait $pid_fedc
 wait $pid_fedd
 wait $pid_fede
-wait $pid_casea
-wait $pid_caseb
-if  [ -e $GITROOT/smv/Verification/WUI/pine_tree.smv ]; then
-  wait $pid_casec
-fi
-wait $pid_cased
 
 echo Generating images
 
@@ -279,7 +239,6 @@ cd $GITROOT/smv/Verification
 scripts/SMV_Cases.sh
 scripts/RESTART_Cases.sh
 cd $GITROOT/smv/Verification
-scripts/SMV_DIFF_Cases.sh
 cd $CURDIDR
 
 # generate geometry images
