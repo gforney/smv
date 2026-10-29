@@ -543,14 +543,6 @@ Colorbars may then be adapted to best highlight the simulation data visualized.
 Regions in the simulation with certain data values may be highlighted by clicking
 on the colorbar.
 
-\subsubsection{Data Compression}\ A program named smokezip may be used to compress 3D smoke, slice and boundary file data (Section \ref{ch:smokezip}). 
-
-\subsubsection{Data Comparison}\ A program named Smokediff
-may be used to compare two FDS cases (Section \ref{ch:smokediff}).
-Smokediff generates the difference between corresponding slice and boundary
-files for two cases with the same geometry.  Smokediff creates a
-{\tt .smv}\ file for the differenced data which may then be viewed with Smokeview.
-
 %%-----------------------------------------------------------------------
 \subsection{Exploring the Scene}
 
@@ -1530,42 +1522,6 @@ use:
 \end{lstlisting}
 A complete list of isosurface quantities
 may be found in Ref.~\cite{FDS_Users_Guide}
-
-%%-----------------------------------------------------------------------
-\subsection{Isosurfaces from particle files}
-The Smokezip -part2iso option may be used to generate isosurfaces from particle data.
-Isosurface locations indicate a boundary separating particle and
-no-particle regions, i.e., wherever particle density is 0.5
-particles per grid cell.  Isosurface  coloring is determined using
-averaged particle data.  Representing particle data with an
-isosurface is useful when particles are used to model objects such
-as trees especially when the objects are viewed up close.  See
-Chapter \ref{ch:smokezip}\ for more details on generating
-isosurface files from particle files.  Figure \ref{figisoparticle}
-shows a snapshot of a fire plume generated using particles and the command
-\begin{lstlisting}
-smokezip -part2iso plumeiso
-\end{lstlisting}
-The plume is visualized using both particles and an isosurface
-generated from these same particles.
-
-
-\begin{figure}[bph]
-\begin{center}
-\begin{tabular}{cc}
-\includegraphics[height=3.75in]{../SMV_Verification_Guide/SCRIPT_FIGURES/plumeiso_prt5_10}&
-\includegraphics[height=3.75in]{../SMV_Verification_Guide/SCRIPT_FIGURES/plumeiso_prt5_iso_10}\\
-particles at 10.0~s&particle isosurface at 10.0~s\\
-\includegraphics[height=3.75in]{../SMV_Verification_Guide/SCRIPT_FIGURES/plumeiso_prt5_30}&
-\includegraphics[height=3.75in]{../SMV_Verification_Guide/SCRIPT_FIGURES/plumeiso_prt5_iso_30}\\
-particles at 30.0~s&particle isosurface at 30.0~s\\
-\end{tabular}
-\end{center}
-\caption
-[Fire plume visualized using particles and isosurfaces generated from  particles]
-{Fire plume visualized using particles and isosurfaces generated from  particles.}
-\label{figisoparticle}%
-\end{figure}
 
 %%-----------------------------------------------------------------------
 %*** fed section
@@ -5653,14 +5609,6 @@ to more easily analyze and generate data.  Smokezip may be used to compress
 FDS data files resulting in quicker load times in Smokeview.  Smokediff may be used
 to compare two FDS cases.  Smokediff generates another .smv file and a set of data files
 which can be viewed with Smokeview.  
-
-%------------------------ smokezip ------------------------------------------------
-
-\input{smokezip}
-
-%------------------------ smokediff ------------------------------------------------
-
-\input{smokediff}
 
 %------------------------ wind2fds ------------------------------------------------
 
