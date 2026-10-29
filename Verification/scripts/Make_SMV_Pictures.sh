@@ -50,15 +50,11 @@ erase_helpinfo_files()
   rm -f *.help
 
   rm -f smokeview.version
-  rm -f smokediff.version
-  rm -f smokezip.version
   rm -f background.version
   rm -f wind2fds.version
   rm -f fds.version
 
   rm -f smokeview.help
-  rm -f smokediff.help
-  rm -f smokezip.help
   rm -f background.help
   rm -f wind2fds.help
   rm -f cfastbot.help
@@ -76,8 +72,6 @@ make_helpinfo_files()
   cd $dir
 
   $SMV        -help_all > smokeview.help
-  $SMOKEZIP   -help     > smokezip.help
-  $SMOKEDIFF  -help     > smokediff.help
   $BACKGROUND -help     > background.help
   $WIND2FDS   -help     > wind2fds.help
   $CFASTBOT   -H        > cfastbot.help
@@ -85,8 +79,6 @@ make_helpinfo_files()
   $SMOKEBOT   -H        > smokebot.help
 
   $SMV -version        > smokeview.version
-  $SMOKEZIP -v         > smokezip.version
-  $SMOKEDIFF -v        > smokediff.version
   $BACKGROUND -version > background.version
   $WIND2FDS            > wind2fds.version
   if [ -e $FDSEXE ]; then
@@ -173,8 +165,6 @@ fi
 
 if [ "$use_installed" == "1" ] ; then
   export SMV=smokeview
-  export SMOKEZIP=smokezip
-  export SMOKEDIFF=smokediff
   export FDS2FED=fds2fed
   export WIND2FDS=wind2fds
   export BACKGROUND=background
@@ -184,8 +174,6 @@ if [ "$use_installed" == "1" ] ; then
   fi
 else
   export SMV=$GITROOT/smv/Build/smokeview/${COMPILER}_$VERSION2/smokeview_$VERSION
-  export SMOKEZIP=$GITROOT/smv/Build/smokezip/${COMPILER}_$VERSION2/smokezip_$VERSION2
-  export SMOKEDIFF=$GITROOT/smv/Build/smokediff/${COMPILER}_$VERSION2/smokediff_$VERSION2
   export FDS2FED=$GITROOT/smv/Build/fds2fed/${COMPILER}_$VERSION2/fds2fed_$VERSION2
   export WIND2FDS=$GITROOT/smv/Build/wind2fds/${COMPILER}_$VERSION2/wind2fds_$VERSION2
   export BACKGROUND=$GITROOT/smv/Build/background/${COMPILER}_$VERSION2/background_$VERSION2
@@ -198,9 +186,7 @@ CFASTBOT=$GITROOT/bot/Cfastbot/run_cfastbot.sh
 
 echo Generating smokeview images using:
 echo background: $BACKGROUND
-echo smokediff : $SMOKEDIFF
 echo smokeview : $SMV
-echo smokezip  : $SMOKEZIP
 echo
 
 RUNSMV="$GITROOT/smv/Utilities/Scripts/qsmv.sh $CPUS_PER_TASK -j $JOBPREFIX $use_installed -q $QUEUE"
