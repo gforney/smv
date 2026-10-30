@@ -360,7 +360,6 @@ EXTERNCPP void Global2GLUIBoundaryBounds(const char *key);
 EXTERNCPP void MakeBoundaryMask(patchdata *patchi);
 EXTERNCPP FILE_SIZE ReadBoundary(int ifile, int flag, int *errorcode);
 EXTERNCPP void SetTimeState(void);
-EXTERNCPP void UncompressBoundaryDataGEOM(patchdata *patchi, int frame_index);
 EXTERNCPP void UpdateBoundaryTypes(void);
 EXTERNCPP void UpdateBoundaryMenuLabels(void);
 EXTERNCPP void UpdateBoundarySliceDups(void);

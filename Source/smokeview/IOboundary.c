@@ -3225,20 +3225,3 @@ void GetBoundaryParams(void){
   UpdateBoundarySliceDups();
   nboundaryslicedups = CountBoundarySliceDups();
 }
-
-/* ------------------ UncompressBoundaryDataGEOM ------------------------ */
-
-void UncompressBoundaryDataGEOM(patchdata *patchi, int local_iframe){
-  unsigned int n_compressed_data;
-  uLongf n_uncompressed_data;
-  unsigned char *compressed_data, *uncompressed_data;
-  float *geom_vals;
-
-  geom_vals         = patchi->geom_vals;
-  compressed_data   = (unsigned char*)geom_vals + patchi->cvals_offsets[local_iframe];
-  uncompressed_data = patchi->cbuffer;
-
-  n_compressed_data   = patchi->cvals_sizes[local_iframe];
-  n_uncompressed_data = patchi->cbuffer_size;
-  UnCompressZLIB(uncompressed_data, &n_uncompressed_data, compressed_data, n_compressed_data);
-}
