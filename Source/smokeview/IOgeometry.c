@@ -2130,16 +2130,6 @@ FILE_SIZE GetGeomData(patchdata *patchi, char *filename, int load_flag, int ntim
   // if(nvert_dynamic>0)vals_1, ...vals_nvert_dynamic
   // if(ntri_dynamic>0) vals_1, ...vals_ntri_dynamic
 
-  //*** compressed (compressed)
-  // 1
-  // completion (0/1)
-  // fileversion (compressed format)
-  // min max (used to perform conversion)
-  // for each time step
-  // time
-  // ncompressed
-  // compressed_1,...,compressed_ncompressed
-
   FILE_m *stream;
   int count_read;
 
@@ -2244,7 +2234,6 @@ FILE_SIZE ReadGeomData(patchdata *patchi, slicedata *slicei, int load_flag, int 
   FILE_SIZE return_filesize = 0;
   float total_time;
   int *geom_offsets = NULL, geom_offset_flag;
-  int *cvals_offsets = NULL, *cvals_sizes = NULL;
   int max_buffer_size = 0;
   unsigned char *cbuffer = NULL;
 
@@ -2323,8 +2312,8 @@ FILE_SIZE ReadGeomData(patchdata *patchi, slicedata *slicei, int load_flag, int 
       if(slicei!=NULL)geom_offsets = slicei->geom_offsets;
     }
   }
-  patchi->cvals_offsets = cvals_offsets;
-  patchi->cvals_sizes   = cvals_sizes;
+  patchi->cvals_offsets = NULL;
+  patchi->cvals_sizes   = NULL;
 
   if(ntimes_local>0){
     NewMemory((void **)&patchi->geom_nstatics,             ntimes_local*sizeof(int));

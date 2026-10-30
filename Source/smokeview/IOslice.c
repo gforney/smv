@@ -10,7 +10,6 @@
 #include <math.h>
 #include GLUT_H
 
-#include "compress.h"
 #include "interp.h"
 #include "smokeviewvars.h"
 #include "IOscript.h"
@@ -2873,18 +2872,6 @@ int TimeAverageData(char *label, float **data_out, float **data_in, int ndata, i
   FREEMEMORY(datatemp);
   return 0;
 }
-
-//*** header
-// endian
-// completion (0/1)
-// fileversion (compressed format)
-// version  (slicef version)
-// global min max (used to perform conversion)
-// i1,i2,j1,j2,k1,k2
-
-//*** frame
-// time, compressed frame size                        for each frame
-// compressed buffer
 
 #ifdef pp_GPU
 

@@ -8,7 +8,6 @@
 
 #include "smokeviewvars.h"
 #include "glui_bounds.h"
-#include "compress.h"
 #include "IOscript.h"
 #include "getdata.h"
 

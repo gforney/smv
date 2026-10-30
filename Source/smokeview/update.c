@@ -10,7 +10,6 @@
 #include GLUT_H
 
 #include "smokeviewvars.h"
-#include "compress.h"
 #include "IOscript.h"
 #include "glui_smoke.h"
 #include "glui_motion.h"
