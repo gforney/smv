@@ -2312,8 +2312,6 @@ FILE_SIZE ReadGeomData(patchdata *patchi, slicedata *slicei, int load_flag, int 
       if(slicei!=NULL)geom_offsets = slicei->geom_offsets;
     }
   }
-  patchi->cvals_offsets = NULL;
-  patchi->cvals_sizes   = NULL;
 
   if(ntimes_local>0){
     NewMemory((void **)&patchi->geom_nstatics,             ntimes_local*sizeof(int));

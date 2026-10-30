@@ -3528,8 +3528,6 @@ int ParseBNDFProcess(smv_case *scase, bufferstreamdata *stream, char *buffer, in
   patchi->geom_vals = NULL;
   patchi->geom_ivals = NULL;
   patchi->geom_nvals = 0;
-  patchi->cvals_offsets = NULL;
-  patchi->cvals_sizes = NULL;
   patchi->cbuffer = NULL;
   patchi->cbuffer_size = 0;
   patchi->blocknumber = blocknumber;

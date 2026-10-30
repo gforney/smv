@@ -551,7 +551,6 @@ typedef struct _slicedata {
   char *slicelabel;
   unsigned char *slice_mask;
   int colorbar_autoflip;
-  FILE_SIZE ncompressed;
   int slice_filetype;
   struct _multislicedata *mslice;
   int menu_show;
@@ -1250,7 +1249,6 @@ typedef struct _patchdata {
   int ntimes, ntimes_old;
   int patch_filetype, structured;
   int shortlabel_index;
-  int *cvals_offsets, *cvals_sizes;
   unsigned char *cbuffer;
   int cbuffer_size;
   int boundary;
