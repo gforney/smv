@@ -3482,7 +3482,6 @@ int ParseBNDFProcess(smv_case *scase, bufferstreamdata *stream, char *buffer, in
 
   NewMemory((void **)&patchi->size_file, (unsigned int)(len+4+1));
   STRCPY(patchi->size_file, bufferptr);
-  //      STRCAT(patchi->size_file,".szz"); when we actully use file check both .sz and .szz extensions
 
   if(parse_opts.lookfor_compressed_files==1&&FileExistsCaseDir(scase, patchi->comp_file) == YES){
     patchi->compression_type = COMPRESSED_ZLIB;

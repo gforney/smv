@@ -1370,15 +1370,10 @@ FILE *FopenSmokeSizefile(char *smokefile, int fortran_skip){
       smoke_sizefilename[lentext - 4] = 0;
     }
   }
-  strcat(smoke_sizefilename, ".szz");
-  SMOKE_SIZE_FILE = FOPEN_2DIR(smoke_sizefilename, "r");
 
-  if(SMOKE_SIZE_FILE == NULL){
-    // not .szz so try .sz
-    strcpy(smoke_sizefilename, smokefile);
-    strcat(smoke_sizefilename, ".sz");
-    SMOKE_SIZE_FILE = FOPEN_2DIR(smoke_sizefilename, "r");
-  }
+  strcpy(smoke_sizefilename, smokefile);
+  strcat(smoke_sizefilename, ".sz");
+  SMOKE_SIZE_FILE = FOPEN_2DIR(smoke_sizefilename, "r");
   if(SMOKE_SIZE_FILE == NULL){
     char *ext;
 

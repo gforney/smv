@@ -743,10 +743,7 @@ void GetBoundarySizeInfo(patchdata *patchi, int *nframes, int *buffersize){
   // compressed size of frame
   // compressed buffer
 
-  strcpy(sizefile, patchi->size_file);
-  strcat(sizefile, ".szz");
-  streamsize = FOPEN_2DIR(sizefile, "r");
-  if(streamsize==NULL){
+  {
     *nframes = 0;
     *buffersize = 0;
 
@@ -754,10 +751,7 @@ void GetBoundarySizeInfo(patchdata *patchi, int *nframes, int *buffersize){
     strcat(sizefile, ".sz");
 
     stream = FOPEN(patchi->file, "rb");
-    if(stream==NULL){
-      if(streamsize!=NULL)fclose(streamsize);
-      return;
-    }
+    if(stream==NULL)return;
 
     streamsize = FOPEN_2DIR(sizefile, "w");
     if(streamsize==NULL){
