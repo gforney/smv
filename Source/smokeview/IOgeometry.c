@@ -2119,7 +2119,7 @@ FILE_SIZE GetGeomData(patchdata *patchi, char *filename, int load_flag, int ntim
   char *ext=NULL;
   unsigned char *cvals;
 
-  //***format (uncompressed)
+  //***format
   // 1
   // version
   // for each time step:
