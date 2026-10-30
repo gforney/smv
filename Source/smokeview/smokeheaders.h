@@ -707,7 +707,6 @@ EXTERNCPP void ScaleFont3D(void);
 
 //*** readsmv.c headers
 
-EXTERNCPP void *CheckFiles(void *arg);
 EXTERNCPP void *Compress(void *arg);
 EXTERNCPP void GetBoxSkyCorners(void);
 EXTERNCPP void GetSliceParmInfo(sliceparmdata *sp);

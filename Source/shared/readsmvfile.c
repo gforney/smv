@@ -3685,7 +3685,6 @@ int ParseSMOKE3DProcess(smv_case *scase, bufferstreamdata *stream, char *buffer,
     smoke3di->soot_loaded = 0;
     smoke3di->seq_id = nn_smoke3d;
     smoke3di->autoload = 0;
-    smoke3di->compression_type = COMPRESSED_UNKNOWN;
     smoke3di->file = NULL;
     smoke3di->smokeframe_in = NULL;
     smoke3di->smokeframe_comp_list = NULL;
@@ -3718,19 +3717,7 @@ int ParseSMOKE3DProcess(smv_case *scase, bufferstreamdata *stream, char *buffer,
     STRCPY(buffer2, bufferptr);
     STRCAT(buffer2, ".svz");
 
-    len = lenbuffer+4;
-    smoke3di->comp_file = SMOKE3DBUFFER(len + 1);
-    STRCPY(smoke3di->comp_file, buffer2);
-
-    if(FileExistsCaseDir(scase, smoke3di->comp_file) == YES){
-      smoke3di->file = smoke3di->comp_file;
-      smoke3di->is_zlib = 1;
-      smoke3di->compression_type = COMPRESSED_ZLIB;
-    }
-    else{
-      smoke3di->file = smoke3di->reg_file;
-      smoke3di->compression_type = COMPRESSED_RLE;
-    }
+    smoke3di->file = smoke3di->reg_file;
 #ifdef pp_SMOKE3D_FORCE
     if(strcmp(smoke3di->file, "dummy.xyz") == 0){
       smoke3di->dummy = 1;
@@ -4745,7 +4732,6 @@ int ReadSMV_Init(smv_case *scase){
       for(i=0; i<scase->smoke3dcoll.nsmoke3dinfo; i++){
         smoke3di = scase->smoke3dcoll.smoke3dinfo + i;
         FreeSmoke3D(scase, smoke3di);
-        FREEMEMORY(smoke3di->comp_file);
         FREEMEMORY(smoke3di->reg_file);
       }
       FREEMEMORY(scase->smoke3dcoll.smoke3dinfo);

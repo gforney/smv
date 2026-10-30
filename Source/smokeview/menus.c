@@ -426,32 +426,26 @@ void GetFileSizes(void){
   printf("\n");
   if(global_scase.smoke3dcoll.nsmoke3dinfo>0){
     float hrrpuv = 0.0, soot = 0.0, temp = 0.0, co2 = 0.0;
-    float hrrpuv2 = 0.0, soot2 = 0.0, temp2 = 0.0, co22 = 0.0;
 
     for(i = 0; i<global_scase.smoke3dcoll.nsmoke3dinfo; i++){
       smoke3ddata *smoke3di;
-      FILE_SIZE file_size, compressed_file_size;
+      FILE_SIZE file_size;
 
       smoke3di = global_scase.smoke3dcoll.smoke3dinfo+i;
 
       file_size = GetFileSizeSMV(smoke3di->reg_file);
-      compressed_file_size = GetFileSizeSMV(smoke3di->comp_file);
 
       if(smoke3di->type==SOOT_index){
         soot += file_size;
-        soot2 += compressed_file_size;
       }
       else if(smoke3di->type==HRRPUV_index){
         hrrpuv += file_size;
-        hrrpuv2 += compressed_file_size;
       }
       else if(smoke3di->type==TEMP_index){
         temp += file_size;
-        temp2 += compressed_file_size;
       }
       else if(smoke3di->type==CO2_index){
         co2 += file_size;
-        co22 += compressed_file_size;
       }
     }
     printf("3d smoke file sizes:\n");
@@ -11752,15 +11746,11 @@ if(opengl_finalized == 0)return;
       if(nsmoke3dloaded>0){
         CREATEMENU(unloadsmoke3dmenu,UnLoadSmoke3DMenu);
         for(i = 0; i<global_scase.smoke3dcoll.nsmoke3dtypes; i++){
-          int j, doit, is_zlib;
+          int j, doit;
 
           doit = 0;
-          is_zlib = 0;
           for(j = 0; j<global_scase.smoke3dcoll.nsmoke3dinfo; j++){
             if(global_scase.smoke3dcoll.smoke3dinfo[j].loaded==1&&global_scase.smoke3dcoll.smoke3dinfo[j].type==i){
-              if(global_scase.smoke3dcoll.smoke3dinfo[j].compression_type == COMPRESSED_ZLIB){
-                is_zlib = 1;
-              }
               doit = 1;
               break;
             }
@@ -11769,9 +11759,6 @@ if(opengl_finalized == 0)return;
             char smvmenulabel[256];
 
             strcpy(smvmenulabel, global_scase.smoke3dcoll.smoke3dtypes[i].longlabel);
-            if(is_zlib == 1){
-              strcat(smvmenulabel, "(ZLIB)");
-            }
             glutAddMenuEntry(smvmenulabel, -(i + 1));
           }
         }
@@ -11823,9 +11810,6 @@ if(opengl_finalized == 0)return;
 #endif
               if(global_scase.smoke3dcoll.smoke3dinfo[jj].type==ii){
                 if(global_scase.smoke3dcoll.smoke3dinfo[jj].loaded==1)nloaded++;
-                if(global_scase.smoke3dcoll.smoke3dinfo[jj].compression_type == COMPRESSED_ZLIB){
-                  is_zlib = 1;
-                }
                 ntotal++;
               }
             }

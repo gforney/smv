@@ -2286,46 +2286,6 @@ void *ReadKeyboard(void *arg){
 }
 #endif
 
-/* ------------------ CheckFiles ------------------------ */
-
-void *CheckFiles(void *arg){
-  int i;
-
-  ThreadLock(checkfiles_threads);
-  global_scase.have_compressed_files = 0;
-  ThreadUnlock(checkfiles_threads);
-  for(i = 0; i < global_scase.smoke3dcoll.nsmoke3dinfo; i++){
-    smoke3ddata *smoke3di;
-    int have_file;
-
-    smoke3di = global_scase.smoke3dcoll.smoke3dinfo + i;
-    have_file = FileExistsCaseDir(&global_scase, smoke3di->comp_file);
-    ThreadLock(checkfiles_threads);
-    if(have_file == YES){
-      smoke3di->compression_type_temp = COMPRESSED_ZLIB;
-      global_scase.have_compressed_files = 1;
-    }
-    ThreadUnlock(checkfiles_threads);
-  }
-  if(global_scase.have_compressed_files == 0){
-    THREAD_EXIT(checkfiles_threads);
-  }
-  ThreadLock(checkfiles_threads);
-  for(i = 0; i < global_scase.smoke3dcoll.nsmoke3dinfo; i++){
-    smoke3ddata *smoke3di;
-
-    smoke3di = global_scase.smoke3dcoll.smoke3dinfo + i;
-    if(smoke3di->compression_type_temp == COMPRESSED_ZLIB){
-      smoke3di->file = smoke3di->comp_file;
-      smoke3di->is_zlib = 1;
-      smoke3di->compression_type = COMPRESSED_ZLIB;
-    }
-  }
-  updatemenu = 1;
-  ThreadUnlock(checkfiles_threads);
-  THREAD_EXIT(checkfiles_threads);
-}
-
 /* ------------------ InitMeshBlockages ------------------------ */
 
 void InitMeshBlockages(void){
@@ -2686,9 +2646,6 @@ int ReadSMV_Configure(){
     }
   }
 
-  ThreadInit(&checkfiles_threads, n_checkfiles_threads, use_checkfiles_threads, serial_override, CheckFiles);
-  ThreadRun(checkfiles_threads);
-  PRINT_TIMER(timer_readsmv, "CheckFiles");
   CheckMemory;
   UpdateIsoColors();
   PRINT_TIMER(timer_readsmv, "UpdateIsoColors");

@@ -1638,68 +1638,6 @@ int GetSmoke3DSizes(smoke3ddata *smoke3di, int fortran_skip, char *smokefile,
   return 0;
 }
 
-/* ------------------ GetSmoke3DVersion ------------------------ */
-
-int GetSmoke3DVersion2(smoke3ddata *smoke3di){
-  FILE *SMOKE3DFILE = NULL, *SMOKE3D_REGFILE = NULL, *SMOKE3D_COMPFILE = NULL;
-  int nxyz[8];
-  char *file;
-  int fortran_skip = 0;
-
-  if(smoke3di->filetype==FORTRAN_GENERATED&&smoke3di->is_zlib==0)fortran_skip = 4;
-
-  file = smoke3di->comp_file;
-  if(file!=NULL)SMOKE3D_COMPFILE = FOPEN(file, "rb");
-  if(SMOKE3D_COMPFILE==NULL){
-    file = smoke3di->reg_file;
-    SMOKE3D_REGFILE = FOPEN(file, "rb");
-    if(SMOKE3D_REGFILE == NULL){
-      file = smoke3di->smoke_density_file;
-      SMOKE3D_REGFILE = FOPEN(file, "rb");
-    }
-  }
-  if(SMOKE3D_REGFILE==NULL&&SMOKE3D_COMPFILE==NULL)return -1;
-  if(SMOKE3D_COMPFILE!=NULL)SMOKE3DFILE = SMOKE3D_COMPFILE;
-  if(SMOKE3D_REGFILE!=NULL)SMOKE3DFILE = SMOKE3D_REGFILE;
-  smoke3di->file = file;
-
-  SKIP_SMOKE(SMOKE3DFILE);fread(nxyz, 4, 8, SMOKE3DFILE); SKIP_SMOKE(SMOKE3DFILE);
-  if(smoke3di->version == 2){
-    float bounds_local[2];
-    
-    SKIP_SMOKE(SMOKE3DFILE);fread(bounds_local,4,2,SMOKE3DFILE);SKIP_SMOKE(SMOKE3DFILE);
-  }
-  {
-    float time_local;
-    int nchars[2];
-
-    SKIP_SMOKE(SMOKE3DFILE);fread(&time_local, 4, 1, SMOKE3DFILE);SKIP_SMOKE(SMOKE3DFILE);
-    if(feof(SMOKE3DFILE)==0){
-      SKIP_SMOKE(SMOKE3DFILE);fread(nchars, 4, 2, SMOKE3DFILE);SKIP_SMOKE(SMOKE3DFILE);
-    }
-  }
-
-  fclose(SMOKE3DFILE);
-
-  return nxyz[1];
-}
-
-/* ------------------ GetSmoke3DVersion ------------------------ */
-
-int GetSmoke3DVersion(smoke3ddata *smoke3di){
-  if(smoke3d_compression_type == COMPRESSED_UNKNOWN){
-    smoke3d_compression_type = GetSmoke3DVersion2(smoke3di);
-  }
-  else if(smoke3d_compression_type == COMPRESSED_RLE){
-    smoke3di->file = smoke3di->reg_file;
-  }
-  else{
-    smoke3di->file = smoke3di->comp_file;
-    smoke3d_compression_type = COMPRESSED_ZLIB;
-  }
-  return smoke3d_compression_type;
-}
-
 /* ------------------ SetSmokeColorFlags ------------------------ */
 
 void SetSmokeColorFlags(smoke3d_collection *smoke3dcoll_arg){
@@ -1928,10 +1866,7 @@ int SetupSmoke3D(smoke3ddata *smoke3di, int load_flag, int iframe_arg, int *erro
     }
   }
 
-  if(smoke3di->compression_type==COMPRESSED_UNKNOWN){
-    smoke3di->compression_type = GetSmoke3DVersion(smoke3di);
-    update_smoke3dmenulabels = 1;
-  }
+  update_smoke3dmenulabels = 1;
   if(iframe_arg==ALL_SMOKE_FRAMES)PRINTF("\nLoading %s(%s)\n", smoke3di->file, smoke3di->label.shortlabel);
   CheckMemory;
   smoke3di->ntimes_old = smoke3di->ntimes;
@@ -2085,7 +2020,6 @@ FILE_SIZE ReadSmoke3D(int time_frame,int ifile_arg,int load_flag, int first_time
   smoke3di->js2=nxyz_local[5];
   smoke3di->ks1=nxyz_local[6];
   smoke3di->ks2=nxyz_local[7];
-  smoke3di->compression_type=COMPRESSED_RLE;
 
   // read smoke data
   START_TIMER(read_time_local);
@@ -2135,16 +2069,11 @@ FILE_SIZE ReadSmoke3D(int time_frame,int ifile_arg,int load_flag, int first_time
 
       nframes_found_local++;
       SKIP_SMOKE(SMOKE3DFILE);fread(smoke3di->smokeframe_comp_list[iii],1,smoke3di->nchars_compressed_smoke[iii],SMOKE3DFILE); SKIP_SMOKE(SMOKE3DFILE);
-      if(smoke3di->compression_type==COMPRESSED_RLE){
-        if(AllZeroRLE(smoke3di->smokeframe_comp_list[iii],smoke3di->nchars_compressed_smoke[iii])==1){
-          smoke3di->frame_all_zeros[iii] = SMOKE3D_ZEROS_ALL;
-        }
-        else{
-          smoke3di->frame_all_zeros[iii] = SMOKE3D_ZEROS_SOME;
-        }
+      if(AllZeroRLE(smoke3di->smokeframe_comp_list[iii],smoke3di->nchars_compressed_smoke[iii])==1){
+        smoke3di->frame_all_zeros[iii] = SMOKE3D_ZEROS_ALL;
       }
       else{
-        smoke3di->frame_all_zeros[iii] = SMOKE3D_ZEROS_UNKNOWN;
+        smoke3di->frame_all_zeros[iii] = SMOKE3D_ZEROS_SOME;
       }
       file_size_local +=4+smoke3di->nchars_compressed_smoke[iii]+4;
       iii++;
@@ -2241,8 +2170,6 @@ int UncompressSmoke3D(smoke3ddata *smoke3di){
   countout=smoke3di->nchars_uncompressed;
 
   unsigned char *buffer_in;
-  switch(smoke3di->compression_type){
-  case COMPRESSED_RLE:
     buffer_in = smoke3di->smokeframe_comp_list[iframe_local];
     countout = UnCompressRLE(buffer_in,countin,smoke3di->smokeframe_in);
     if(update_fire_histogram == 1 && smoke3di->is_fire==1 && smoke3di->histtimes != NULL && smoke3di->histtimes[iframe_local] == 0){
@@ -2267,15 +2194,6 @@ int UncompressSmoke3D(smoke3ddata *smoke3di){
         smoke3d_firevals[i] /= denom;
       }
     }
-    CheckMemory;
-    break;
-  case COMPRESSED_ZLIB:
-    UnCompressZLIB(smoke3di->smokeframe_in,&countout,smoke3di->smokeframe_comp_list[iframe_local],countin);
-    break;
-  default:
-    assert(FFALSE);
-    break;
-  }
   CheckMemory;
   if(smoke3di->frame_all_zeros[iframe_local] == SMOKE3D_ZEROS_UNKNOWN){
     int i;
@@ -2726,19 +2644,6 @@ void UpdateSmoke3dMenuLabels(void){
     if(showfiles==1){
       if(strcmp(smoke3di->menulabel, "") != 0)STRCAT(smoke3di->menulabel, ", ");
       STRCAT(smoke3di->menulabel,smoke3di->file);
-    }
-    switch(smoke3di->compression_type){
-    case COMPRESSED_UNKNOWN:
-      // compression type not determined yet
-      break;
-    case COMPRESSED_RLE: // 3d smoke files are rle compressed by default
-      break;
-    case COMPRESSED_ZLIB:
-      STRCAT(smoke3di->menulabel," (ZLIB) ");
-      break;
-    default:
-      assert(FFALSE);
-      break;
     }
   }
 }

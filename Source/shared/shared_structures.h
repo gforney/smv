@@ -1367,7 +1367,7 @@ typedef struct _smoke3ddata {
   int version;
   int seq_id, autoload;
   char *file;
-  char *comp_file, *reg_file;
+  char *reg_file;
   char *smoke_density_file;
 #ifdef pp_SMOKE3D_FORCE
   int dummy;
@@ -1383,7 +1383,6 @@ typedef struct _smoke3ddata {
   int blocknumber;
   int type;
   int is1, is2, js1, js2, ks1, ks2;
-  int compression_type, compression_type_temp;
   flowlabels label;
   char menulabel[128];
   float *times;
