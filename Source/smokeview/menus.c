@@ -404,18 +404,12 @@ int ComparePatchLabels(const void *arg1, const void *arg2){
 
 /* ----------------------- PrintFileSizes ----------------------------- */
 
-void PrintFileSizes(char *type, float val, float val2){
-  char label[100], label2[100], *labelptr=NULL, *labelptr2=NULL;
+void PrintFileSizes(char *type, float val){
+  char label[100], *labelptr=NULL;
 
-  if(val>0.0)labelptr=GetFloatFileSizeLabel(val, label);
-  if(val2>0.0)labelptr2=GetFloatFileSizeLabel(val2, label2);
   if(val>0.0){
-    if(val2>0.0){
-      if(labelptr!=NULL&&labelptr2!=NULL)printf("  %s/compressed: %s/%s\n", type,labelptr,labelptr2);
-    }
-    else{
-      if(labelptr != NULL)printf("  %s: %s\n", type,labelptr);
-    }
+    labelptr = GetFloatFileSizeLabel(val, label);
+    if(labelptr != NULL)printf("  %s: %s\n", type,labelptr);
   }
 }
 /* ------------------ GetFileSizes ------------------------ */
@@ -449,10 +443,10 @@ void GetFileSizes(void){
       }
     }
     printf("3d smoke file sizes:\n");
-    PrintFileSizes("soot",soot,soot2);
-    PrintFileSizes("hrrpuv",hrrpuv,hrrpuv2);
-    PrintFileSizes("temp",temp,temp2);
-    PrintFileSizes("co2",co2,co22);
+    PrintFileSizes("soot",soot);
+    PrintFileSizes("hrrpuv",hrrpuv);
+    PrintFileSizes("temp",temp);
+    PrintFileSizes("co2",co2);
     printf("\n");
   }
 
@@ -474,7 +468,7 @@ void GetFileSizes(void){
 
   if(global_scase.npatchinfo>0){
     patchdata **patchlist;
-    float sum = 0.0, compressed_sum=0;
+    float sum = 0.0;
 
     printf("boundary files sizes: \n");
     NewMemory((void **)&patchlist, global_scase.npatchinfo*sizeof(patchdata *));
@@ -494,11 +488,11 @@ void GetFileSizes(void){
         sum += file_size;
       }
       else{
-        PrintFileSizes(patchim1->label.longlabel,sum,compressed_sum);
+        PrintFileSizes(patchim1->label.longlabel,sum);
         sum = file_size;
       }
       if(i==global_scase.npatchinfo-1){
-        PrintFileSizes(patchi->label.longlabel,sum,compressed_sum);
+        PrintFileSizes(patchi->label.longlabel,sum);
       }
     }
     printf("\n");

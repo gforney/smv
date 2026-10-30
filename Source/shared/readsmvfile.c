@@ -3267,14 +3267,12 @@ int ParsePRT5Process(smv_case *scase, bufferstreamdata *stream, char *buffer, in
 
   // parti->hist_file can't be written to, then put it in a world writable temp directory
 
-  parti->compression_type = UNCOMPRESSED;
   if(FileExistsCaseDir(scase, parti->reg_file)==YES){
     parti->file = parti->reg_file;
   }
   else{
     parti->file = NULL;
   }
-  parti->compression_type = UNCOMPRESSED;
   parti->loaded = 0;
   parti->request_load = 0;
   parti->finalize = 0;

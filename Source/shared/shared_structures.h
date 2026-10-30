@@ -431,10 +431,8 @@ typedef struct _partdata {
 
   char *file, *size_file, *reg_file, *bound_file;
   int have_bound_file;
-  int seq_id, autoload, loaded, skipload, request_load, display, reload,
-      finalize;
+  int seq_id, autoload, loaded, skipload, request_load, display, reload, finalize;
   int loadstatus, boundstatus;
-  int compression_type;
   int blocknumber;
   int *timeslist, ntimes, itime;
   FILE_SIZE bound_file_size;
