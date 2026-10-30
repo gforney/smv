@@ -35,10 +35,6 @@
                            if(returncode!=count)returncode=0;\
                            FSEEK_SLICE(STREAM,SLICE_TRAILER_SIZE,SEEK_CUR)
 
-#define FORTRLESLICEREAD(var,size) FSEEK(RLESLICEFILE,4,SEEK_CUR);\
-                           returncode=fread(var,4,size,RLESLICEFILE);\
-                           FSEEK(RLESLICEFILE,4,SEEK_CUR)
-
 #define GET_VAL(U,VAL,n) \
          VAL=0.0; \
          if(U!=NULL){ \

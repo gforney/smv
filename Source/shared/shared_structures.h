@@ -541,12 +541,6 @@ typedef struct _clipdata {
   float zmin, zmax;
 } clipdata;
 
-/* --------------------------  compdata ------------------------------------ */
-
-typedef struct _compdata {
-  int offset, size;
-} compdata;
-
 /* --------------------------  slicedata ------------------------------------ */
 
 typedef struct _slicedata {
@@ -584,7 +578,6 @@ typedef struct _slicedata {
   unsigned char full_mesh;
   contour *line_contours;
   int nline_contours;
-  compdata *compindex;
   unsigned char *slicelevel;
   char menulabel[128];
   char menulabel2[128];
@@ -1263,7 +1256,6 @@ typedef struct _patchdata {
   int shortlabel_index;
   int *cvals_offsets, *cvals_sizes;
   unsigned char *cbuffer;
-  int is_compressed;
   int cbuffer_size;
   int boundary;
   int firstshort_patch;

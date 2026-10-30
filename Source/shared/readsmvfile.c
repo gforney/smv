@@ -3536,7 +3536,6 @@ int ParseBNDFProcess(smv_case *scase, bufferstreamdata *stream, char *buffer, in
   patchi->cvals_sizes = NULL;
   patchi->cbuffer = NULL;
   patchi->cbuffer_size = 0;
-  patchi->is_compressed = 0;
   patchi->blocknumber = blocknumber;
   patchi->seq_id = nn_patch;
   patchi->autoload = 0;
@@ -4140,7 +4139,6 @@ int ParseSLCFProcess(smv_case *scase, int option, bufferstreamdata *stream, char
   sd->loading = 0;
   sd->hist_update = 0;
   sd->qslicedata = NULL;
-  sd->compindex = NULL;
   sd->slicecomplevel = NULL;
   sd->qslicedata_compressed = NULL;
   if(sd->is1!=sd->is2&&sd->js1!=sd->js2&&sd->ks1!=sd->ks2){

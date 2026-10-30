@@ -2186,8 +2186,6 @@ FILE_SIZE GetGeomData(patchdata *patchi, char *filename, int load_flag, int ntim
   float time;
   int iframe, frame_start, frame_stop;
   char *ext=NULL;
-  int is_compressed = 0;
-  float valminmax[2];
   unsigned char *cvals;
 
   //***format (uncompressed)
@@ -2218,32 +2216,16 @@ FILE_SIZE GetGeomData(patchdata *patchi, char *filename, int load_flag, int ntim
   *error = 1;
   if(filename==NULL)return 0;
   ext = strrchr(filename, '.');
-  if(ext != NULL && strcmp(ext, ".svz") == 0)is_compressed = 1;
   stream = fopen_b(filename, NULL, 0, "rb");
   file_size = GetFileSizeSMV(filename);
   if(stream == NULL){
-    if(is_compressed == 1){
-      printf(" The compressed boundary file %s failed to open\n", filename);
-    }
-    else{
     printf(" The boundary file %s failed to open\n", filename);
-    }
     return 0;
   }
 
   *error = 0;
-  if(is_compressed == 1){
-    int completion;
-
-    fread_m(&one, 4, 1, stream);
-    fread_m(&completion, 4, 1, stream);
-    fread_m(&version, 4, 1, stream);
-    fread_m(valminmax, 4, 2, stream);
-  }
-  else{
-    FORTREAD_m(&one, 4, 1, stream);
-    FORTREAD_m(&version, 4, 1, stream);
-  }
+  FORTREAD_m(&one, 4, 1, stream);
+  FORTREAD_m(&version, 4, 1, stream);
   nvars = 0;
   count = 0;
   if(time_frame==ALL_FRAMES){
@@ -2257,79 +2239,57 @@ FILE_SIZE GetGeomData(patchdata *patchi, char *filename, int load_flag, int ntim
   }
   for(iframe = frame_start; iframe<frame_stop; iframe++){
     int nvals_local[4];
-    int ncompressed;
 
-    if(is_compressed == 1){
-      fread_m(&time, 4, 1, stream);
-    }
-    else{
-      FORTREAD_m(&time, 4, 1, stream);
-      if(count_read!=1)break;
-    }
+    FORTREAD_m(&time, 4, 1, stream);
+    if(count_read!=1)break;
     if(time_frame==ALL_FRAMES||time_frame==iframe)times[count] = time;
-    if(is_compressed == 1){
-      fread_m(nvals_local, 4, 4, stream);
-      fread_m(&ncompressed, 4, 1, stream);
-    }
-    else{
-      FORTREAD_m(nvals_local, 4, 4, stream);
-      if(count_read != 4)break;
-    }
+    FORTREAD_m(nvals_local, 4, 4, stream);
+    if(count_read != 4)break;
     nvert_s = nvals_local[0];
     ntri_s  = nvals_local[1];
     nvert_d = nvals_local[2];
     ntri_d  = nvals_local[3];
     if(time_frame==ALL_FRAMES||time_frame==iframe)nstatics[count] = nvert_s+ntri_s;
 
-    if(is_compressed == 1){
-      if(ncompressed>0){
-        fread_m(cvals, 1, ncompressed, stream);
-        cvals += ncompressed;
+    if(nvert_s > 0){
+      if(time_frame == ALL_FRAMES || time_frame == iframe){
+        FORTREAD_m(vals + nvars, 4, nvert_s, stream);
+        if(count_read!=nvert_s)break;
+        nvars += nvert_s;
+      }
+      else{
+        fseek_m(stream, 4 + 4 * nvert_s + 4, SEEK_CUR);
       }
     }
-    else{
-      if(nvert_s > 0){
-        if(time_frame == ALL_FRAMES || time_frame == iframe){
-          FORTREAD_m(vals + nvars, 4, nvert_s, stream);
-          if(count_read!=nvert_s)break;
-          nvars += nvert_s;
-        }
-        else{
-          fseek_m(stream, 4 + 4 * nvert_s + 4, SEEK_CUR);
-        }
+    if(ntri_s > 0){
+      if(time_frame == ALL_FRAMES || time_frame == iframe){
+        FORTREAD_m(vals + nvars, 4, ntri_s, stream);
+        if(count_read!=ntri_s)break;
+        nvars += ntri_s;
       }
-      if(ntri_s > 0){
-        if(time_frame == ALL_FRAMES || time_frame == iframe){
-          FORTREAD_m(vals + nvars, 4, ntri_s, stream);
-          if(count_read!=ntri_s)break;
-          nvars += ntri_s;
-        }
-        else{
-          fseek_m(stream, (4 + 4 * ntri_s + 4), SEEK_CUR);
-        }
+      else{
+        fseek_m(stream, (4 + 4 * ntri_s + 4), SEEK_CUR);
       }
     }
     if(time_frame == ALL_FRAMES || time_frame == iframe)ndynamics[count] = nvert_d + ntri_d;
-    if(is_compressed == 0){
-      if(nvert_d > 0){
-        if(time_frame == ALL_FRAMES || time_frame == iframe){
-          FORTREAD_m(vals + nvars, 4, nvert_d, stream);
-          if(count_read!=nvert_d)break;
-          nvars += nvert_d;
-        }
-        else{
-          fseek_m(stream, 4 + 4 * nvert_d + 4, SEEK_CUR);
-        }
+    if(nvert_d > 0){
+      if(time_frame == ALL_FRAMES || time_frame == iframe){
+        FORTREAD_m(vals + nvars, 4, nvert_d, stream);
+        if(count_read!=nvert_d)break;
+        nvars += nvert_d;
       }
-      if(ntri_d > 0){
-        if(time_frame == ALL_FRAMES || time_frame == iframe){
-          FORTREAD_m(vals + nvars, 4, ntri_d, stream);
-          if(count_read!=ntri_d)break;
-          nvars += ntri_d;
-        }
-        else{
-          fseek_m(stream, 4 + 4 * ntri_d + 4, SEEK_CUR);
-        }
+      else{
+       fseek_m(stream, 4 + 4 * nvert_d + 4, SEEK_CUR);
+      }
+    }
+    if(ntri_d > 0){
+      if(time_frame == ALL_FRAMES || time_frame == iframe){
+        FORTREAD_m(vals + nvars, 4, ntri_d, stream);
+        if(count_read!=ntri_d)break;
+        nvars += ntri_d;
+      }
+      else{
+        fseek_m(stream, 4 + 4 * ntri_d + 4, SEEK_CUR);
       }
     }
     if(time_frame==iframe){
@@ -2395,11 +2355,6 @@ FILE_SIZE ReadGeomData(patchdata *patchi, slicedata *slicei, int load_flag, int 
 
   char *ext = NULL;
   ext = strrchr(patchi->file, '.');
-  if(ext != NULL && strcmp(ext, ".svz") == 0){
-    patchi->is_compressed = 1;
-    NewMemory((void **)&cvals_offsets, MAX_FRAMES * sizeof(int));
-    NewMemory((void **)&cvals_sizes,   MAX_FRAMES * sizeof(int));
-  }
   if(time_value != NULL){
     NewMemory((void **)&geom_offsets, MAX_FRAMES * sizeof(int));
     geom_offset_flag = BUILD_GEOM_OFFSETS;
@@ -2408,7 +2363,7 @@ FILE_SIZE ReadGeomData(patchdata *patchi, slicedata *slicei, int load_flag, int 
     geom_offset_flag = GET_GEOM_OFFSETS;
   }
 
-  if(flag==1&&patchi->is_compressed==0){
+  if(flag==1){
     ntimes_local = GetGeomDataSizeFixed(patchi, &nvals, time_frame, geom_offsets, &geom_offset_flag, &max_buffer_size, &error);
   }
   else{
@@ -2451,14 +2406,8 @@ FILE_SIZE ReadGeomData(patchdata *patchi, slicedata *slicei, int load_flag, int 
     NewMemory((void **)&patchi->geom_vals_dynamic_offset,  ntimes_local*sizeof(int));
   }
   if(nvals>0){
-    if(patchi->is_compressed==1){
-      patchi->is_compressed = 1;
-      NewMemory((void **)&patchi->geom_vals, nvals*sizeof(char));
-    }
-    else{
-      NewMemory((void **)&patchi->geom_vals, nvals * sizeof(float));
-      NewMemory((void **)&patchi->geom_ivals, nvals * sizeof(char));
-    }
+    NewMemory((void **)&patchi->geom_vals, nvals * sizeof(float));
+    NewMemory((void **)&patchi->geom_ivals, nvals * sizeof(char));
   }
   int filesize;
 
@@ -3846,13 +3795,8 @@ void DrawGeomVData(vslicedata *vd){
 
 /* ------------------ DrawGeomData ------------------------ */
 
-#define GEOMVAL(index) ( patchi->is_compressed==0 ? vals[(index)] : (float)cvals[(index)] )
 #define GEOMTEXTURE(index, vmin, vmax) ( CLAMP( (vals[(index)]-vmin)/(vmax-vmin),0.0,1.0) )
-#define GEOMTEXTURE2(geomval, vmin, vmax) ( \
-        patchi->is_compressed==0 ? \
-        CLAMP( (geomval-vmin)/(vmax-vmin),0.0,1.0) : \
-        CLAMP( (float)geomval/255.0,0.0,1.0) \
-        )
+#define GEOMTEXTURE2(geomval, vmin, vmax) ( CLAMP( (geomval-vmin)/(vmax-vmin),0.0,1.0) )
 void DrawGeomData(int flag, slicedata *sd, patchdata *patchi, int geom_type){
   int i;
   unsigned char *ivals, *cvals;
@@ -3964,7 +3908,7 @@ void DrawGeomData(int flag, slicedata *sd, patchdata *patchi, int geom_type){
 
           trianglei = triangles + j;
           if(patchi->patch_filetype==PATCH_GEOMETRY_BOUNDARY){
-            rvals[0] = GEOMVAL(j);
+            rvals[0] = vals[j];
             if(is_time_arrival == 1 && rvals[0] > TOA_LIMIT)continue;
             rvals[0] = GEOMTEXTURE2(rvals[0], ttmin, ttmax);
             ival = CLAMP(rvals[0] * 255.0, 0, 255);
@@ -4221,7 +4165,7 @@ void DrawGeomData(int flag, slicedata *sd, patchdata *patchi, int geom_type){
               int ival;
               float rval;
 
-              rval = GEOMTEXTURE2(GEOMVAL(j), ttmin, ttmax);
+              rval = GEOMTEXTURE2(vals[j], ttmin, ttmax);
               ival = CLAMP(rval*255.0, 0, 255);
               color0 = rgb_patch+4*ival;
               color1 = color0;
@@ -4345,11 +4289,8 @@ void DrawGeomData(int flag, slicedata *sd, patchdata *patchi, int geom_type){
           glColor4fv(foregroundcolor);
         }
         else{
-          int ival;
-          float rval;
-
-          rval = GEOMTEXTURE2(GEOMVAL(j), ttmin, ttmax);
-          ival = CLAMP(rval*255.0, 0, 255);
+          float rval = GEOMTEXTURE2(vals[j], ttmin, ttmax);
+          int   ival = CLAMP(rval*255.0, 0, 255);
           color = rgb_patch+4*ival;
           glColor3fv(color);
         }
