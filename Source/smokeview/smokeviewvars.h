@@ -1290,7 +1290,6 @@ SVEXTERN float slice_line_contour_max;
 SVEXTERN int slice_line_contour_num;
 SVEXTERN int setpartmin_old, setpartmax_old;
 SVEXTERN int SVDECL(glui_setpatchmin,GLOBAL_MIN), SVDECL(glui_setpatchmax,GLOBAL_MAX), SVDECL(setzonemin,GLOBAL_MIN), SVDECL(setzonemax,GLOBAL_MAX);
-SVEXTERN int SVDECL(loadpatchbysteps,UNCOMPRESSED );
 SVEXTERN int SVDECL(settargetmin,0), SVDECL(settargetmax,0);
 SVEXTERN int SVDECL(setpartchopmin,0), SVDECL(setpartchopmax,0);
 SVEXTERN int SVDECL(setpatchchopmin,0), SVDECL(setpatchchopmax,0);
