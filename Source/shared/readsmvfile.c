@@ -5066,10 +5066,6 @@ int ReadSMV_Parse(smv_case *scase, bufferstreamdata *stream){
       scase->propcoll.npropinfo++;
       continue;
     }
-    if(MatchSMV(buffer,"SMOKEDIFF") == 1){
-      scase->smokediff=1;
-      continue;
-    }
     if(MatchSMV(buffer,"ALBEDO") == 1){
       FGETS(buffer,255,stream);
       sscanf(buffer,"%f",&scase->smoke_albedo);

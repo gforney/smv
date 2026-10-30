@@ -2387,7 +2387,6 @@ FILE_SIZE ReadGeomData(patchdata *patchi, slicedata *slicei, int load_flag, int 
   if(load_flag==UNLOAD){
     plotstate = GetPlotState(DYNAMIC_PLOTS);
     if(patchi->boundary==1)UpdateBoundaryType();
-    UpdateUnitDefs();
     UpdateTimes();
     PrintMemoryInfo;
     return 0;
@@ -2721,7 +2720,6 @@ FILE_SIZE ReadGeomData(patchdata *patchi, slicedata *slicei, int load_flag, int 
 //    }
     PRINT_TIMER(geom_color_timer, "update boundary colors");
 
-    UpdateUnitDefs();
     UpdateTimes();
     force_redisplay = 1;
     UpdateFrameNumber(1);

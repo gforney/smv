@@ -3430,7 +3430,6 @@ FILE_SIZE ReadSlice(const char *file, int ifile, int time_frame, float *time_val
           UpdateAllSliceLabels(slicefile_labelindex, errorcode);
         }
       }
-      UpdateUnitDefs();
       PrintMemoryInfo;
       CheckMemory;
       return 0;
@@ -3745,7 +3744,6 @@ FILE_SIZE ReadSlice(const char *file, int ifile, int time_frame, float *time_val
     GLUIHVACSliceBoundsCPP_CB(BOUND_PERCENTILE_DRAW);
     colorbar_slice_min = qmin;
     colorbar_slice_max = qmax;
-    UpdateUnitDefs();
     UpdateTimes();
     CheckMemory;
 

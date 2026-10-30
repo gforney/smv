@@ -841,7 +841,6 @@ EXTERNCPP float GetUnitVal(const char *unitlabel, float oldval, int ndecimals);
 EXTERNCPP void InitUnitDefs(void);
 EXTERNCPP void InitUnits(void);
 EXTERNCPP void SetUnitVis(void);
-EXTERNCPP void UpdateUnitDefs(void);
 
 //*** update.c headers
 

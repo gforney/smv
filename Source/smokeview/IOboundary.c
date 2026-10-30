@@ -1144,7 +1144,6 @@ FILE_SIZE ReadBoundaryBndf(int ifile, int load_flag, int *errorcode){
       BlockageMenu(visBLOCKAsInput);
     }
     UpdateBoundaryType();
-    UpdateUnitDefs();
     patchi->npatches=0;
     UpdateTimes();
     patchi->ntimes_old=0;
@@ -2085,7 +2084,6 @@ FILE_SIZE ReadBoundaryBndf(int ifile, int load_flag, int *errorcode){
   if(patchi->finalize==1){
     UpdateTimes();
     ForceIdle();
-    UpdateUnitDefs();
     UpdateChopColors();
   }
   PrintMemoryInfo;

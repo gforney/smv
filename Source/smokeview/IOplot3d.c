@@ -328,7 +328,6 @@ FILE_SIZE ReadPlot3D(char *file, int ifile, int flag, int *errorcode){
     updatemenu=1;
     PrintMemoryInfo;
     update_times = 1;
-    UpdateUnitDefs();
     return 0;
   }
 
@@ -518,7 +517,6 @@ FILE_SIZE ReadPlot3D(char *file, int ifile, int flag, int *errorcode){
   GLUIUpdatePlot3dListIndex();
   PrintMemoryInfo;
   update_times = 1;
-  UpdateUnitDefs();
   ForceIdle();
   STOP_TIMER(total_time);
 

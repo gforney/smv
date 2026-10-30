@@ -11330,12 +11330,6 @@ if(opengl_finalized == 0)return;
         else{
           strcpy(menulabel,uci->units[j].unit);
         }
-        if(global_scase.smokediff==1&&uci->diff_index==j&&uci->units[j].rel_defined==1){
-          strcat(menulabel," rel to ");
-          strcat(menulabel,uci->units[j].rel_val);
-          strcat(menulabel," ");
-          strcat(menulabel,uci->units[0].unit);
-        }
         glutAddMenuEntry(menulabel,1000*i+j);
       }
     }

@@ -1741,7 +1741,6 @@ typedef struct _smv_cases {
   int ntotal_blockages;
   int hasSensorNorm;
   char *texturedir;
-  int smokediff;
   int have_northangle;
   int usetextures;
   /// @brief SMV file contains DEVICE_ACT entries
