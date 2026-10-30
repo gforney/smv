@@ -386,7 +386,7 @@ EXTERNCPP FILE_SIZE GetGeomData(patchdata *patchi, char *filename, int load_flag
               int *nstatics, int *ndynamics, float *vals, int time_frame, float *time_value,
               int *geom_offsets, int *error);
 EXTERNCPP int  GetGeomDataSize(char *file, int *nvals, int time_frame,
-               int *cvals_offsets, int *cvals_sizes, int *geom_offsets, int *geom_offset_flag,
+               int *geom_offset_flag,
                int *max_buffer_size, int *error);
 EXTERNCPP void GetGeomInfoPtrs(int flag);
 EXTERNCPP int InMesh(float *xyz);
