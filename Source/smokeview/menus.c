@@ -490,21 +490,18 @@ void GetFileSizes(void){
     qsort((patchdata **)patchlist, (size_t)global_scase.npatchinfo, sizeof(patchdata *), ComparePatchLabels);
     for(i = 0; i<global_scase.npatchinfo; i++){
       patchdata *patchi, *patchim1;
-      FILE_SIZE file_size, compressed_file_size;
+      FILE_SIZE file_size;
 
       patchi = patchlist[i];
       file_size = GetFileSizeSMV(patchi->reg_file);
-      compressed_file_size = GetFileSizeSMV(patchi->comp_file);
 
       if(i>0)patchim1 = patchlist[i-1];
       if(i==0||strcmp(patchim1->label.longlabel, patchi->label.longlabel)==0){
         sum += file_size;
-        compressed_sum += compressed_file_size;
       }
       else{
         PrintFileSizes(patchim1->label.longlabel,sum,compressed_sum);
         sum = file_size;
-        compressed_sum = compressed_file_size;
       }
       if(i==global_scase.npatchinfo-1){
         PrintFileSizes(patchi->label.longlabel,sum,compressed_sum);

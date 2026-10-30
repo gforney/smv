@@ -1256,7 +1256,7 @@ typedef struct _patchdata {
   int seq_id, autoload;
   char *file,*size_file,*bound_file;
   int have_bound_file;
-  char *comp_file, *reg_file;
+  char *reg_file;
   char *filetype_label;
   geomdata *geominfo;
   int *geom_offsets;
@@ -1271,7 +1271,6 @@ typedef struct _patchdata {
   int cbuffer_size;
   int boundary;
   int firstshort_patch;
-  int compression_type, compression_type_temp;
   int setvalmin, setvalmax;
   float valmin_patch, valmax_patch;
   float valmin_glui,  valmax_glui;

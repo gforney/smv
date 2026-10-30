@@ -2294,19 +2294,6 @@ void *CheckFiles(void *arg){
   ThreadLock(checkfiles_threads);
   global_scase.have_compressed_files = 0;
   ThreadUnlock(checkfiles_threads);
-  for(i = 0; i < global_scase.npatchinfo; i++){
-    patchdata *patchi;
-    int have_file;
-
-    patchi = global_scase.patchinfo + i;
-    have_file = FileExistsCaseDir(&global_scase, patchi->comp_file);
-    ThreadLock(checkfiles_threads);
-    if(have_file == YES){
-      patchi->compression_type_temp = COMPRESSED_ZLIB;
-      global_scase.have_compressed_files = 1;
-    }
-    ThreadUnlock(checkfiles_threads);
-  }
   for(i = 0; i < global_scase.smoke3dcoll.nsmoke3dinfo; i++){
     smoke3ddata *smoke3di;
     int have_file;
@@ -2324,15 +2311,6 @@ void *CheckFiles(void *arg){
     THREAD_EXIT(checkfiles_threads);
   }
   ThreadLock(checkfiles_threads);
-  for(i = 0; i < global_scase.npatchinfo; i++){
-    patchdata *patchi;
-
-    patchi = global_scase.patchinfo + i;
-    if(patchi->compression_type_temp == COMPRESSED_ZLIB){
-      patchi->compression_type = COMPRESSED_ZLIB;
-      patchi->file = patchi->comp_file;
-    }
-  }
   for(i = 0; i < global_scase.smoke3dcoll.nsmoke3dinfo; i++){
     smoke3ddata *smoke3di;
 

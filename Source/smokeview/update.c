@@ -132,14 +132,8 @@ void UpdateFrameNumber(int changetime){
         patchi=global_scase.patchinfo + meshi->patchfilenum;
         if(patchi->structured == NO||meshi->patch_times==NULL||meshi->patch_timeslist==NULL)continue;
         meshi->patch_itime=meshi->patch_timeslist[iglobal_times];
-        if(patchi->compression_type==UNCOMPRESSED){
-
-          meshi->patchval_iframe  = meshi->patchval  + meshi->patch_itime*meshi->npatchsize;
-          meshi->cpatchval_iframe = meshi->cpatchval + meshi->patch_itime * meshi->npatchsize;
-        }
-        else{
-          UncompressBoundaryDataBNDF(meshi, meshi->patch_itime);
-        }
+        meshi->patchval_iframe  = meshi->patchval  + meshi->patch_itime*meshi->npatchsize;
+        meshi->cpatchval_iframe = meshi->cpatchval + meshi->patch_itime * meshi->npatchsize;
       }
     }
     if(showiso==1){

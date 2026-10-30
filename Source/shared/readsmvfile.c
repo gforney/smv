@@ -3476,21 +3476,10 @@ int ParseBNDFProcess(smv_case *scase, bufferstreamdata *stream, char *buffer, in
   strcat(patchi->bound_file, ".bnd");
   patchi->have_bound_file = NO;
 
-  NewMemory((void **)&patchi->comp_file, (unsigned int)(len + 4 + 1));
-  STRCPY(patchi->comp_file, bufferptr);
-  STRCAT(patchi->comp_file, ".svz");
-
   NewMemory((void **)&patchi->size_file, (unsigned int)(len+4+1));
   STRCPY(patchi->size_file, bufferptr);
 
-  if(parse_opts.lookfor_compressed_files==1&&FileExistsCaseDir(scase, patchi->comp_file) == YES){
-    patchi->compression_type = COMPRESSED_ZLIB;
-    patchi->file             = patchi->comp_file;
-  }
-  else{
-    patchi->compression_type = UNCOMPRESSED;
-    patchi->file             = patchi->reg_file;
-  }
+  patchi->file             = patchi->reg_file;
   patchi->geominfo = NULL;
   if(patchi->structured==NO){
     int igeom;
@@ -4784,7 +4773,6 @@ int ReadSMV_Init(smv_case *scase){
       patchi = scase->patchinfo + i;
       FreeLabels(&patchi->label);
       FREEMEMORY(patchi->reg_file);
-      FREEMEMORY(patchi->comp_file);
       FREEMEMORY(patchi->size_file);
     }
     FREEMEMORY(scase->patchinfo);
@@ -5585,7 +5573,6 @@ int ReadSMV_Parse(smv_case *scase, bufferstreamdata *stream){
 
       patchi = scase->patchinfo + i;
       patchi->reg_file=NULL;
-      patchi->comp_file=NULL;
       patchi->file=NULL;
       patchi->size_file=NULL;
     }
