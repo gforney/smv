@@ -4452,7 +4452,6 @@ FILE_SIZE LoadSmoke3D(int type, int frame, int *count, float *time_value){
     break;
     }
   }
-  smoke3d_compression_type = COMPRESSED_UNKNOWN;
   for(i=0; i<global_scase.smoke3dcoll.nsmoke3dinfo; i++){
     smoke3ddata *smoke3di;
 
