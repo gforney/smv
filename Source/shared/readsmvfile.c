@@ -3830,13 +3830,12 @@ int ParseSLCFProcess(smv_case *scase, int option, bufferstreamdata *stream, char
   int slicegeom = 0;
   int slcf_index = 0;
   char *char_slcf_index;
-  int has_reg, compression_type;
+  int has_reg;
   int ii1 = -1, ii2 = -1, jj1 = -1, jj2 = -1, kk1 = -1, kk2 = -1;
   int blocknumber;
   slicedata *sd;
   size_t len;
   int read_slice_header = 0;
-  char zlib_file[255], rle_file[255];
   int cell_center_flag = -1;
   int fds_dir = -1;
 
@@ -3973,7 +3972,6 @@ int ParseSLCFProcess(smv_case *scase, int option, bufferstreamdata *stream, char
   if(slicegeom==1&&cell_center_flag==1)sd->cell_center = 1;
  // sd->file_size = 0;
   sd->reg_file = NULL;
-  sd->comp_file = NULL;
   sd->slicelabel = NULL;
   sd->cell_center_edge = 0;
   sd->file_size = 0;
@@ -3999,19 +3997,9 @@ int ParseSLCFProcess(smv_case *scase, int option, bufferstreamdata *stream, char
   }
 #endif
 
-  strcpy(zlib_file, bufferptr);
-  strcat(zlib_file, ".svz");
-  strcpy(rle_file, bufferptr);
-  strcat(rle_file, ".rle");
-
   has_reg = NO;
-  compression_type = UNCOMPRESSED;
-  if(parse_opts.lookfor_compressed_files==1){
-    if(FileExistsCaseDir(scase, rle_file)==YES)compression_type  = COMPRESSED_RLE;
-    if(FileExistsCaseDir(scase, zlib_file)==YES)compression_type = COMPRESSED_ZLIB;
-  }
-  if(compression_type==UNCOMPRESSED&&(parse_opts.fast_startup==1||FileExistsCaseDir(scase, bufferptr)==YES))has_reg = YES;
-  if(has_reg==NO&&compression_type==UNCOMPRESSED){
+  if(parse_opts.fast_startup==1||FileExistsCaseDir(scase, bufferptr)==YES)has_reg = YES;
+  if(has_reg==NO){
     scase->slicecoll.nsliceinfo--;
 
     nslicefiles--;
@@ -4037,27 +4025,9 @@ int ParseSLCFProcess(smv_case *scase, int option, bufferstreamdata *stream, char
     return RETURN_CONTINUE;
   }
 
-  sd->reg_file  = SLICEBUFFER(len + 1);
-  sd->comp_file = SLICEBUFFER(len + 4 + 1);
+  sd->reg_file = SLICEBUFFER(len + 1);
   STRCPY(sd->reg_file, bufferptr);
-
-  sd->compression_type = compression_type;
-  switch(compression_type){
-  case UNCOMPRESSED:
-    sd->file = sd->reg_file;
-    break;
-  case COMPRESSED_ZLIB:
-    STRCPY(sd->comp_file, zlib_file);
-    sd->file = sd->comp_file;
-    break;
-  case COMPRESSED_RLE:
-    STRCPY(sd->comp_file, rle_file);
-    sd->file = sd->comp_file;
-    break;
-  default:
-    assert(FFALSE);
-    break;
-  }
+  sd->file = sd->reg_file;
 
   // read in geometry file name
 
@@ -4248,7 +4218,6 @@ void FreeSliceData(smv_case *scase){
       sd = scase->slicecoll.sliceinfo+i;
       FreeLabels(&scase->slicecoll.sliceinfo[i].label);
       FREEMEMORY(sd->reg_file);
-      FREEMEMORY(sd->comp_file);
       FREEMEMORY(sd->size_file);
     }
     FREEMEMORY(scase->sliceorderindex);

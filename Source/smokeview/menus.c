@@ -7736,9 +7736,7 @@ void InitLoadMultiSubMenu(int **loadsubmslicemenuptr, int *nmultisliceloadedptr)
     if(mslicei->slice_filetype==SLICE_GEOM){
       strcat(menulabel, " - geometry");
     }
-    if(sd->compression_type == COMPRESSED_ZLIB){
-      strcat(menulabel, "(ZLIB)");
-    }
+
     if(mslicei->loadable == 0)strcat(menulabel, " - unavailable, no meshes with this data were selected");
     glutAddMenuEntry(menulabel, i);
   }
@@ -8248,9 +8246,7 @@ void InitMultiVectorSubMenu(int **loadsubmvslicemenuptr){
       STRCAT(menulabel, " - ");
       STRCAT(menulabel, si->slicelabel);
     }
-    if(si->compression_type == COMPRESSED_ZLIB){
-      STRCAT(menulabel, "(ZLIB)");
-    }
+
     if(mvslicei->loadable == 0)strcat(menulabel, " - unavailable, no meshes with this data were selected");
     glutAddMenuEntry(menulabel, i);
     if(i==0||strcmp(si->label.longlabel, sim1->label.longlabel)!=0){

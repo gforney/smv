@@ -553,13 +553,11 @@ typedef struct _slicedata {
   int seq_id, autoload;
   char *file, *size_file, *bound_file;
   int have_bound_file;
-  char *comp_file, *reg_file;
-  char *geom_file;
+  char *reg_file, *geom_file;
   int finalize;
   int slcf_index;
   char *slicelabel;
   unsigned char *slice_mask;
-  int compression_type;
   int colorbar_autoflip;
   FILE_SIZE ncompressed;
   int slice_filetype;
