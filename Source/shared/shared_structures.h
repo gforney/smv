@@ -292,12 +292,10 @@ typedef struct _meshdata {
   struct _meshdata *skip_nabors[6], *nabors[6];
 
   int *ptype;
-  unsigned int *zipoffset, *zipsize;
 
   float *xyzpatch_offset, *xyzpatch_no_offset, *xyzpatch_threshold;
   float *thresholdtime;
 
-  unsigned char *cpatchval_zlib, *cpatchval_iframe_zlib;
   unsigned char *cpatchval, *cpatchval_iframe;
   float *patch_times, *patch_timesi, *patchval;
   float *patchval_iframe;
@@ -573,8 +571,6 @@ typedef struct _slicedata {
   flowlabels label;
   float *qslicedata, *qsliceframe, *times, *qslice;
   unsigned char *times_map;
-  unsigned char *qslicedata_compressed;
-  unsigned char *slicecomplevel;
   unsigned char full_mesh;
   contour *line_contours;
   int nline_contours;
@@ -1771,8 +1767,6 @@ typedef struct _smv_cases {
   spherepoints *wui_sphereinfo;
   int solid_ht3d;
   float northangle;
-  int niso_compressed;
-  int have_compressed_files;
   int have_cface_normals;
   int cellcenter_slice_active;
   int auto_terrain;
@@ -1883,7 +1877,6 @@ typedef struct _parse_options {
   int smoke3d_only;
   int setup_only;
   int fast_startup;
-  int lookfor_compressed_files;
   int handle_slice_files;
 } parse_options;
 

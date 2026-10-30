@@ -60,7 +60,6 @@ parse_options parse_opts = {
   .smoke3d_only = 0,
   .setup_only = 0,
   .fast_startup = 1,
-  .lookfor_compressed_files = 0,
   .handle_slice_files = 1
 };
 
@@ -1033,15 +1032,12 @@ void InitMesh(meshdata *meshi){
   meshi->offset[YYY] = 0.0;
   meshi->offset[ZZZ] = 0.0;
   meshi->ptype = NULL;
-  meshi->zipoffset = NULL, meshi->zipsize = NULL;
   meshi->xyzpatch_offset = NULL;
   meshi->xyzpatch_no_offset = NULL;
   meshi->xyzpatch_threshold = NULL;
   meshi->patchventcolors = NULL;
   meshi->cpatchval = NULL;
   meshi->cpatchval_iframe = NULL;
-  meshi->cpatchval_iframe_zlib = NULL;
-  meshi->cpatchval_zlib = NULL;
   meshi->patch_times = NULL;
   meshi->patch_times_map = NULL;
   meshi->patchval = NULL;
@@ -4139,8 +4135,6 @@ int ParseSLCFProcess(smv_case *scase, int option, bufferstreamdata *stream, char
   sd->loading = 0;
   sd->hist_update = 0;
   sd->qslicedata = NULL;
-  sd->slicecomplevel = NULL;
-  sd->qslicedata_compressed = NULL;
   if(sd->is1!=sd->is2&&sd->js1!=sd->js2&&sd->ks1!=sd->ks2){
     sd->slice3d = 1;
   }
@@ -4547,7 +4541,6 @@ int ReadSMV_Init(smv_case *scase){
   }
   FREEMEMORY(scase->terraininfo);
   scase->nterraininfo=0;
-  scase->niso_compressed=0;
   if(scase->sphereinfo==NULL){
     NewMemory((void **)&scase->sphereinfo,sizeof(spherepoints));
     InitSpherePoints(scase->sphereinfo,14);

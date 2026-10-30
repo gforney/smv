@@ -3038,8 +3038,6 @@ FILE_SIZE ReadSlice(const char *file, int ifile, int time_frame, float *time_val
       }
       FREEMEMORY(sd->times);
       FREEMEMORY(sd->slicelevel);
-      FREEMEMORY(sd->qslicedata_compressed);
-      FREEMEMORY(sd->slicecomplevel);
     }
 
     slicefilenum = ifile;

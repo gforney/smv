@@ -831,8 +831,6 @@ FILE_SIZE ReadBoundaryBndf(int ifile, int load_flag, int *errorcode){
     FREEMEMORY(meshi->xyzpatch_no_offset);
     FREEMEMORY(meshi->xyzpatch_threshold);
     FREEMEMORY(meshi->thresholdtime);
-    FREEMEMORY(meshi->zipoffset);
-    FREEMEMORY(meshi->zipsize);
     FREEMEMORY(meshi->patchventcolors);
     FREEMEMORY(meshi->cpatchval);
     FREEMEMORY(meshi->patchval);

@@ -193,11 +193,6 @@ int SetupCase(char *filename){
     bufferstreamdata *smv_streaminfo = NULL;
 
     PRINTF("reading  %s\n", input_file);
-    char *smvzip_filename = CasePathSmvZip(&global_scase);
-    if(FileExistsOrig(smvzip_filename) == 1){
-      parse_opts.lookfor_compressed_files = 1;
-    }
-    FREEMEMORY(smvzip_filename);
     char *iso_filename = CasePathIso(&global_scase);
     char *fedsmv_filename = CasePathFed(&global_scase);
     smv_streaminfo = GetSMVBuffer(input_file);

@@ -10501,10 +10501,8 @@ if(opengl_finalized == 0)return;
         STRCAT(levellabel,"Levels");
         GLUTADDSUBMENU(levellabel,isolevelmenu);
       }
-      if(global_scase.niso_compressed==0){
-        if(smooth_iso_normal == 1)glutAddMenuEntry("*Smooth", MENU_ISOSHOW_SMOOTH);
-        if(smooth_iso_normal == 0)glutAddMenuEntry("Smooth", MENU_ISOSHOW_SMOOTH);
-      }
+      if(smooth_iso_normal == 1)glutAddMenuEntry("*Smooth", MENU_ISOSHOW_SMOOTH);
+      if(smooth_iso_normal == 0)glutAddMenuEntry("Smooth", MENU_ISOSHOW_SMOOTH);
       if(show_iso_normal == 1)glutAddMenuEntry("*Show normals", MENU_ISOSHOW_NORMALS);
       if(show_iso_normal == 0)glutAddMenuEntry("Show normals", MENU_ISOSHOW_NORMALS);
       glutAddMenuEntry("Output bounds", MENU_ISOSHOW_OUTPUT);
