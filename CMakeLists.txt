@@ -189,6 +189,7 @@ endif()
 add_subdirectory(Source/shared)
 
 # The programs to build
+add_subdirectory(Source/part2iso)
 add_subdirectory(Source/fds2fed)
 add_subdirectory(Source/pnginfo)
 add_subdirectory(Source/smokeview)
