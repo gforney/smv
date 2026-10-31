@@ -50,12 +50,10 @@ erase_helpinfo_files()
   rm -f *.help
 
   rm -f smokeview.version
-  rm -f background.version
   rm -f wind2fds.version
   rm -f fds.version
 
   rm -f smokeview.help
-  rm -f background.help
   rm -f wind2fds.help
   rm -f cfastbot.help
   rm -f firebot.help
@@ -72,14 +70,12 @@ make_helpinfo_files()
   cd $dir
 
   $SMV        -help_all > smokeview.help
-  $BACKGROUND -help     > background.help
   $WIND2FDS   -help     > wind2fds.help
   $CFASTBOT   -H        > cfastbot.help
   $FIREBOT    -H        > firebot.help
   $SMOKEBOT   -H        > smokebot.help
 
   $SMV -version        > smokeview.version
-  $BACKGROUND -version > background.version
   $WIND2FDS            > wind2fds.version
   if [ -e $FDSEXE ]; then
     echo "" | $FDSEXE 2> $GITROOT/smv/Manuals/SMV_User_Guide/SCRIPT_FIGURES/fds.version
@@ -168,7 +164,6 @@ if [ "$use_installed" == "1" ] ; then
   export FDS2FED=fds2fed
   export PART2ISO=part2iso
   export WIND2FDS=wind2fds
-  export BACKGROUND=background
   export SMVBINDIR=`which smokeview`
   if [ "$SMVBINDIR" != "" ]; then
     SMVBINDIR=${SMVBINDIR%/*}
@@ -178,7 +173,6 @@ else
   export FDS2FED=$GITROOT/smv/Build/fds2fed/${COMPILER}_$VERSION2/fds2fed_$VERSION2
   export PART2ISO=$GITROOT/smv/Build/part2iso/${COMPILER}_$VERSION2/part2iso_$VERSION2
   export WIND2FDS=$GITROOT/smv/Build/wind2fds/${COMPILER}_$VERSION2/wind2fds_$VERSION2
-  export BACKGROUND=$GITROOT/smv/Build/background/${COMPILER}_$VERSION2/background_$VERSION2
   export SMVBINDIR=$GITROOT/smv/Build/for_bundle
 fi
 
@@ -187,7 +181,6 @@ FIREBOT=$GITROOT/bot/Firebot/run_firebot.sh
 CFASTBOT=$GITROOT/bot/Cfastbot/run_cfastbot.sh
 
 echo Generating smokeview images using:
-echo background: $BACKGROUND
 echo smokeview : $SMV
 echo
 
@@ -202,8 +195,6 @@ SUMMARY=$GITROOT/smv/Manuals/SMV_Summary
 
 is_file_installed $SMV
 is_file_installed $PART2ISO
-is_file_installed $SMOKEDIFF
-is_file_installed $BACKGROUND
 is_file_installed $WIND2FDS
 
 erase_helpinfo_files $SMVUG/SCRIPT_FIGURES
