@@ -119,8 +119,9 @@ void Part2Iso(part *parti){
   nlevels=1;
   levels[0]=0.5;
 
-  if(npart5propinfo>0)NewMemory((void **)&part5propinfo_copy,npart5propinfo*sizeof(partpropdata));
-  if(npart5propinfo>0&&part5propinfo_copy==NULL)return;
+  // Keep the property array valid even for particle classes without quantities.
+  NewMemory((void **)&part5propinfo_copy,MAX(1,npart5propinfo)*sizeof(partpropdata));
+  if(part5propinfo_copy==NULL)return;
 
   for(i=0; i<npart5propinfo; i++){
     partpropdata *propi;
@@ -134,9 +135,12 @@ void Part2Iso(part *parti){
     for(k=0; k<nquantities[j]; k++){
       partclassdata *classj;
       partpropdata *propi;
+      int propindex;
 
       classj=parti->classptr[j];
-      propi=part5propinfo_copy+GetPartPropIndex(classj->labels[k].shortlabel);
+      propindex=GetPartPropIndex(classj->labels[k].shortlabel);
+      if(propindex<0||propindex>=npart5propinfo)continue;
+      propi=part5propinfo_copy+propindex;
       propi->used=1;
     }
   }
@@ -259,8 +263,14 @@ void Part2Iso(part *parti){
       }
       for(k=0; k<nquantities[j]; k++){
         partpropdata *propi;
+        int propindex;
 
-        propi=part5propinfo_copy+GetPartPropIndex(classj->labels[k].shortlabel);
+        propindex=GetPartPropIndex(classj->labels[k].shortlabel);
+        if(propindex<0||propindex>=npart5propinfo){
+          vals+=npoints[j];
+          continue;
+        }
+        propi=part5propinfo_copy+propindex;
 
         for(i=0; i<npoints[j]; i++){
           int ijkval;
@@ -313,8 +323,6 @@ void Part2Iso(part *parti){
 
     FREEMEMORY(propi->partvals);
   }
-  if(npart5propinfo>0){
-    FREEMEMORY(part5propinfo_copy);
-  }
+  FREEMEMORY(part5propinfo_copy);
 }
 
