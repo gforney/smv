@@ -23,3 +23,28 @@ SETTIMEVAL
  40
 RENDERONCE
  pine_tree_part_040
+UNLOADALL
+LOADISO
+ particle boundary: 0.5  (Colored by: PARTICLE TEMPERATURE)
+SETTIMEVAL
+ 0.000000
+RENDERONCE
+ pine_tree_partiso_000
+SETTIMEVAL
+ 10.0
+RENDERONCE
+ pine_tree_partiso_010
+SETTIMEVAL
+ 20.
+RENDERONCE
+ pine_tree_partiso_020
+SETTIMEVAL
+ 30.000000
+RENDERONCE
+ pine_tree_partiso_030
+SETTIMEVAL
+ 40.
+RENDERONCE
+ pine_tree_partiso_040
+
+

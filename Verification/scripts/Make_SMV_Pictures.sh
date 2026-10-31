@@ -166,6 +166,7 @@ fi
 if [ "$use_installed" == "1" ] ; then
   export SMV=smokeview
   export FDS2FED=fds2fed
+  export PART2ISO=part2iso
   export WIND2FDS=wind2fds
   export BACKGROUND=background
   export SMVBINDIR=`which smokeview`
@@ -175,6 +176,7 @@ if [ "$use_installed" == "1" ] ; then
 else
   export SMV=$GITROOT/smv/Build/smokeview/${COMPILER}_$VERSION2/smokeview_$VERSION
   export FDS2FED=$GITROOT/smv/Build/fds2fed/${COMPILER}_$VERSION2/fds2fed_$VERSION2
+  export PART2ISO=$GITROOT/smv/Build/part2iso/${COMPILER}_$VERSION2/part2iso_$VERSION2
   export WIND2FDS=$GITROOT/smv/Build/wind2fds/${COMPILER}_$VERSION2/wind2fds_$VERSION2
   export BACKGROUND=$GITROOT/smv/Build/background/${COMPILER}_$VERSION2/background_$VERSION2
   export SMVBINDIR=$GITROOT/smv/Build/for_bundle
@@ -199,6 +201,8 @@ export SMVVG=$GITROOT/smv/Manuals/SMV_Verification_Guide
 SUMMARY=$GITROOT/smv/Manuals/SMV_Summary
 
 is_file_installed $SMV
+is_file_installed $PART2ISO
+is_file_installed $SMOKEDIFF
 is_file_installed $BACKGROUND
 is_file_installed $WIND2FDS
 
@@ -227,11 +231,29 @@ pid_fedd=$1
 $FDS2FED fed_test           &
 pid_fede=$1
 
+# compute isosurface from particles
+
+cd $GITROOT/smv/Verification/Visualization
+echo Converting particles to isosurfaces in case plumeiso
+$PART2ISO plumeiso &
+pid_caseb=$!
+
+cd $GITROOT/smv/Verification/WUI
+if  [ -e pine_tree.smv ]; then
+  echo Converting particles to isosurfaces in case pine_tree
+  $PART2ISO pine_tree &
+  pid_casec=$!
+fi
+
 wait $pid_feda
 wait $pid_fedb
 wait $pid_fedc
 wait $pid_fedd
 wait $pid_fede
+wait $pid_caseb
+if  [ -e $GITROOT/smv/Verification/WUI/pine_tree.smv ]; then
+  wait $pid_casec
+fi
 
 echo Generating images
 
@@ -239,6 +261,7 @@ cd $GITROOT/smv/Verification
 scripts/SMV_Cases.sh
 scripts/RESTART_Cases.sh
 cd $GITROOT/smv/Verification
+scripts/SMV_DIFF_Cases.sh
 cd $CURDIDR
 
 # generate geometry images
