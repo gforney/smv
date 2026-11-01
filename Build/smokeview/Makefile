@@ -277,7 +277,7 @@ gnu_linux_db = -O0 -ggdb -Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wsign-c
                $(CFLAGS_COM)
 gnu_linux_db : CC        = gcc
 gnu_linux_db : CPP       = g++
-gnu_linux_db : exe       = smokeview_linux
+gnu_linux_db : exe       = smokeview_linux_db
 
 gnu_linux_db : $(obj)
 	$(CPP) -o $(bin)/$(exe) $(obj) $(LFLAGS_COM) $(LFLAGS) -L $(LIB_DIR)/gnu_linux $(SMV_LIBS_LINUX) $(SYSTEM_LIBS_LINUX)
