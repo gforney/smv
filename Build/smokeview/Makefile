@@ -274,7 +274,7 @@ intel_linux_db : CPP       = icpx
 intel_linux_db : exe       = smokeview_linux_db$(SMV_PROFILESTRING)
 
 intel_linux_db : $(obj)
-	$(CPP) -o $(bin)/$(exe) $(obj) $(LFLAGS) -L$(LIB_DIR)/intel_linux $(SMV_LIBS_LINUX) $(SYSTEM_LIBS_LINUX)
+	$(CPP) -o $(bin)/$(exe) $(obj) $(LFLAGS_COM) $(LFLAGS) -L$(LIB_DIR)/intel_linux $(SMV_LIBS_LINUX) $(SYSTEM_LIBS_LINUX)
 
 # ------------- gnu_linux_db ----------------
 
@@ -288,7 +288,7 @@ gnu_linux_db : CPP       = g++
 gnu_linux_db : exe       = smokeview_linux$(SMV_PROFILESTRING)
 
 gnu_linux_db : $(obj)
-	$(CPP) -o $(bin)/$(exe) $(obj) $(LFLAGS) -L $(LIB_DIR)/gnu_linux $(SMV_LIBS_LINUX) $(SYSTEM_LIBS_LINUX)
+	$(CPP) -o $(bin)/$(exe) $(obj) $(LFLAGS_COM) $(LFLAGS) -L $(LIB_DIR)/gnu_linux $(SMV_LIBS_LINUX) $(SYSTEM_LIBS_LINUX)
 
 # ------------- gnu_linux ----------------
 
@@ -299,7 +299,7 @@ gnu_linux : CPP       = g++
 gnu_linux : exe       = smokeview_linux$(SMV_PROFILESTRING)
 
 gnu_linux : $(obj)
-	$(CPP) -o $(bin)/$(exe) $(obj) $(LFLAGS) -L $(LIB_DIR)/gnu_linux $(SMV_LIBS_LINUX) $(SYSTEM_LIBS_LINUX)
+	$(CPP) -o $(bin)/$(exe) $(obj) $(LFLAGS_COM) $(LFLAGS) -L $(LIB_DIR)/gnu_linux $(SMV_LIBS_LINUX) $(SYSTEM_LIBS_LINUX)
 
 # ------------- clang_linux_db ----------------
 
