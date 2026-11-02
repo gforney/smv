@@ -24,15 +24,6 @@ f_units *GetUnitClass(char *unit){
   return NULL;
 }
 
-/* ------------------ UnitTypeMatch ------------------------ */
-
-int UnitTypeMatch(char *unit, f_units *unit_class){
-
-  if(strlen(unit_class->units->unit)!=strlen(unit))return 1;
-  if(strcmp(unit_class->units->unit,unit)!=0)return 1;
-  return 0;
-}
-
 /* ------------------ IsUnitPresent ------------------------ */
 
 int IsUnitPresent(char *label, char *unit){

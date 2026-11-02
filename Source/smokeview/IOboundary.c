@@ -668,40 +668,6 @@ void GetPatchSizes2(FILE_m *stream, int npatch, int nmeshes_arg, int *npatchsize
 #endif
   return;
 }
-/* ------------------ DrawFace ------------------------ */
-
-void DrawFace(float *v11, float *v22, int dir){
-  float v12[3], v21[3];
-
-  memcpy(v12, v11, 3*sizeof(float));
-  memcpy(v21, v11, 3*sizeof(float));
-  switch(dir){
-  case 0:
-  case 1:
-    v12[1] = v22[1];
-    v21[2] = v22[2];
-    break;
-  case 2:
-  case 3:
-    v12[0] = v22[0];
-    v21[2] = v22[2];
-    break;
-  case 4:
-  case 5:
-    v12[0] = v22[0];
-    v21[1] = v22[1];
-    break;
-  default:
-    assert(FFALSE);
-    break;
-  }
-  glVertex3fv(v11); glVertex3fv(v12); glVertex3fv(v22);
-  glVertex3fv(v11); glVertex3fv(v22); glVertex3fv(v21);
-
-  glVertex3fv(v11); glVertex3fv(v22); glVertex3fv(v12);
-  glVertex3fv(v11); glVertex3fv(v21); glVertex3fv(v22);
-}
-
 /* ------------------ GetPatchData ------------------------ */
 
 void GetPatchData(int imesh, FILE_m *stream, int npatch, patchfacedata *patchfaceinfo,

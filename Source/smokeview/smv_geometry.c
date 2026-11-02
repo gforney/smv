@@ -1551,65 +1551,6 @@ float VolumeTetrahedron(float *v1, float *v2, float *v3, float *v4){
   return DOT3(v4d,vcross)/6.0;
 }
 
-/* ----------------------- InitTetraClipInfo ----------------------------- */
-
-void InitTetraClipInfo(clipdata *ci,float *v1, float *v2, float *v3, float *v4){
-  float v1d[3], v2d[3];
-  GLdouble *clipvals;
-  float vol;
-
-  //     v4
-  //     .  .
-  //     .   v2
-  //     .  /  \         v4           v4          v4             v3
-  //     ./     \       /  \         /  \        /  \          /   \
-  //    v1-------v3    v1---v3      v3---v2     v2---v1       v1---v2
-
-  vol = VolumeTetrahedron(v1,v2,v3,v4);
-
-  clipvals = ci->clipvals;
-  ci->option=TETRA_CLIPPLANES;
-
-  VEC3DIFF(v1d,v1,v3);
-  VEC3DIFF(v2d,v4,v3);
-  CROSS(clipvals,v1d,v2d);
-  if(vol>0.0){
-    VEC3MA(clipvals,-1.0);
-  }
-  NORMALIZE3(clipvals);
-  clipvals[3]=-DOT3(clipvals,v3);
-  clipvals+=4;
-
-  VEC3DIFF(v1d,v3,v2);
-  VEC3DIFF(v2d,v4,v2);
-  CROSS(clipvals,v1d,v2d);
-  if(vol>0.0){
-    VEC3MA(clipvals,-1.0);
-  }
-  NORMALIZE3(clipvals);
-  clipvals[3]=-DOT3(clipvals,v2);
-  clipvals+=4;
-
-  VEC3DIFF(v1d,v2,v1);
-  VEC3DIFF(v2d,v4,v1);
-  CROSS(clipvals,v1d,v2d);
-  if(vol>0.0){
-    VEC3MA(clipvals,-1.0);
-  }
-  NORMALIZE3(clipvals);
-  clipvals[3]=-DOT3(clipvals,v1);
-  clipvals+=4;
-
-  VEC3DIFF(v1d,v3,v1);
-  VEC3DIFF(v2d,v2,v1);
-  CROSS(clipvals,v1d,v2d);
-  if(vol>0.0){
-    VEC3MA(clipvals,-1.0);
-  }
-  NORMALIZE3(clipvals);
-  clipvals[3]=-DOT3(clipvals,v1);
-}
-
 /* ----------------------- MergeMax ----------------------------- */
 
 float MergeMax(int opti, float vali, int optj, float valj){

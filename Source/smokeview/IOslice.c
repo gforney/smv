@@ -1041,44 +1041,6 @@ void SetSliceLabels(float smin, float smax,
   }
 }
 
-/* ------------------ UpdateAllSliceLabels ------------------------ */
-
-void UpdateAllSliceLabels(int slicetype, int *errorcode){
-  int i;
-  float valmin, valmax;
-  int setvalmin, setvalmax;
-  int ii;
-  slicedata *sd;
-
-  *errorcode=0;
-
-  setvalmin=slicebounds[slicetype].dlg_setvalmin;
-  setvalmax=slicebounds[slicetype].dlg_setvalmax;
-  if(setvalmin==1){
-    valmin=slicebounds[slicetype].dlg_valmin;
-  }
-  else{
-    valmin=slicebounds[slicetype].data_valmin;
-    slicebounds[slicetype].dlg_valmin=valmin;
-  }
-  if(setvalmax==1){
-    valmax=slicebounds[slicetype].dlg_valmax;
-  }
-  else{
-    valmax=slicebounds[slicetype].data_valmax;
-    slicebounds[slicetype].dlg_valmax=valmax;
-  }
-  for(ii=0; ii<nslice_loaded; ii++){
-    i = slice_loaded_list[ii];
-    sd = global_scase.slicecoll.sliceinfo + i;
-    if(sd->slicefile_labelindex == slicetype){
-      SetSliceLabels(valmin, valmax, sd, NULL, errorcode);
-    }
-    if(*errorcode!=0)return;
-  }
-  SliceBounds2Glui(slicetype);
-}
-
 /* ------------------ SetSliceColors ------------------------ */
 
 void SetSliceColors(float smin, float smax, slicedata *sd, int flag, int *errorcode){

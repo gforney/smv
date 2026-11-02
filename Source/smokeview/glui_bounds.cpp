@@ -124,20 +124,14 @@ class bounds_dialog{
     void Callback(int var), GLUI_Update_CB PROC_CB, procdata *procinfo, int *nprocinfo);
   void setupNoGraphics(const char *file_type, cpp_boundsdata *bounds, int nbounds);
   void set_cache_flag(int cache_flag);
-  int  get_chopmin(char *label, int *set_valmin, float *valmin);
-  int  get_chopmax(char *label, int *set_valmax, float *valmax);
   int  set_chopmin(char *label, int set_valmin, float valmin);
   int  set_chopmax(char *label, int set_valmax, float valmax);
   int  set_min(char *label, int set_valmin, float valmin);
   void set_min_all(int *set_valmin, float *valmin, int nvals);
-  void get_global_minmax_all(float *valmin, float *valmax, int nvals);
-  void get_loaded_minmax_all(float *valmin, float *valmax, int nvals);
   void set_global_minmax_all(float *valmin, float *valmax, int nvals);
   void set_loaded_minmax_all(float *valmin, float *valmax, int nvals);
   int  set_max(char *label, int set_valmax, float valmax);
   void set_max_all(int *set_valmax, float *valmax, int nvals);
-  void set_plot_minmax(float p_min, float p_max);
-  void set_plot_minmax_clamp(float p_min, float p_max);
   void set_research_mode(int flag);
   void open_minmax(void);
 
@@ -166,30 +160,6 @@ float SmvRound(float val, int n){
   sscanf(c_val, "%f", &return_val);
 
   return return_val;
-}
-
-/* ------------------ set_plot_minmax ------------------------ */
-
-void bounds_dialog::set_plot_minmax(float p_min, float p_max){
-  float p_min_round, p_max_round;
-
-  p_min_round = SmvRound(p_min, 4);
-  p_max_round = SmvRound(p_max, 4);
-  if(SPINNER_plot_min!=NULL)SPINNER_plot_min->set_float_val(p_min_round);
-  if(SPINNER_plot_max!=NULL)SPINNER_plot_max->set_float_val(p_max_round);
-}
-
-/* ------------------ set_plot_minmax_clamp ------------------------ */
-
-void bounds_dialog::set_plot_minmax_clamp(float p_min, float p_max){
-  p_min = SmvRound(p_min, 4);
-  p_max = SmvRound(p_max, 4);
-  if(SPINNER_plot_min!=NULL){
-    SPINNER_plot_min->set_float_limits(p_min, p_max);
-  }
-  if(SPINNER_plot_max!=NULL){
-    SPINNER_plot_max->set_float_limits(p_min, p_max);
-  }
 }
 
 /* ------------------ set_cache_flag ------------------------ */
@@ -510,42 +480,6 @@ int bounds_dialog::set_chopmin(char *label, int set_valmin, float valmin){
   return 0;
 }
 
-/* ------------------ get_chopmin ------------------------ */
-
-int bounds_dialog::get_chopmin(char *label, int *set_chopmin, float *chopmin){
-  int i;
-
-  for(i = 0; i < nall_bounds; i++){
-    cpp_boundsdata *boundi;
-
-    boundi = all_bounds + i;
-    if(strcmp(boundi->label, label) == 0){
-      *set_chopmin = boundi->set_chopmin;
-      *chopmin = boundi->chopmin;
-      return 1;
-    }
-  }
-  return 0;
-}
-
-/* ------------------ get_chopmax ------------------------ */
-
-int bounds_dialog::get_chopmax(char *label, int *set_chopmax, float *chopmax){
-  int i;
-
-  for(i = 0; i < nall_bounds; i++){
-    cpp_boundsdata *boundi;
-
-    boundi = all_bounds + i;
-    if(strcmp(boundi->label, label) == 0){
-      *set_chopmax = boundi->set_chopmax;
-      *chopmax     = boundi->chopmax;
-      return 1;
-    }
-  }
-  return 0;
-}
-
 /* ------------------ set_chopmax ------------------------ */
 
 int bounds_dialog::set_chopmax(char *label, int set_valmax, float valmax){
@@ -641,38 +575,6 @@ void bounds_dialog::set_min_all(int *set_valmin, float *valmin, int nvals){
     boundi = all_bounds+i;
     boundi->set_valmin = set_valmin[i];
     boundi->valmin[boundi->set_valmin] = valmin[i];
-  }
-}
-
-/* ------------------ get_global_minmax_all ------------------------ */
-
-void bounds_dialog::get_global_minmax_all(float *valmin, float *valmax, int nvals){
-  int i, set_valmin, set_valmax;
-
-  set_valmin = BOUND_GLOBAL_MIN;
-  set_valmax = BOUND_GLOBAL_MAX;
-  for(i = 0; i < nall_bounds; i++){
-    cpp_boundsdata *boundi;
-
-    boundi = all_bounds + i;
-    valmin[i] = boundi->valmin[set_valmin];
-    valmax[i] = boundi->valmax[set_valmax];
-  }
-}
-
-/* ------------------ get_loaded_minmax_all ------------------------ */
-
-void bounds_dialog::get_loaded_minmax_all(float *valmin, float *valmax, int nvals){
-  int i, set_valmin, set_valmax;
-
-  set_valmin = BOUND_LOADED_MIN;
-  set_valmax = BOUND_LOADED_MAX;
-  for(i = 0; i < nall_bounds; i++){
-    cpp_boundsdata *boundi;
-
-    boundi = all_bounds + i;
-    valmin[i] = boundi->valmin[set_valmin];
-    valmax[i] = boundi->valmax[set_valmax];
   }
 }
 

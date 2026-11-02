@@ -156,32 +156,6 @@ void UpdateAllBoundaryColors(int flag){
   FREEMEMORY(list);
 }
 
-/* ------------------ GetBoundaryLabels ------------------------ */
-
-void GetBoundaryLabels(
-              float local_tmin, float local_tmax,
-              char **boundarylabels, float *boundaryvalues, float *tvals256, int nlevel){
-  int n;
-  float factor, tval, range;
-
-  range = local_tmax - local_tmin;
-  factor = range/(nlevel-2);
-  for(n=1; n<nlevel-2; n++){
-    tval = local_tmin + (n-1)*factor;
-    Num2String(&boundarylabels[n][0],tval);
-    boundaryvalues[n] = tval;
-  }
-  tval = local_tmin + (nlevel-3)*factor;
-  for(n=0; n<256; n++){
-    tvals256[n] = (local_tmin*(255-n) + n*local_tmax)/255.;
-  }
-  Num2String(&boundarylabels[nlevel-2][0],tval);
-  boundaryvalues[nlevel-2] = tval;
-  tval = local_tmax;
-  Num2String(&boundarylabels[nlevel-1][0],tval);
-  boundaryvalues[nlevel-1] = tval;
-}
-
 /* ------------------ UpdatePart5Extremes ------------------------ */
 
 void UpdatePart5Extremes(void){

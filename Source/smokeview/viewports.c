@@ -1708,39 +1708,6 @@ float DistPtXYZ(float *pt, float x, float y, float z){
   return sqrt(dx*dx + dy*dy + dz*dz);
 }
 
-/* ------------------ DistPointLineSeg  ------------------------ */
-
-float DistPointLineSeg(float *point, float *xyz1, float *xyz2){
-  int i;
-  float dp[3], dxyz[3];
-  float num, denom;
-  float t;
-  // xt = xyz1*(1-t) + xyz2*t
-  // (point - xt) .dot. (xyz2 - xyz1) = 0
-  // solve for t and compute distance between xt and point
-
-  for(i=0; i<3; i++){
-    dp[i]   = point[i]  - xyz1[i];
-    dxyz[i] = xyz2[i] - xyz1[i];
-  }
-  num   = DOT3(dp, dxyz);
-  denom = DOT3(dxyz, dxyz);
-  if(denom>0.0){
-    float xyz[3];
-    float dist;
-
-    t = num/denom;
-    if(t<0.0||t>1.0)return -1.0;
-    for(i=0; i<3; i++){
-      xyz[i] = xyz1[i]*(1.0-t)+xyz2[i]*t;
-      dxyz[i] = point[i] - xyz[i];
-    }
-    dist = sqrt(DOT3(dxyz,dxyz));
-    return dist;
-  }
-  return -1.0;
-}
-
 /* ------------------ DistPointBox  ------------------------ */
 
 void DistPointBox(float *point, float corners[8][3], float *mindist, float *maxdist){

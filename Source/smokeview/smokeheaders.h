@@ -279,7 +279,6 @@ EXTERNCPP void UpdateSelectFaces(void);
 
 //*** menus.c headers
 
-EXTERNCPP void HideImmersedMenu(void);
 EXTERNCPP void HideInternalBlockages(void);
 EXTERNCPP void ShowInternalBlockages(void);
 
@@ -308,9 +307,6 @@ EXTERNCPP void GetBoundaryColors3(patchdata *patchi, float *t, int start, int nt
               int nlevel,
               char **patchlabels, float *patchvalues, float *tvals256,
               int *extreme_min, int *extreme_max, int flag);
-EXTERNCPP void GetBoundaryLabels(
-              float tmin, float tmax,
-              char **labels, float *boundaryvaluespatch, float *tvals256, int nlevel);
 EXTERNCPP void GetColorbarLabels(float tmin, float tmax, int nlevel,
               char labels[12][11],float *tlevels256);
 EXTERNCPP void GetPartColors(partdata *parti, int nlevels, int flag);
@@ -528,7 +524,6 @@ EXTERNCPP void Slice2Device(void);
 EXTERNCPP void SortSlices(void);
 EXTERNCPP int  TimeAverageData(char *label, float **data_out, float **data_in, int ndata, int data_per_timestep, float *times_local, int ntimes_local, float average_time);
 EXTERNCPP void UpdateAllSliceColors(int slicetype, int *errorcode);
-EXTERNCPP void UpdateAllSliceLabels(int slicetype, int *errorcode);
 EXTERNCPP void UpdateGslicePlanes(void);
 EXTERNCPP void UpdateSliceBoundIndexes(void);
 EXTERNCPP void UpdateSliceBoundLabels(void);
@@ -561,7 +556,6 @@ EXTERNCPP void MergeSmoke3D(smoke3ddata *smoke3dset);
 EXTERNCPP void *MergeSmoke3DAll(void *arg);
 EXTERNCPP void *UncompressSmoke3DAll(void *arg);
 EXTERNCPP FILE_SIZE ReadSmoke3D(int iframe, int ifile, int flag, int first_time, int *errorcode);
-EXTERNCPP void ReadSmoke3DAllMeshes(int iframe, int smoketype, int *errorcode);
 EXTERNCPP void SmokeWrapup(void);
 EXTERNCPP int  UpdateSmoke3D(smoke3ddata *smoke3di);
 EXTERNCPP void UpdateSmoke3dFileParms(void);
@@ -793,7 +787,6 @@ EXTERNCPP void GetScreenMapping(float *xyz0, float *screen_perm);
 EXTERNCPP int  GetTimeInterval(float val, float *array, int n);
 EXTERNCPP int  InExterior(float *xyz);
 EXTERNCPP void InitClip(void);
-EXTERNCPP void InitTetraClipInfo(clipdata *ci,float *v1, float *v2, float *v3, float *v4);
 EXTERNCPP void MatMultMat(float *m1, float *m2, float *m3);
 EXTERNCPP void *MakeIBlank(void *arg);
 EXTERNCPP int  MakeIBlankCarve(void);

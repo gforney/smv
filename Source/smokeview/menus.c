@@ -5938,12 +5938,6 @@ void HideInternalBlockages(void){
   updatefacelists = 1;
 }
 
-/* ------------------ HideImmersedMenu ------------------------ */
-
-void HideImmersedMenu(void){
-  ImmersedMenu(GEOMETRY_HIDE);
-}
-
 /* ------------------ ShowBoundaryMenu ------------------------ */
 
 void ShowBoundaryMenu(int value){
@@ -7318,32 +7312,6 @@ void IsoLoadState(isodata *isoi, int  *load_state){
     if(strcmp(isoi->surface_label.longlabel, isoii->surface_label.longlabel)!=0)continue;
     total++;
     if(isoii->loaded==1)loaded++;
-  }
-  if(loaded==0){
-    *load_state = 0;
-  }
-  else{
-    if(loaded<total){
-      *load_state = 1;
-    }
-    else{
-      *load_state = 2;
-    }
-  }
-}
-
-/* ------------------ PatchLoadState ------------------------ */
-
-void PatchLoadState(patchdata *patchi, int  *load_state){
-  int i, total=0, loaded=0;
-
-  for(i=0; i<global_scase.npatchinfo; i++){
-    patchdata *patchii;
-
-    patchii = global_scase.patchinfo + i;
-    if(strcmp(patchi->label.longlabel, patchii->label.longlabel)!=0)continue;
-    total++;
-    if(patchii->loaded==1)loaded++;
   }
   if(loaded==0){
     *load_state = 0;
