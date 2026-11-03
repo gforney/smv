@@ -6323,9 +6323,10 @@ overridden by using the -bindir command line option, for example
 {\tt smokeview -bindir C:\textbackslash Users\textbackslash username\textbackslash bindir casename}
 
 \item a file named casename.ini in the current directory, the directory where the case is located.
-\item a file named casename.ini in \$HOME/.smokeview if the current directory is not writable.
-This could occur if one does not {\em own}\ the directory containing the case.
-For example if you are running the case in someone elses directory space.
+
+\item a file specfied by the -load\_ini command line option, for example
+
+{\tt smokeview -load\_ini C:\textbackslash Users\textbackslash username\textbackslash custom.ini casename}
 \end{enumerate}
 
 The {\tt casename.ini}\ file may be created by selecting the {\tt Save settings to casename.ini}\ menu item.
@@ -7102,8 +7103,7 @@ to any loaded slice files whenever the scene is rendered.
 \subsection{View}
 \label{sect:iniview}
 The keywords in this section define how a scene is viewed.
-Keywords exist for showing or hiding various scene elements
-and for modifying how various scene elements appear.
+Keywords exist for showing, hiding or modifying various scene elements.
 
 \blist
 
