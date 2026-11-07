@@ -1020,27 +1020,6 @@ void UpdateSliceBounds(void){
   }
 }
 
-/* ------------------ SetSliceLabels ------------------------ */
-
-void SetSliceLabels(float smin, float smax,
-  slicedata *sd, patchdata *pd, int *errorcode){
-  int slicetype=-1;
-
-  assert((sd != NULL && pd == NULL)||(sd == NULL && pd != NULL));
-  if(sd!=NULL)slicetype = GetSliceBoundsIndexFromLabel(sd->label.shortlabel);
-  if(pd != NULL)slicetype = GetSliceBoundsIndexFromLabel(pd->label.shortlabel);
-  if(slicetype!=-1){
-    boundsdata *sb;
-
-    sb = slicebounds+slicetype;
-    if(sd!=NULL)sb->label = &(sd->label);
-    if(pd!=NULL)sb->label = &(pd->label);
-
-    *errorcode = 0;
-    GetColorbarLabels(smin, smax, global_scase.nrgb, sb->colorlabels, sb->levels256);
-  }
-}
-
 /* ------------------ SetSliceColors ------------------------ */
 
 void SetSliceColors(float smin, float smax, slicedata *sd, int flag, int *errorcode){

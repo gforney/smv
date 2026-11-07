@@ -150,18 +150,6 @@ int InPercentileMode(void);
 //bounds_dialog::bounds_dialog(void){
 //}
 
-/* ------------------ SmvRound ------------------------ */
-
-float SmvRound(float val, int n){
-  float return_val;
-  char c_val[32];
-
-  Float2String(c_val, val, n, force_fixedpoint);
-  sscanf(c_val, "%f", &return_val);
-
-  return return_val;
-}
-
 /* ------------------ set_cache_flag ------------------------ */
 
 void bounds_dialog::set_cache_flag(int cache_flag){

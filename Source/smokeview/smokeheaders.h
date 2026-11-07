@@ -594,7 +594,6 @@ EXTERNCPP int  HaveTerrainSlice(void);
 EXTERNCPP int  HaveTerrainTexture(int *draw_surfaceptr);
 EXTERNCPP void UpdateTerrain(int allocate_memory);
 EXTERNCPP void UpdateTerrainColors(void);
-EXTERNCPP void UpdateTerrainOptions(void);
 
 //*** IOzone.c headers
 

@@ -1539,18 +1539,6 @@ void InitClip(void){
   stepclip_xmax=0,stepclip_ymax=0,stepclip_zmax=0;
 }
 
-/* ------------------ VolumeTetrahedron ------------------------ */
-
-float VolumeTetrahedron(float *v1, float *v2, float *v3, float *v4){
-  float v2d[3], v3d[3], v4d[3], vcross[3];
-
-  VEC3DIFF(v2d,v2,v1);
-  VEC3DIFF(v3d,v3,v1);
-  VEC3DIFF(v4d,v4,v1);
-  CROSS(vcross,v2d,v3d);
-  return DOT3(v4d,vcross)/6.0;
-}
-
 /* ----------------------- MergeMax ----------------------------- */
 
 float MergeMax(int opti, float vali, int optj, float valj){
