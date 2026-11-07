@@ -46,10 +46,6 @@ SVEXTERN threaderdata SVDECL(*meshnabors_threads, NULL);
 SVEXTERN int SVDECL(n_makeiblank_threads, 1), SVDECL(use_makeiblank_threads, 1);
 SVEXTERN threaderdata SVDECL(*makeiblank_threads,       NULL);
 
-//***checkfiles
-SVEXTERN int SVDECL(n_checkfiles_threads, 1), SVDECL(use_checkfiles_threads, 1);
-SVEXTERN threaderdata SVDECL(*checkfiles_threads,       NULL);
-
 //*** ffmpeg
 SVEXTERN int SVDECL(n_ffmpeg_threads, 1), SVDECL(use_ffmpeg_threads, 1);
 SVEXTERN threaderdata SVDECL(*ffmpeg_threads,         NULL);
@@ -718,7 +714,6 @@ SVEXTERN int SVDECL(check_colorbar, 0);
 SVEXTERN int SVDECL(script_startframe,-1), SVDECL(script_skipframe,-1);
 SVEXTERN int SVDECL(render_startframe0,-1), SVDECL(render_skipframe0,-1);
 SVEXTERN int SVDECL(update_smokecolorbar,0);
-SVEXTERN int SVDECL(combine_meshes,1);
 SVEXTERN int vcolorbar_left_pos, vcolorbar_right_pos, vcolorbar_down_pos, vcolorbar_top_pos;
 SVEXTERN int hcolorbar_left_pos, hcolorbar_right_pos, hcolorbar_down_pos, hcolorbar_top_pos;
 SVEXTERN float scale_2d_x, scale_2d_y;
@@ -1214,7 +1209,7 @@ SVEXTERN int SVDECL(glui_active,0);
 
 SVEXTERN int SVDECL(old_draw_colorlabel,0);
 SVEXTERN int SVDECL(vis3DSmoke3D,1);
-SVEXTERN int SVDECL(smokeskip,1),SVDECL(smoke3d_frame_inc,1),SVDECL(update_smoke3d_frame_inc,0);
+SVEXTERN int SVDECL(smoke3d_frame_inc,1),SVDECL(update_smoke3d_frame_inc,0);
 SVEXTERN float SVDECL(scene_aspect_ratio,1.0);
 
 SVEXTERN int SVDECL(fix_window_aspect, 0);
@@ -1334,7 +1329,7 @@ SVEXTERN int SVDECL(shooter_cont_update,0),SVDECL(shooter_firstframe,0);
 //keep comment until changes are merged
 //SVEXTERN float SVDECL(shooter_u0,2.0), SVDECL(shooter_z0,1.0), SVDECL(shooter_p,1.0/7.0), SVDECL(shooter_v_inf,1.0);
 SVEXTERN float SVDECL(shooter_u0,2.0), SVDECL(shooter_z0,1.0), SVDECL(shooter_p, 0.1428571), SVDECL(shooter_v_inf,1.0);
-SVEXTERN float shooter_velmag, shooter_veldir, shooter_duration, SVDECL(shooter_history,10.0);
+SVEXTERN float shooter_velmag, shooter_veldir, shooter_duration;
 SVEXTERN int SVDECL(shooter_active,0);
 SVEXTERN int shooter_fps,shooter_vel_type, shooter_nparts, SVDECL(visShooter,0), showshooter, nshooter_frames, max_shooter_points;
 SVEXTERN shootpointdata SVDECL(*shootpointinfo,NULL);
@@ -1422,7 +1417,6 @@ SVEXTERN int SVDECL(hide_internal_blockages, 0);
 SVEXTERN int SVDECL(outline_color_flag,0);
 SVEXTERN int visBlocks,                SVDECL(solid_state,-1),      SVDECL(outline_state,-1);
 SVEXTERN int visBlocks_save,           SVDECL(solid_state_save,-1), SVDECL(outline_state_save,-1);
-SVEXTERN int SVDECL(visBlocks_ini,-1), SVDECL(solid_state_ini, -1), SVDECL(outline_state_ini, -1);
 #define OBSTGEOM_SAVE    1
 #define OBSTGEOM_RESTORE 0
 SVEXTERN int SVDECL(obstgeom_state, -1);
@@ -1610,7 +1604,6 @@ SVEXTERN int SVDECL(n_blockages_debug, 0);
 #endif
 SVEXTERN int SVDECL(colorbar_select_index,-1),SVDECL(update_colorbar_select_index,0);
 SVEXTERN float fds_eyepos[3],smv_eyepos[3],fds_viewdir[3],smv_viewpos[3];
-SVEXTERN int SVDECL(tour_usecurrent,0);
 SVEXTERN int SVDECL(output_slicedata,0),SVDECL(output_patchdata,0);
 SVEXTERN f_units SVDECL(*unitclasses,NULL),SVDECL(*unitclasses_default,NULL),SVDECL(*unitclasses_ini,NULL);
 SVEXTERN int SVDECL(nunitclasses,0),SVDECL(nunitclasses_default,0),SVDECL(nunitclasses_ini,0);
@@ -1991,7 +1984,6 @@ SVEXTERN int SVDECL(show_firecolormap,0);
 SVEXTERN int SVDECL(fire_colormap_type,      FIRECOLOR_COLORBAR);
 SVEXTERN int SVDECL(fire_colormap_type_save, FIRECOLOR_COLORBAR);
 
-SVEXTERN int SVDECL(use_smoke_rgb, 1);
 SVEXTERN int SVDECL(use_fire_colormap, 0),  SVDECL(use_fire_rgb, 1);
 SVEXTERN int SVDECL(use_co2_colormap, 0),   SVDECL(use_co2_rgb, 1);
 

@@ -369,9 +369,6 @@ extern "C" void GLUIShooterSetup(int main_window){
   SPINNER_shooter_fps=glui_shooter->add_spinner_to_panel(PANEL_shooter_frameH,"frames per second",GLUI_SPINNER_INT,&shooter_fps,SHOOTER_FPS,ShooterCB);
 
   SPINNER_shooter_duration=glui_shooter->add_spinner_to_panel(PANEL_shooter_frameH,"duration (s)",GLUI_SPINNER_FLOAT,&shooter_duration,SHOOTER_DURATION,ShooterCB);
- // SPINNER_shooter_history=glui_shooter->add_spinner_to_panel(PANEL_shooter_frameH,"history (s)",
- //   GLUI_SPINNER_FLOAT,&shooter_history,SHOOTER_HISTORY,ShooterCB);
- // SPINNER_shooter_history->disable();
 
   ShooterCB(SHOOTER_NPARTS);
   ShooterCB(SHOOTER_FPS);

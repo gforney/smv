@@ -2626,7 +2626,6 @@ void UpdateDisplay(void){
     INIT_PRINT_TIMER(timer_update_menus);
     if(opengl_finalized==1)glutDetachMenu(GLUT_RIGHT_BUTTON);
     attachmenu_status = 0;
-    ThreadLock(checkfiles_threads);
 #ifdef pp_GLUT_DEBUG
     printf("\n***before menu setup\n");
 #endif
@@ -2634,7 +2633,6 @@ void UpdateDisplay(void){
 #ifdef pp_GLUT_DEBUG
     printf("***after menu setup\n\n");
 #endif
-    ThreadUnlock(checkfiles_threads);
     if(opengl_finalized==1)glutAttachMenu(GLUT_RIGHT_BUTTON);
     attachmenu_status = 1;
     updatemenu = 0;

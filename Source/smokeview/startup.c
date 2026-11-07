@@ -342,12 +342,8 @@ int SetupCase(char *filename){
   printf("\n***before glutDetatchMenu\n");
   glutDetachMenu(GLUT_RIGHT_BUTTON);
   attachmenu_status = 0;
-  printf("\n***before THREADcontrol\n");
-  ThreadLock(checkfiles_threads);
   printf("\n***before InitMenus\n");
   InitMenus();
-  printf("\n***before THREADcontrol\n");
-  ThreadUnlock(checkfiles_threads);
   printf("\n***before glutAttachMenu\n");
   glutAttachMenu(GLUT_RIGHT_BUTTON);
   attachmenu_status = 1;
@@ -359,9 +355,7 @@ int SetupCase(char *filename){
   InitMisc();
   glutDetachMenu(GLUT_RIGHT_BUTTON);
   attachmenu_status = 0;
-  ThreadLock(checkfiles_threads);
   InitMenus();
-  ThreadUnlock(checkfiles_threads);
   glutAttachMenu(GLUT_RIGHT_BUTTON);
   attachmenu_status = 1;
 #endif
