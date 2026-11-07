@@ -124,7 +124,6 @@ class bounds_dialog{
     void Callback(int var), GLUI_Update_CB PROC_CB, procdata *procinfo, int *nprocinfo);
   void setupNoGraphics(const char *file_type, cpp_boundsdata *bounds, int nbounds);
   void set_cache_flag(int cache_flag);
-  int  set_chopmin(char *label, int set_valmin, float valmin);
   int  set_chopmax(char *label, int set_valmax, float valmax);
   int  set_min(char *label, int set_valmin, float valmin);
   void set_min_all(int *set_valmin, float *valmin, int nvals);
@@ -448,24 +447,6 @@ void bounds_dialog::set_valtype_index(int index){
 
 int bounds_dialog::get_valtype(void){
   return bounds.set_valtype;
-}
-
-/* ------------------ set_chopmin ------------------------ */
-
-int bounds_dialog::set_chopmin(char *label, int set_valmin, float valmin){
-  int i;
-
-  for(i = 0; i<nall_bounds; i++){
-    cpp_boundsdata *boundi;
-
-    boundi = all_bounds+i;
-    if(strcmp(boundi->label, label)==0){
-      boundi->set_chopmin = set_valmin;
-      boundi->chopmin     = valmin;
-      return 1;
-    }
-  }
-  return 0;
 }
 
 /* ------------------ set_chopmax ------------------------ */
