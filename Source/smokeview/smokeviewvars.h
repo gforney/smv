@@ -698,7 +698,7 @@ SVEXTERN int SVDECL(wall_cell_color_flag,0);
 SVEXTERN circdata cvent_circ, object_circ, windrose_circ;
 SVEXTERN int SVDECL(show_all_units,0);
 SVEXTERN int SVDECL(circle_outline,0);
-SVEXTERN unsigned char SVDECL(*patchmin_unit,NULL),SVDECL(*patchmax_unit,NULL);
+SVEXTERN unsigned char SVDECL(*patchmin_unit,NULL);
 SVEXTERN unsigned char SVDECL(*glui_slicemin_unit,NULL),SVDECL(*glui_slicemax_unit,NULL);
 SVEXTERN unsigned char SVDECL(*plot3dmin_unit,NULL),SVDECL(*plot3dmax_unit,NULL);
 SVEXTERN unsigned char SVDECL(*partmin_unit,NULL),SVDECL(*partmax_unit,NULL);
@@ -1063,7 +1063,7 @@ SVEXTERN int SVDECL(glui_post_redisplay_on, 0);
 SVEXTERN int SVDECL(demo_mode,0);
 SVEXTERN int SVDECL(smoke3d_demo_mode, 0);
 SVEXTERN int SVDECL(loadplot3dall,0);
-SVEXTERN char *shortp3label[MAXPLOT3DVARS], *unitp3label[MAXPLOT3DVARS];
+SVEXTERN char *shortp3label[MAXPLOT3DVARS];
 SVEXTERN int SVDECL(update_plot3d_bnd, 0);
 
 SVEXTERN int show3dsmoke;
@@ -1322,7 +1322,7 @@ SVEXTERN float shooter_uvw[3]={0.0,0.0,0.0};
 #else
 SVEXTERN float shooter_uvw[3];
 #endif
-SVEXTERN float shooter_velx, shooter_vely, shooter_velz, shooter_time;
+SVEXTERN float shooter_velx, shooter_vely, shooter_velz;
 SVEXTERN int SVDECL(shooter_cont_update,0),SVDECL(shooter_firstframe,0);
 //keep comment until changes are merged
 //SVEXTERN float SVDECL(shooter_u0,2.0), SVDECL(shooter_z0,1.0), SVDECL(shooter_p,1.0/7.0), SVDECL(shooter_v_inf,1.0);
