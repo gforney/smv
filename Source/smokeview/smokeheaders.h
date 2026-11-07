@@ -529,7 +529,6 @@ EXTERNCPP void UpdateSliceBoundLabels(void);
 EXTERNCPP void UpdateSliceBounds(void);
 EXTERNCPP void UpdateSliceContours(int slice_type_index, float line_min, float line_max, int nline_values);
 EXTERNCPP void UpdateSliceDups(sliceparmdata *sp);
-EXTERNCPP void UpdateSliceFilenum(void);
 EXTERNCPP void UpdateSliceMenuShow(sliceparmdata *sp);
 EXTERNCPP void UpdateSliceMenuLabels(sliceparmdata *sp);
 EXTERNCPP void UpdateVectorSkip(int skip);

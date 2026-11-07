@@ -1468,7 +1468,7 @@ void InitVars(void){
   direction_color[1]=0.250980;
   direction_color[2]=0.545098;
   direction_color[3]=1.0;
-  direction_color_ptr=GetColorPtr(&global_scase, direction_color);
+  GetColorPtr(&global_scase, direction_color);
 
   GetGitInfo(smv_githash,smv_gitdate, NULL );
 

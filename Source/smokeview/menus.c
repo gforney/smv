@@ -612,7 +612,6 @@ void ShowMultiSliceMenu(int value){
     }
     break;
   }
-  UpdateSliceFilenum();
   plotstate = GetPlotState(DYNAMIC_PLOTS);
 
   UpdateShow();
@@ -653,7 +652,6 @@ void TrainerViewMenu(int value){
     LoadSmoke3DMenu(0);
     LoadSmoke3DMenu(1);
     ShowAllSmoke();
-    trainerload_old=1;
     break;
   case MENU_TRAINER_temp:  // temperature slices
     HideAllSmoke();
@@ -661,7 +659,6 @@ void TrainerViewMenu(int value){
     sliceload_dir = 1;
     LoadAllSlicesLabel("temp");
     ShowAllSlices("TEMPERATURE");
-    trainerload_old=2;
     break;
   case MENU_TRAINER_oxy:  //  oxygen slices
     HideAllSmoke();
@@ -669,12 +666,10 @@ void TrainerViewMenu(int value){
     sliceload_dir = 1;
     LoadAllSlicesLabel("X_O2");
     ShowAllSlices("OXYGEN VOLUME FRACTION");
-    trainerload_old=3;
     break;
   case MENU_TRAINER_CLEAR: // unload
     LoadUnloadMenu(UNLOADALL);
     trainerload=0;
-    trainerload_old=0;
     break;
   default:
     assert(FFALSE);
@@ -1406,7 +1401,6 @@ void ShowHideSliceMenu(int value){
     }
   }
   update_flipped_colorbar = 1;
-  UpdateSliceFilenum();
   plotstate=GetPlotState(DYNAMIC_PLOTS);
 
   UpdateShow();
@@ -1666,7 +1660,6 @@ void FontMenu(int value){
     colorbar_font_ptr = GLUT_BITMAP_HELVETICA_12;
 #endif
     font_height          = 12;
-    colorbar_font_height = 10;
     break;
   case LARGE_FONT:
     fontindex=LARGE_FONT;
@@ -1684,7 +1677,6 @@ void FontMenu(int value){
     colorbar_font_ptr   = GLUT_BITMAP_HELVETICA_18;
 #endif
     font_height          = 18;
-    colorbar_font_height = 18;
     break;
   case SCALED_FONT:
     fontindex=SCALED_FONT;
@@ -3985,8 +3977,6 @@ void LoadParticleMenu(int value){
   if(value==MENU_DUMMY)return;
   part_load_size = 0;
   part_file_count = 0;
-  global_part_boundsize = 0;
-  global_have_global_bound_file = 0;
   GLUTSETCURSOR(GLUT_CURSOR_WAIT);
   if(value>=0){
     char  *partfile;

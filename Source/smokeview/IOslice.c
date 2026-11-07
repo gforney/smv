@@ -757,22 +757,6 @@ FILE_SIZE ReadVSlice(int ivslice, int time_frame, float *time_value, int load_fl
   return return_filesize;
 }
 
-/* ------------------ UpdateSliceFilenum ------------------------ */
-
-void UpdateSliceFilenum(void){
-  slicedata *sd;
-  int i;
-  int ii;
-
-  for(ii=0; ii<nslice_loaded; ii++){
-    i = slice_loaded_list[ii];
-    sd = global_scase.slicecoll.sliceinfo+i;
-    if(sd->display==0||slicefile_labelindex!=sd->slicefile_labelindex)continue;
-    slicefilenum=i;
-    break;
-  }
-}
-
 /* ------------------ MergeLoadedSliceHist ------------------------ */
 
 void MergeLoadedSliceHist(char *label, histogramdata **histptr){
@@ -2941,7 +2925,6 @@ FILE_SIZE ReadSlice(const char *file, int ifile, int time_frame, float *time_val
   show_slice_average = 0;
   slicefilenumber = ifile;
   assert(slicefilenumber>=0&&slicefilenumber<global_scase.slicecoll.nsliceinfo);
-  slicefilenum = ifile;
   sd = global_scase.slicecoll.sliceinfo+slicefilenumber;
 
   blocknumber = sd->blocknumber;
@@ -2968,7 +2951,6 @@ FILE_SIZE ReadSlice(const char *file, int ifile, int time_frame, float *time_val
       FREEMEMORY(sd->slicelevel);
     }
 
-    slicefilenum = ifile;
 
 // reset slice variables to an unloaded state
 
@@ -2999,7 +2981,6 @@ FILE_SIZE ReadSlice(const char *file, int ifile, int time_frame, float *time_val
         i = slice_loaded_list[ii];
         sdi = global_scase.slicecoll.sliceinfo + i;
         if(sdi->slicefile_labelindex == slicefile_labelindex){
-          slicefilenum = i;
           flag2 = 1;
           break;
         }
@@ -3012,14 +2993,12 @@ FILE_SIZE ReadSlice(const char *file, int ifile, int time_frame, float *time_val
           i = slice_loaded_list[ii];
           sdi = global_scase.slicecoll.sliceinfo + i;
           if(sdi->slicefile_labelindex != slicefile_labelindex){
-            slicefilenum = i;
             flag2 = 1;
             break;
           }
         }
       }
       if(flag2 == 0){
-        slicefilenum = 0;
         slicefile_labelindex = 0;
       }
 
