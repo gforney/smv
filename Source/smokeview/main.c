@@ -117,11 +117,9 @@ char *ProcessCommandLine(CommandlineArgs *args, common_opts *opts){
 
   CheckMemory;
   if(args->have_x0){
-    use_commandline_origin = 1;
     screenX0 = args->x0;
   }
   if(args->have_y0){
-    use_commandline_origin = 1;
     screenY0 = args->y0;
   }
   if(args->have_X0){

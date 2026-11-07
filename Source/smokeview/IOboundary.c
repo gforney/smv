@@ -1824,8 +1824,6 @@ void Global2GLUIBoundaryBounds(const char *key){
       setpatchchopmin=patchi->setchopmin;
       setpatchchopmax=patchi->setchopmax;
 
-      patchmin_unit = (unsigned char *)patchi->label.unit;
-
       updatefacelists = 1;
 
       GLUI2GlobalBoundaryBounds(key);

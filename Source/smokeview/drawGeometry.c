@@ -3985,7 +3985,6 @@ void UpdateSelectBlocks(void){
     }
   }
   qsort(sortedblocklist,(size_t)ntotal,sizeof(int),CompareBlock);
-  nselectblocks=ntotal;
 }
 
 /* ------------------ UpdateSelectFaces ------------------------ */

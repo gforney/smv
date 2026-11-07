@@ -1232,9 +1232,6 @@ void DrawSmokeFrame(void){
 
 #ifdef pp_GPU
   usegpu_local = usegpu;
-#endif
-  triangle_count = 0;
-#ifdef pp_GPU
   if(usegpu_local == 1){
     LoadSmokeShaders();
     load_shaders = 1;
