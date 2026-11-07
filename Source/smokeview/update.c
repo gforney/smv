@@ -69,14 +69,12 @@ void UpdateFrameNumber(int changetime){
           patchi->geom_nval_static  = patchi->geom_nstatics[patchi->geom_itime];
           patchi->geom_nval_dynamic = patchi->geom_ndynamics[patchi->geom_itime];
           sd->itime                 = patchi->geom_timeslist[iglobal_times];
-          slice_time                = sd->itime;
         }
         else{
           if(sd->timeslist == NULL)continue;
           sd->itime = sd->timeslist[iglobal_times];
 
           assert(sd->times_map == NULL || sd->times_map[sd->itime] == 1);
-          slice_time = sd->itime;
         }
       }
       for(i = 0; i < global_scase.npatchinfo; i++){
@@ -2131,8 +2129,6 @@ int GetColorbarState(void){
   // if colorbars are hidden then research mode needs to be off
   visColorbarVertical = 0;
   visColorbarHorizontal = 0;
-  visColorbarVertical_save = 0;
-  visColorbarHorizontal_save = 0;
   return COLORBAR_HIDDEN;
 }
 

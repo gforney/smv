@@ -166,7 +166,6 @@ void GetViewportInfo(void){
 #endif
   if(fontindex==SCALED_FONT){
     scale_2d_x = (scaled_font2d_height2width*(float)scaled_font2d_height/(float)104.76);
-    scale_2d_y = ((float)scaled_font2d_height/(float)152.38);
 
     text_height = MAX(18,(int)( (12.0/18.0)*(25.0/18.0)*(float)scaled_font2d_height));
     text_width =  MAX(18, (25.0/36.0)*(scaled_font2d_height2width*(float)scaled_font2d_height));
@@ -1444,9 +1443,6 @@ void GetSmokeDir(float *mm){
   eye_position_smv[0] = -DOT3(mm + 0, mm + 12) / mscale[0];
   eye_position_smv[1] = -DOT3(mm + 4, mm + 12) / mscale[1];
   eye_position_smv[2] = -DOT3(mm + 8, mm + 12) / mscale[2];
-  eye_position_fds[0] = SMV2FDS_X(eye_position_smv[0]);
-  eye_position_fds[1] = SMV2FDS_Y(eye_position_smv[1]);
-  eye_position_fds[2] = SMV2FDS_Z(eye_position_smv[2]);
 
 #ifdef pp_GETMESH
   for(j = 0; j < global_scase.meshescoll.nmeshes + 1; j++){
@@ -2077,9 +2073,6 @@ void ViewportScene(int quad, int view_mode, GLint screen_left, GLint screen_down
         (double)viewx,  (double)viewy,  (double)viewz,
         (double)uup[0], (double)uup[1], (double)uup[2]
       );
-      smv_viewpos[0] = viewx;
-      smv_viewpos[1] = viewy;
-      smv_viewpos[2] = viewz;
     }
     else{
       float *view, *uup, *right;
@@ -2109,9 +2102,6 @@ void ViewportScene(int quad, int view_mode, GLint screen_left, GLint screen_down
         (double)vview[0],(double)vview[1],(double)vview[2],
           (double)uup[0],  (double)uup[1],  (double)uup[2]
       );
-      smv_viewpos[0] = vview[0];
-      smv_viewpos[1] = vview[1];
-      smv_viewpos[2] = vview[2];
     }
 
     glGetFloatv(GL_MODELVIEW_MATRIX,modelview_setup);
