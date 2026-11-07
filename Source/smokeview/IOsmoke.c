@@ -23,9 +23,6 @@
 #define FIRE_USE_ALPHAMAP   1
 #define FIRE_USE_HALFDEPTH  2
 
-int cull_count=0;
-int smoke_function_count;
-
 /* ------------------ UpdateSmoke3dFileParms ------------------------ */
 
 void UpdateSmoke3dFileParms(void){

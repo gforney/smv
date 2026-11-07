@@ -47,7 +47,6 @@ GLUI_Spinner *SPINNER_shooter_u0=NULL;
 GLUI_Spinner *SPINNER_shooter_z0=NULL;
 GLUI_Spinner *SPINNER_shooter_p=NULL;
 GLUI_Spinner *SPINNER_shooter_duration=NULL;
-GLUI_Spinner *SPINNER_shooter_history=NULL;
 GLUI_Spinner *SPINNER_shooter_1=NULL;
 
 GLUI_Button *BUTTON_shooter_loadplot3d=NULL;

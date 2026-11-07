@@ -9,7 +9,7 @@
 
 #include "smokeviewvars.h"
 
-GLuint p_smoke, p_3dslice, p_zonesmoke, p_volsmoke;
+GLuint p_smoke, p_3dslice, p_zonesmoke;
 
 #define LINK_BAD 0
 #define LINK_GOOD 1
