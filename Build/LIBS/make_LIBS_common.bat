@@ -58,7 +58,6 @@ if NOT x%freeglutdir% == x goto skip_glut
   echo *** building glut
   start "building glut" /WAIT cmd /c "makelib %COMPILER_TYPE%  > %LIBDIR%\glut.out 2>&1"
   echo *** glut build complete
-  timeout /t 1 > Nul
 :skip_glut
 
 :: freeglut
@@ -96,6 +95,8 @@ call :WAIT glui.running
 echo *** glui build complete
 
 cd %LIBDIR%
+setlocal
+set "lib_copy_failed="
 
 call :COPY %SRCDIR%\zlib131\libz.lib          %LIBDIR%\zlib.lib
 call :COPY %SRCDIR%\jpeg-9b\libjpeg.lib       %LIBDIR%\jpeg.lib
@@ -113,7 +114,8 @@ call :COPY %FREEGLUTLIBDIR%\freeglut_static.lib %LIBDIR%\freeglut_static.lib
 call :COPY %SRCDIR%\pthreads\libpthreads.lib   %LIBDIR%\pthreads.lib
 call :COPY %SRCDIR%\glui_v2_1_beta\libglui.lib %LIBDIR%\glui.lib
 
-goto eof
+if defined lib_copy_failed exit /b 1
+exit /b 0
 
 ::------------------------------------------------
 :COPY
@@ -123,23 +125,31 @@ set infile=%1
 set outfile=%2
 IF NOT EXIST %infile% goto else1
    echo *** copying %label%
-   copy %infile% %outfile% >Nul
+   copy %infile% %outfile% >Nul || set "lib_copy_failed=1"
    goto endif1
 :else1
    echo.
    echo *** warning: %infile% does not exist
+   set "lib_copy_failed=1"
    echo.
 :endif1
 exit /b
 
 ::------------------------------------------------
+:BUILD
+::------------------------------------------------
+:: Mark the job before launching it so :WAIT cannot miss a worker starting up.
+type Nul > "%LIBDIR%\%1.running"
+start "building %1" cmd /d /c call "%COMMON%\lib_wrapper.bat" "%1" "%LIBDIR%" makelib %COMPILER_TYPE% %2 || (
+  del "%LIBDIR%\%1.running"
+  echo *** warning: could not start %1 build
+)
+exit /b
+
+::------------------------------------------------
 :WAIT
 ::------------------------------------------------
-set file=%1
-:CONT
-if not exist %LIBDIR%\%file% timeout /t 1 > Nul
-if not exist %LIBDIR%\%file% exit /b
-timeout /t 1 > Nul
-goto CONT
-
-:eof
+if not exist "%LIBDIR%\%1" exit /b
+:: timeout requires console input, which the GUI redirects.
+powershell.exe -NoProfile -NonInteractive -Command "$marker = Join-Path $env:LIBDIR '%1'; while (Test-Path -LiteralPath $marker) { Start-Sleep -Milliseconds 250 }"
+exit /b
