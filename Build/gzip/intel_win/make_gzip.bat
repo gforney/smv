@@ -14,7 +14,7 @@ echo Intel oneAPI compilers are set up.
 
 setlocal
 pushd "%~dp0" || exit /b 1
-nmake /nologo /a /f ..\Makefile
+nmake /nologo /f ..\Makefile intel_win
 set "build_status=%errorlevel%"
 popd
 exit /b %build_status%

@@ -4,7 +4,8 @@ With Intel oneAPI and Visual Studio C++ build tools installed, run
 `Build\gzip\intel_win\make_gzip.bat` from the repository root. The script
 sets up oneAPI if needed and keeps it available for later builds in the same
 Command Prompt. From an initialized oneAPI prompt, you can also
-run `nmake /a /f ..\Makefile` in `Build\gzip\intel_win`. The build uses Intel `icx`, the
+run `nmake /f ..\Makefile intel_win` in `Build\gzip\intel_win`.
+The build uses Intel `icx`, the
 bundled zlib sources, and the static C runtime. It writes `gzip.exe` and the
 `.obj` files to `Build\gzip\intel_win`.
 

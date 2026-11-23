@@ -21,5 +21,8 @@ gzip.exe: ..\Makefile $(SOURCES) $(HEADERS)
 	$(CC) /nologo /c /O2 /MT /D_CRT_SECURE_NO_WARNINGS /D_CRT_NONSTDC_NO_WARNINGS /I"$(ZLIB)" $(SOURCES)
 	$(CC) /nologo /MT /Fe:$@ $(OBJECTS)
 
+intel_win:
+	$(MAKE) /nologo /a /f ..\Makefile CC=icx gzip.exe
+
 clang_win:
 	$(MAKE) /nologo /a /f ..\Makefile CC=clang-cl gzip.exe
