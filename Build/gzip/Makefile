@@ -1,4 +1,5 @@
-SOURCE = ..\..\Source
+CC = icx
+SOURCE = ..\..\..\Source
 ZLIB = $(SOURCE)\zlib131
 
 SOURCES = $(SOURCE)\gzip\minigzip.c \
@@ -12,5 +13,13 @@ HEADERS = $(ZLIB)\crc32.h $(ZLIB)\deflate.h $(ZLIB)\gzguts.h \
           $(ZLIB)\inftrees.h $(ZLIB)\trees.h $(ZLIB)\zconf.h \
           $(ZLIB)\zlib.h $(ZLIB)\zutil.h
 
-gzip.exe: Makefile $(SOURCES) $(HEADERS)
-		cl /nologo /O2 /MT /D_CRT_SECURE_NO_WARNINGS /I"$(ZLIB)" /Fe:$@ $(SOURCES)
+OBJECTS = minigzip.obj adler32.obj crc32.obj deflate.obj \
+          gzclose.obj gzlib.obj gzread.obj gzwrite.obj \
+          inffast.obj inflate.obj inftrees.obj trees.obj zutil.obj
+
+gzip.exe: ..\Makefile $(SOURCES) $(HEADERS)
+	$(CC) /nologo /c /O2 /MT /D_CRT_SECURE_NO_WARNINGS /D_CRT_NONSTDC_NO_WARNINGS /I"$(ZLIB)" $(SOURCES)
+	$(CC) /nologo /MT /Fe:$@ $(OBJECTS)
+
+clang_win:
+	$(MAKE) /nologo /a /f ..\Makefile CC=clang-cl gzip.exe

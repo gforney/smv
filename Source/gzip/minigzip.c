@@ -1,6 +1,7 @@
 /* minigzip.c -- simulate gzip using the zlib compression library
  * Copyright (C) 1995-2006, 2010, 2011, 2016 Jean-loup Gailly
  * For conditions of distribution and use, see copyright notice in zlib.h
+ * Modified for Smokeview to add a --help option.
  */
 
 /*
@@ -521,6 +522,18 @@ int main(int argc, char *argv[]) {
       copyout = uncompr = 1;
 
     while (argc > 0) {
+      if (strcmp(*argv, "--help") == 0) {
+        printf("Usage: %s [OPTION]... [FILE]...\n"
+               "  --help    Show this help\n"
+               "  -c        Write to standard output and keep the input\n"
+               "  -d        Decompress\n"
+               "  -f        Use filtered compression\n"
+               "  -h        Use Huffman-only compression\n"
+               "  -r        Use run-length encoding\n"
+               "  -1 to -9  Set the compression level\n"
+               "With no file, read from standard input.\n", bname);
+        return 0;
+      }
       if (strcmp(*argv, "-c") == 0)
         copyout = 1;
       else if (strcmp(*argv, "-d") == 0)
