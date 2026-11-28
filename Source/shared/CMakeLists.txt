@@ -4,6 +4,7 @@ add_library(smv STATIC
     dmalloc.c
     compress.c
     file_util.c
+    gzfile_util.c
     string_util.c
     threader.c
     histogram.c
