@@ -1,6 +1,6 @@
 CC = icx
 SOURCE = ..\..\..\Source
-ZLIB = $(SOURCE)\zlib131
+ZLIB = $(SOURCE)\LIBS\zlib131
 
 SOURCES = $(SOURCE)\gzip\minigzip.c \
           $(ZLIB)\adler32.c $(ZLIB)\crc32.c $(ZLIB)\deflate.c \
@@ -17,12 +17,12 @@ OBJECTS = minigzip.obj adler32.obj crc32.obj deflate.obj \
           gzclose.obj gzlib.obj gzread.obj gzwrite.obj \
           inffast.obj inflate.obj inftrees.obj trees.obj zutil.obj
 
-gzip.exe: ..\Makefile $(SOURCES) $(HEADERS)
+gzip_win.exe: ..\Makefile $(SOURCES) $(HEADERS)
 	$(CC) /nologo /c /O2 /MT /D_CRT_SECURE_NO_WARNINGS /D_CRT_NONSTDC_NO_WARNINGS /I"$(ZLIB)" $(SOURCES)
 	$(CC) /nologo /MT /Fe:$@ $(OBJECTS)
 
 intel_win:
-	$(MAKE) /nologo /a /f ..\Makefile CC=icx gzip.exe
+	$(MAKE) /nologo /a /f ..\Makefile CC=icx gzip_win.exe
 
 clang_win:
-	$(MAKE) /nologo /a /f ..\Makefile CC=clang-cl gzip.exe
+	$(MAKE) /nologo /a /f ..\Makefile CC=clang-cl gzip_win.exe
